@@ -18,3 +18,25 @@ Create application by:
 
     # Delete its repository. (We want only its initial version for reference.)
     rm -r examples/default-app/.git*
+
+Merge stub code into top-level application directory:
+
+    Copy additional content into:
+        package.json
+        .gitignore
+    Run 'npm install', which will add entries to 'package-lock.json'.
+    Copy files:
+        public/
+            favicon.ico
+            index.html
+            logo.svg
+            robots.txt
+        src/
+            App.svelte
+            App.test.js
+            index.js
+
+Run `npm start` or `npx snowpack dev` to start the development server, launch
+the default web browser, and load the page into a new browser tab. Or run `npm
+run build` or `npx snowpack build` to compile it to a static directory "build"
+for production. See `npx snowpack --help` for additional commands and options.
