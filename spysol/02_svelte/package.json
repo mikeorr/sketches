@@ -1,0 +1,14 @@
+{
+  "name": "spysol",
+  "version": "0.1.0",
+  "description": "A Spider card game.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mike Orr",
+  "license": "MIT",
+  "devDependencies": {
+    "snowpack": "^3.0.11"
+  }
+}
