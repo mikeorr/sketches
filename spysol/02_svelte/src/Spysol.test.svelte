@@ -1,3 +1,4 @@
+/*
 import {render} from '@testing-library/svelte';
 import {expect} from 'chai';
 import App from './App.svelte';
@@ -9,3 +10,4 @@ describe('<App>', () => {
     expect(document.body.contains(linkElement));
   });
 });
+*/

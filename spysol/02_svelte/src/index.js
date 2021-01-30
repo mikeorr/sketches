@@ -1,10 +1,12 @@
-import App from "./App.svelte";
+import Spysol from "./Spysol.svelte";
 
-let app = new App({
-  target: document.body,
+export let els = {
+    spysol: document.getElementById("spysol"),
+};
+
+export let spysol = new Spysol({
+  target: els.spysol,
 });
-
-export default app;
 
 // Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
 // Learn more: https://www.snowpack.dev/concepts/hot-module-replacement
