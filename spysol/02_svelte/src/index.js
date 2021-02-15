@@ -1,5 +1,5 @@
 import Spysol from "./Spysol.svelte";
-import {makeCards} from "./models.js";
+import * as models from "./models.js";
 
 export let els = {
     spysol: document.getElementById("spysol"),
@@ -9,9 +9,11 @@ export let spysol = new Spysol({
   target: els.spysol,
 });
 
-let cards = makeCards();
+const deck = new models.Deck()
+let cards = deck.sorted();
 
 console.log(cards.map(x => x.name).join(" "));
+console.log(cards.length);
 
 // Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
 // Learn more: https://www.snowpack.dev/concepts/hot-module-replacement

@@ -11,15 +11,30 @@ const letterRanks = {1: "A", 11: "J", 12: "Q", 13: "K"};
 
 class Card {
     constructor (id) {
+        const rs = id % 26;
+        this.id = id;
+        this.rank = (rs % 12) + 1;
+        this.red = rs > 12;
+        const rankname = letterRanks[this.rank] || this.rank.toString();
+        if (this.red) {
+            this.suit = "H";
+            this.symbol = String.fromCodePoint(0x1F0B1 + this.rank - 1);
+        } else {
+            this.suit = "C";
+            this.symbol = String.fromCodePoint(0x1F0D1 + this.rank - 1);
+        }
+        this.name = rankname + this.suit;
+
+        /*
         let rankred, rank, red, suit, chr, rankname, symbol;
         rankred = id % 26;
-        if (rankred <= 13) {
-            rank = rankred;
+        if (rankred <= 12) {
+            rank = rankred + 1;
             red = false;
             suit = "C";
             symbol = String.fromCodePoint(0x1F0D1 + rank - 1);
         } else {
-            rank = rankred - 13;
+            rank = rankred - 12;
             red = true;
             suit = "H";
             symbol = String.fromCodePoint(0x1F0B1 + rank - 1);
@@ -31,15 +46,33 @@ class Card {
         this.red = red;
         this.suit = suit;
         this.symbol = symbol;
+        */
     }
 }
 
 
-export function makeCards() {
-    let cards, id;
-    cards = [];
-    for(id = 1; id <= 124; id++) {
-        cards.push(new Card(id));
+export class Deck {
+
+    sorted() {
+        let cards = [];
+        let id;
+        for(id = 1; id <= 104; id++) {
+            cards.push(new Card(id));
+        }
+        return cards;
     }
-    return cards;
-};
+
+    shuffled() {
+        let cards = this.sorted();
+        // Shuffling not implemented.
+        return cards;
+    }
+
+    ordered(order) {
+        let orig = this.sorted();
+        let cards = order.map( i => orig[x] );
+        //let cards = [];
+        //order.forEach( i => cards.push(orig[i-1]) );
+        return cards;
+    }
+}
