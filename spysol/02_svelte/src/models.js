@@ -15,38 +15,45 @@ class Card {
         this.id = id;
         this.rank = (rs % 13) + 1;
         this.red = rs > 12;
-        const rankname = letterRanks[this.rank] || this.rank.toString();
-        if (this.red) {
-            this.suit = chars.hearts;
-            this.chr = String.fromCodePoint(0x1F0B1 + this.rank - 1);
-        } else {
-            this.suit = chars.clubs;
-            this.chr = String.fromCodePoint(0x1F0D1 + this.rank - 1);
-        }
-        this.name = rankname + this.suit;
+        this.suit = this.red ? chars.hearts : chars.clubs;
+        this.name = this._getRankName(this.rank) + this.suit;
+        this.chr = this._getChr(this.rank, this.red);
+    }
 
-        /*
-        let rankred, rank, red, suit, chr, rankname, symbol;
-        rankred = id % 26;
-        if (rankred <= 12) {
-            rank = rankred + 1;
-            red = false;
-            suit = "C";
-            symbol = String.fromCodePoint(0x1F0D1 + rank - 1);
-        } else {
-            rank = rankred - 12;
-            red = true;
-            suit = "H";
-            symbol = String.fromCodePoint(0x1F0B1 + rank - 1);
+    _getChr(rank, red) {
+        let base, offset;
+        base = red ? 0x1F0B1 : 0x1F0D1;
+        offset = rank - 1;
+        if (rank >= 12) {
+            offset++
         }
-        rankname = letterRanks[rank] || rank.toString();
-        this.id = id;
-        this.name = rankname + suit;
-        this.rank = rank;
-        this.red = red;
-        this.suit = suit;
-        this.symbol = symbol;
-        */
+        return String.fromCodePoint(base + offset);
+    }
+
+    _getRankName(rank) {
+        switch (rank) {
+            case 1:
+                return "A";
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                return rank.toString();
+            case 11:
+                return "J";
+            case 12:
+                return "Q";
+            case 13:
+                return "K";
+            default:
+                return undefined;
+              
+        }
     }
 }
 
