@@ -1,11 +1,12 @@
 <script>
-  import {onMount} from 'svelte';
-  let count = 0;
-  onMount(() => {
-    const interval = setInterval(() => count++, 1000);
-    return () => {
-      clearInterval(interval);
-    };
+  import * as svelte from 'svelte';
+  import * as models from "./models.js";
+
+  let deck = new models.Deck()
+  let sorted = deck.sorted();
+  console.log(sorted.map(x => x.name).join(" "));
+
+  svelte.onMount(() => {
   });
 </script>
 
@@ -15,7 +16,6 @@
     font-family: Arial, Helvetica, sans-serif;
   }
   .Spysol {
-    text-align: center;
   }
 
   .Spysol-header {
@@ -27,6 +27,9 @@
 
 <div class="Spysol">
   <header class="Spysol-header">
-    <p>Page has been open for <code>{count}</code> seconds.</p>
   </header>
+  <h1>Sorted cards</h1>
+  {#each sorted as card (card.id)}
+  <span style="font-family: monospace; margin-right: 1em">{card.name} </span>
+  {/each}
 </div>
