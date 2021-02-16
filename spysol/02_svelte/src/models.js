@@ -13,7 +13,7 @@ class Card {
     constructor (id) {
         const rs = id % 26;
         this.id = id;
-        this.rank = (rs % 12) + 1;
+        this.rank = (rs % 13) + 1;
         this.red = rs > 12;
         const rankname = letterRanks[this.rank] || this.rank.toString();
         if (this.red) {
@@ -56,7 +56,7 @@ export class Deck {
     sorted() {
         let cards = [];
         let id;
-        for(id = 1; id <= 104; id++) {
+        for(id = 0; id < 104; id++) {
             cards.push(new Card(id));
         }
         return cards;
