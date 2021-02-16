@@ -2,7 +2,7 @@
 
 const chars = {
     back: String.fromCodePoint(0x1F0A0),
-    spades: String.fromCodePoint(0x2660),
+    clubs: String.fromCodePoint(0x2663),
     hearts: String.fromCodePoint(0x2665),
 };
 
@@ -17,11 +17,11 @@ class Card {
         this.red = rs > 12;
         const rankname = letterRanks[this.rank] || this.rank.toString();
         if (this.red) {
-            this.suit = "H";
-            this.symbol = String.fromCodePoint(0x1F0B1 + this.rank - 1);
+            this.suit = chars.hearts;
+            this.chr = String.fromCodePoint(0x1F0B1 + this.rank - 1);
         } else {
-            this.suit = "C";
-            this.symbol = String.fromCodePoint(0x1F0D1 + this.rank - 1);
+            this.suit = chars.clubs;
+            this.chr = String.fromCodePoint(0x1F0D1 + this.rank - 1);
         }
         this.name = rankname + this.suit;
 

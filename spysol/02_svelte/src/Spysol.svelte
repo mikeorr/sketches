@@ -4,7 +4,6 @@
 
   let deck = new models.Deck()
   let sorted = deck.sorted();
-  console.log(sorted.map(x => x.name).join(" "));
 
   svelte.onMount(() => {
   });
@@ -17,11 +16,16 @@
   }
   .Spysol {
   }
-
-  .Spysol-header {
+  .card {
+    font-family: monospace;
+    margin-right: 1em;
+    text-align: right;
   }
-  .App-link {
-    color: #ff3e00;
+  .card-black {
+    color: black;
+  }
+  .card-red {
+    color: red;
   }
 </style>
 
@@ -30,6 +34,8 @@
   </header>
   <h1>Sorted cards</h1>
   {#each sorted as card (card.id)}
-  <span style="font-family: monospace; margin-right: 1em">{card.name} </span>
+  <span class="card {card.red ? 'card-red' : 'card-black'}">
+    {card.name} <!--{card.chr}-->
+  </span>
   {/each}
 </div>
