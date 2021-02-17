@@ -83,3 +83,55 @@ export class Deck {
         return cards;
     }
 }
+
+
+class Column {
+    constructor() {
+        this.hidden = [];   // Array of Card.
+        this.visible = [];   // Array of Card.
+    }
+
+    reset() {
+        // Delete all cards.
+        this.hidden.splice(0);
+        this.hidden.splice(0);
+    }
+}
+
+
+export class SpysolModel {
+    constructor(order=null) {
+        this.cards = this._getCards();
+        this.reset();
+    }
+
+    reset() {
+        this.columns = [];
+        for (let i=0; i <= 9; i++) {
+            this.columns.push(new Column())
+        }
+        this.score = {
+            foundations: 0,
+            runs: 0,
+            runs2: 0,
+            won: false,
+            foundationsToWin: 8,
+        };
+    }
+
+    deal() {
+    }
+
+    recalculate() {
+        return this.score;
+    }
+
+    _getCards(order=null) {
+        const deck = new Deck()
+        if (order) {
+            return deck.ordered(order);
+        } else {
+            return deck.shuffled();
+        }
+    }
+}
