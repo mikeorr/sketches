@@ -1,6 +1,5 @@
 // Spysol models
 
-//import range from "range";
 import shuffle from "array-shuffle";
 
 const chars = {
@@ -102,15 +101,13 @@ class Column {
 
 export class SpysolModel {
     constructor(order=null) {
+        this.columnsRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.cards = this._getCards();
         this.reset();
     }
 
     reset() {
-        this.columns = [];
-        for (let i=0; i <= 9; i++) {
-            this.columns.push(new Column())
-        }
+        this.columns = this.columnsRange.map(x => new Column());
         this.score = {
             foundations: 0,
             runs: 0,
@@ -121,6 +118,21 @@ export class SpysolModel {
     }
 
     deal() {
+        this.reset();
+        const maxColumn = this.columns.length - 1;
+        let iColumn = 0;
+        let col;
+        this.cards.forEach(card => {
+            c = this.columns[iColumn];
+            if len(c.hidden.length < 5) {
+                c.hidden.push(card);
+            } else {
+                c.visible.push(card);
+            }
+            if (++iColumn >= this.columns.length) {
+                iColumn = 0;
+            }
+        })'
     }
 
     recalculate() {
