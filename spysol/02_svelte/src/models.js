@@ -1,5 +1,7 @@
 // Spysol models
 
+import shuffle from "array-shuffle";
+
 const chars = {
     back: String.fromCodePoint(0x1F0A0),
     clubs: String.fromCodePoint(0x2663),
@@ -70,9 +72,7 @@ export class Deck {
     }
 
     shuffled() {
-        let cards = this.sorted();
-        // Shuffling not implemented.
-        return cards;
+        return shuffle(this.sorted());
     }
 
     ordered(order) {
