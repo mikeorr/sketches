@@ -2,32 +2,34 @@
 
 import shuffle from "array-shuffle";
 
-const chars = {
-    back: String.fromCodePoint(0x1F0A0),
-    clubs: String.fromCodePoint(0x2663),
-    hearts: String.fromCodePoint(0x2665),
-};
+export class Card {
+    // A playing card.
 
-const letterRanks = {1: "A", 11: "J", 12: "Q", 13: "K"};
+    // Attributes (all readonly):
+    //   id: Integer 0 - 105.
+    //   rank: Integer 1 - 13.
+    //   red: true for red (hearts/diamonds), false for black (clubs/spades).
+    //   suit: suit character:
+    //     hearts for hearts/diamonds, clubs for clubs/spades.
+    //   name: string, rank + suit, substituting A=1, J=11, Q=12, K=13.
+    //   chr: the single unicode characer for the rank & suit.
 
-
-class Card {
-    constructor (id) {
-        const rs = id % 26;
+    constructor (id, rank, red) {
         this.id = id;
-        this.rank = (rs % 13) + 1;
-        this.red = rs > 12;
-        this.suit = this.red ? chars.hearts : chars.clubs;
-        this.name = this._getRankName(this.rank) + this.suit;
+        this.rank = rank;
+        this.red = red;
+        this.suit = String.fromCodePoint(red ? 0x2665 : 0x2663);
+        this.rankName = this._getRankName(rank);
+        this.name = this.rankName + this.suit;
         this.chr = this._getChr(this.rank, this.red);
     }
 
     _getChr(rank, red) {
         let base, offset;
-        base = red ? 0x1F0B1 : 0x1F0D1;
+        base = red ? 0x1F0B1 : 0x1F0D1;   // Ace of hearts; ace of clubs.
         offset = rank - 1;
         if (rank >= 12) {
-            offset++
+            offset++;
         }
         return String.fromCodePoint(base + offset);
     }
@@ -59,30 +61,29 @@ class Card {
     }
 }
 
-
-export class Deck {
-
-    sorted() {
-        let cards = [];
-        let id;
-        for(id = 0; id < 104; id++) {
-            cards.push(new Card(id));
+// Create an array of Card objects in sorted order.
+// The length is 105: two packs of playing cards, with the suits reduced to two.
+// Clubs A 2 3 4 5 6 7 8 9 10 J Q K. (Instead of spades.)
+// Hearts ditto.  (Instead of diamonds.)
+// Clubs ditto.
+// Hearts ditto.
+// Repeat all four.
+function getCardDeck {
+    const reds = [false, true, false, true, false, true, false, true];
+    const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    let red;
+    let rank;
+    let card;
+    let cards = [];
+    let id = 0;
+    for (red of reds) {
+        for (rank of ranks) {
+            card = new Card(id, rank, red);
+            cards.push(card);
         }
-        return cards;
     }
-
-    shuffled() {
-        return shuffle(this.sorted());
-    }
-
-    ordered(order) {
-        let orig = this.sorted();
-        let cards = order.map( i => orig[x] );
-        //let cards = [];
-        //order.forEach( i => cards.push(orig[i-1]) );
-        return cards;
-    }
-}
+    return cards;
+};
 
 
 class Column {
@@ -102,11 +103,26 @@ class Column {
 export class SpysolModel {
     constructor(order=null) {
         this.columnsRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        this.cards = this._getCards();
+        this.columnsLength = this.columnsRange.length;
+        this.origCards = this._getCardDeck(order);
+        this.cards = this.origCards.slice();
         this.reset();
     }
 
+    // Set the original cards for future deals.
+    setCards(order) {
+        const deck = new Deck()
+        if (order) {
+            this.origCards = deck.ordered(order);
+        } else {
+            this.origCards = deck.shuffled();
+        }
+    }
+
+    // Set the tableau and scores to empty.
+    // Copy a fresh set of origCards ready to deal.
     reset() {
+        this.cards = this.origCards.slice();
         this.columns = this.columnsRange.map(x => new Column());
         this.score = {
             foundations: 0,
@@ -119,9 +135,18 @@ export class SpysolModel {
 
     deal() {
         this.reset();
-        const maxColumn = this.columns.length - 1;
-        let iColumn = 0;
-        let col;
+        const columnsLength = this.columns.length;
+        let iRow = 0;
+        let iCol = 0;
+        let iCard = 0;
+        for (iRow = 0; iRow < 5; iRow++) {
+            for (iCol = 0; iCol < columnsLength; iCol++) {
+                this.columns[iCol].hidden.push(this.cards[iCard++]);
+            }
+        }
+        for (iCol = 0; iCol < columnsLength; iCol++) {
+            this.columns[iCol].visible.push(this.cards[iCard++]);
+        }
         this.cards.forEach(card => {
             c = this.columns[iColumn];
             if len(c.hidden.length < 5) {
