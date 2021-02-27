@@ -61,14 +61,9 @@ export class Card {
     }
 }
 
-// Create an array of Card objects in sorted order.
-// The length is 105: two packs of playing cards, with the suits reduced to two.
-// Clubs A 2 3 4 5 6 7 8 9 10 J Q K. (Instead of spades.)
-// Hearts ditto.  (Instead of diamonds.)
-// Clubs ditto.
-// Hearts ditto.
-// Repeat all four.
-function getCardDeck {
+// Create an array of Card objects.
+function getCardDeck(options) {
+    options = options || {};
     const reds = [false, true, false, true, false, true, false, true];
     const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     let red;
@@ -82,7 +77,13 @@ function getCardDeck {
             cards.push(card);
         }
     }
-    return cards;
+    if (options.order) {
+        return ordered.map(i => cards[i]);
+    } elif (options.shuffle) }
+       return shuffle(cards);
+    } else {
+        return cards;
+    }
 };
 
 
@@ -104,19 +105,13 @@ export class SpysolModel {
     constructor(order=null) {
         this.columnsRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.columnsLength = this.columnsRange.length;
-        this.origCards = this._getCardDeck(order);
-        this.cards = this.origCards.slice();
+        this.setCards(order);
         this.reset();
     }
 
     // Set the original cards for future deals.
     setCards(order) {
-        const deck = new Deck()
-        if (order) {
-            this.origCards = deck.ordered(order);
-        } else {
-            this.origCards = deck.shuffled();
-        }
+        this.cards = getCardDeck(order ? {order} : {shuffle: true});
     }
 
     // Set the tableau and scores to empty.
