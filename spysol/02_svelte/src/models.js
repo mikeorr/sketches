@@ -105,6 +105,7 @@ export class SpysolModel {
     constructor(order=null) {
         this.columnsRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.columnsLength = this.columnsRange.length;
+        this.foundationstoWin - 8;
         this.setCards(order);
         this.reset();
     }
@@ -114,18 +115,19 @@ export class SpysolModel {
         this.cards = getCardDeck(order ? {order} : {shuffle: true});
     }
 
+    shuffle() {
+        this.setCards();
+    }
+
     // Set the tableau and scores to empty.
     // Copy a fresh set of origCards ready to deal.
     reset() {
-        this.cards = this.origCards.slice();
         this.columns = this.columnsRange.map(x => new Column());
-        this.score = {
-            foundations: 0,
-            runs: 0,
-            runs2: 0,
-            won: false,
-            foundationsToWin: 8,
-        };
+        this.foundations = 0,
+        this.runs = 0;
+        this.runs2 = 0;
+        this.won = false;
+        ;
     }
 
     deal() {
@@ -156,15 +158,6 @@ export class SpysolModel {
     }
 
     recalculate() {
-        return this.score;
     }
 
-    _getCards(order=null) {
-        const deck = new Deck()
-        if (order) {
-            return deck.ordered(order);
-        } else {
-            return deck.shuffled();
-        }
-    }
 }
