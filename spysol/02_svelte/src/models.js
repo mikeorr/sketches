@@ -14,13 +14,15 @@ export class Card {
     //   name: string, rank + suit, substituting A=1, J=11, Q=12, K=13.
     //   chr: the single unicode characer for the rank & suit.
 
+    static _letterRanks = {1: "A", 11: "J", 12: "Q", 13: "K"};
+
     constructor (id, rank, red) {
         this.id = id;
         this.rank = rank;
         this.red = red;
         this.suit = String.fromCodePoint(red ? 0x2665 : 0x2663);
         this.rankName = this._getRankName(rank);
-        this.name = this.rankName + this.suit;
+        this.name = this.constructor._letterRanks[rank] || rank.toString();
         this.chr = this._getChr(this.rank, this.red);
     }
 
@@ -33,37 +35,10 @@ export class Card {
         }
         return String.fromCodePoint(base + offset);
     }
-
-    _getRankName(rank) {
-        switch (rank) {
-            case 1:
-                return "A";
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-                return rank.toString();
-            case 11:
-                return "J";
-            case 12:
-                return "Q";
-            case 13:
-                return "K";
-            default:
-                return undefined;
-              
-        }
-    }
 }
 
 // Create an array of Card objects.
-function getCardDeck(options) {
-    options = options || {};
+function getCardDeck() {
     const reds = [false, true, false, true, false, true, false, true];
     const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     let red;
@@ -76,13 +51,6 @@ function getCardDeck(options) {
             card = new Card(id, rank, red);
             cards.push(card);
         }
-    }
-    if (options.order) {
-        return ordered.map(i => cards[i]);
-    } elif (options.shuffle) }
-       return shuffle(cards);
-    } else {
-        return cards;
     }
 };
 
@@ -111,12 +79,14 @@ export class SpysolModel {
     }
 
     // Set the original cards for future deals.
-    setCards(order) {
-        this.cards = getCardDeck(order ? {order} : {shuffle: true});
+    setCardOrder(order) {
+        const cards = getCardDeck();
+        this.cards = order.map(i => cards[i]);
     }
 
     shuffle() {
-        this.setCards();
+        const cards = getCardDeck();
+        this.cards = shuffle(cards);
     }
 
     // Set the tableau and scores to empty.
