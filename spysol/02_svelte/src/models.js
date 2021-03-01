@@ -3,16 +3,18 @@
 import shuffle from "array-shuffle";
 
 export class Card {
-    constructor (id, rank, spades) {
-        const chrBase = spades ? 0x1F0D1 : 0x1F0B1;
+    static _letterRanks = {1: "A", 11: "J", 12: "Q", 13: "K"};
+    constructor (id, rank, clubs) {
+        const chrBase = clubs ? 0x1F0D1 : 0x1F0B1;
         this.id = id;
         this.rank = rank;
         this.red = red;
         this.suit = String.fromCodePoint(red ? 0x2663 : 0x2665);
-        this.black = spades;
-        this.red = not spades;
+        this.black = clubs;
+        this.red = not clubs;
         this.name = this.constructor._letterRanks[rank] || rank.toString();
         this.chr = String.fromCharCode(chrBase + rank - 1);
+    }
 }
 
 // Create an array of Card objects.
