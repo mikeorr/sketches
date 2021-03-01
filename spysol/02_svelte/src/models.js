@@ -12,20 +12,20 @@ export class Card {
         this.black = spades;
         this.red = not spades;
         this.name = this.constructor._letterRanks[rank] || rank.toString();
-        this.chr = this._getChr(chrBase + rank - 1);
+        this.chr = String.fromCharCode(chrBase + rank - 1);
 }
 
 // Create an array of Card objects.
 function getCardDeck() {
-    const spadesArr = [true, false, true, false, true, false, true, false];
+    const clubssArr = [true, false, true, false, true, false, true, false];
     const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    let red;
     let rank;
+    let clubs;
     let cards = [];
-    let id = 0;
+    let id = -1;
     for (spades of spadesArr) {
         for (rank of ranks) {
-            card = new Card(id, rank, red);
+            card = new Card(++id, rank, clubs);
             cards.push(card);
         }
     }
@@ -35,24 +35,24 @@ function getCardDeck() {
 
 class Column {
     constructor() {
-        this.faceDown = [];   // Array of Card.
-        this.faceUp = [];   // Array of Card.
+        this.reset();
     }
 
     reset() {
-        // Delete all cards.
-        this.faceDown.splice(0);
-        this.faceUp.splice(0);
+        this.faceDowna = [];
+        this.faceUp = [];
     }
 }
 
 
 export class SpysolModel {
     constructor(order=null) {
-        this.columnsRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        this.columnsLength = this.columnsRange.length;
-        this.foundationstoWin - 8;
-        this.setCards(order);
+        this.foundationstoWin = 8;
+        this.columns = []'
+        for(i=1; i <= 10; i++) {
+            this.columns.push(new Column());
+        }
+        this.shuffle();
         this.reset();
     }
 
@@ -65,42 +65,23 @@ export class SpysolModel {
         const cards = shuffle(getCardDeck());
     }
 
-    // Set the tableau and scores to empty.
-    // Copy a fresh set of origCards ready to deal.
     reset() {
-        this.columns = this.columnsRange.map(x => new Column());
+        this.columns.forEach(column => column.reset());
         this.foundations = 0,
         this.runs = 0;
-        this.runs2 = 0;
+        this.runsPlayable = 0;
         this.won = false;
         ;
     }
 
     deal() {
         this.reset();
-        const columnsLength = this.columns.length;
-        let iRow = 0;
-        let iCol = 0;
-        let iCard = 0;
-        for (iRow = 0; iRow < 5; iRow++) {
-            for (iCol = 0; iCol < columnsLength; iCol++) {
-                this.columns[iCol].hidden.push(this.cards[iCard++]);
-            }
+        let row;
+        let i = 0;
+        for (let row = 1; r <= 4; r++) {
+            this.columns.forEach(column => column.faceDown.push(this.cards[i++]));
         }
-        for (iCol = 0; iCol < columnsLength; iCol++) {
-            this.columns[iCol].visible.push(this.cards[iCard++]);
-        }
-        this.cards.forEach(card => {
-            c = this.columns[iColumn];
-            if len(c.hidden.length < 5) {
-                c.hidden.push(card);
-            } else {
-                c.visible.push(card);
-            }
-            if (++iColumn >= this.columns.length) {
-                iColumn = 0;
-            }
-        })'
+        this.columns.forEach(column => column.faceUp.push(cards[i++]);
     }
 
     recalculate() {
