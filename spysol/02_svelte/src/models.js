@@ -3,68 +3,46 @@
 import shuffle from "array-shuffle";
 
 export class Card {
-    // A playing card.
-
-    // Attributes (all readonly):
-    //   id: Integer 0 - 105.
-    //   rank: Integer 1 - 13.
-    //   red: true for red (hearts/diamonds), false for black (clubs/spades).
-    //   suit: suit character:
-    //     hearts for hearts/diamonds, clubs for clubs/spades.
-    //   name: string, rank + suit, substituting A=1, J=11, Q=12, K=13.
-    //   chr: the single unicode characer for the rank & suit.
-
-    static _letterRanks = {1: "A", 11: "J", 12: "Q", 13: "K"};
-
-    constructor (id, rank, red) {
+    constructor (id, rank, spades) {
+        const chrBase = spades ? 0x1F0D1 : 0x1F0B1;
         this.id = id;
         this.rank = rank;
         this.red = red;
-        this.suit = String.fromCodePoint(red ? 0x2665 : 0x2663);
-        this.rankName = this._getRankName(rank);
+        this.suit = String.fromCodePoint(red ? 0x2663 : 0x2665);
+        this.black = spades;
+        this.red = not spades;
         this.name = this.constructor._letterRanks[rank] || rank.toString();
-        this.chr = this._getChr(this.rank, this.red);
-    }
-
-    _getChr(rank, red) {
-        let base, offset;
-        base = red ? 0x1F0B1 : 0x1F0D1;   // Ace of hearts; ace of clubs.
-        offset = rank - 1;
-        if (rank >= 12) {
-            offset++;
-        }
-        return String.fromCodePoint(base + offset);
-    }
+        this.chr = this._getChr(chrBase + rank - 1);
 }
 
 // Create an array of Card objects.
 function getCardDeck() {
-    const reds = [false, true, false, true, false, true, false, true];
+    const spadesArr = [true, false, true, false, true, false, true, false];
     const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     let red;
     let rank;
-    let card;
     let cards = [];
     let id = 0;
-    for (red of reds) {
+    for (spades of spadesArr) {
         for (rank of ranks) {
             card = new Card(id, rank, red);
             cards.push(card);
         }
     }
+    return cards;
 };
 
 
 class Column {
     constructor() {
-        this.hidden = [];   // Array of Card.
-        this.visible = [];   // Array of Card.
+        this.faceDown = [];   // Array of Card.
+        this.faceUp = [];   // Array of Card.
     }
 
     reset() {
         // Delete all cards.
-        this.hidden.splice(0);
-        this.hidden.splice(0);
+        this.faceDown.splice(0);
+        this.faceUp.splice(0);
     }
 }
 
@@ -78,15 +56,13 @@ export class SpysolModel {
         this.reset();
     }
 
-    // Set the original cards for future deals.
     setCardOrder(order) {
         const cards = getCardDeck();
         this.cards = order.map(i => cards[i]);
     }
 
     shuffle() {
-        const cards = getCardDeck();
-        this.cards = shuffle(cards);
+        const cards = shuffle(getCardDeck());
     }
 
     // Set the tableau and scores to empty.
