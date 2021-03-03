@@ -9,7 +9,6 @@
   let total = deck.length;
   let maxFaceDownRows = 5;
 
-  let deck;          // Initialized in 'shuffle()'.
   let columns;       // Initialized in 'reset()'.
   let foundations;   // Initialized in 'reset()'.
   let runs;          // Initialized in 'reset()'.
@@ -17,10 +16,6 @@
   let moves;         // Initialized in 'reset()'.
   let stock;         // Initialized in 'reset()'.
 
-
-  function shuffle() {
-    deck = shuffle(logic.getCards());
-  }
 
   function reset() {
     columns = [
@@ -42,20 +37,20 @@
     stock = [];
   }
 
-  function deal() {
-    let i = 0;
+  function deal(redeal=false) {
+    stock = redeal ? deck.slice() : shuffle(logic.getCards());
     function pushHidden(column) {
-        column.hidden.push(deck[i++]);
+        column.hidden.push(stock.pop());
     }
     function pushHidden(column) {
-        column.visible.push(deck[i++]);
+        column.visible.push(stock.pop());
     }
     for (let row = 1; row <= maxHiddenRows; row++) {
         columns.forEach(pusHidden);
     }
     columns.forEach(pushVisible);
     columns = columns;   // Kick UI.
-    stock = deck.slice(i);
+    // 'stock' still contains remaining cards.
   }
 
 
