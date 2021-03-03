@@ -17,22 +17,33 @@ export class Card {
     }
 }
 
-// Create an array of Card objects.
-function getCardDeck() {
-    const clubssArr = [true, false, true, false, true, false, true, false];
-    const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    let rank;
-    let clubs;
-    let cards = [];
-    let id = -1;
-    for (spades of spadesArr) {
-        for (rank of ranks) {
-            card = new Card(++id, rank, clubs);
-            cards.push(card);
+
+export class Dealer {
+    sort() {
+        const clubssArr = [true, false, true, false, true, false, true, false];
+        const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+        let rank;
+        let clubs;
+        let deck = [];
+        let id = -1;
+        for (spades of spadesArr) {
+            for (rank of ranks) {
+                card = new Card(++id, rank, clubs);
+                deck.push(card);
+            }
         }
+        return deck;
     }
-    return cards;
-};
+
+    shuffle() {
+        return shuffle(this.sort())
+    }
+
+    custom(order) {
+        const deck = this.sort()
+        return order.map(i => deck[i]);
+    }
+}
 
 
 class Column {

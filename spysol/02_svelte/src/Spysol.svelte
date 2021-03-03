@@ -3,11 +3,62 @@
   import shuffle from "array-shuffle";
   import * as models from "./models.js";
 
-  let deck = new models.Deck()
-  let sorted = deck.sorted();
-  let shuffled = deck.shuffled();
-  sorted.reverse()
-  let model = new models.SpysolModel();
+  // Props, reactive variables, and their dependencies.
+  let debug = true;
+  let dealer = models.Dealer();
+  let sorted = dealer.sort();   // For debugging.
+  let deck = dealer.shuffle();
+  let total = deck.length;
+  let maxFaceDownRows = 5;
+
+  // Initalized in 'reset()'.
+  let columns;
+  let foundations;
+  let runs;
+  let won;
+  let moves;
+  let stock;
+
+  function reset() {
+    columns = [
+        {hidden: [], visible: []},   // 0
+        {hidden: [], visible: []},   // 1
+        {hidden: [], visible: []},   // 2
+        {hidden: [], visible: []},   // 3
+        {hidden: [], visible: []},   // 4
+        {hidden: [], visible: []},   // 5
+        {hidden: [], visible: []},   // 6
+        {hidden: [], visible: []},   // 7
+        {hidden: [], visible: []},   // 8
+        {hidden: [], visible: []},   // 9
+    ];
+    foundations = 0;
+    runs = 0;
+    won = false;
+    moves = [];
+    stock = [];
+  }
+
+  function shuffle() {
+    deck = dealer.shuffle();
+  }
+
+  function deal() {
+    let i = 0;
+    function pushFaceDown(column) {
+        column.hidden.push(deck[i++]);
+    }
+    function pushHidden(column) {
+        column.visible.push(deck[i++]);
+    }
+    for (let row = 1; row <= maxHiddenRows; row++) {
+        columns.forEach(pusHidden);
+    }
+    columns.forEach(pushVisible);
+    columns = columns;   // Kick UI.
+    stock = deck.slice(i);
+  }
+
 
   svelte.onMount(() => {
   });
