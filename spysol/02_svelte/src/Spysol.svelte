@@ -1,23 +1,26 @@
 <script>
   import * as svelte from 'svelte';
   import shuffle from "array-shuffle";
-  import * as models from "./models.js";
+  import * as logic from "./logic.js";
 
   // Props, reactive variables, and their dependencies.
   let debug = true;
-  let dealer = models.Dealer();
-  let sorted = dealer.sort();   // For debugging.
-  let deck = dealer.shuffle();
+  let sorted = logic.getCards();   // For debugging.
   let total = deck.length;
   let maxFaceDownRows = 5;
 
-  // Initalized in 'reset()'.
-  let columns;
-  let foundations;
-  let runs;
-  let won;
-  let moves;
-  let stock;
+  let deck;          // Initialized in 'shuffle()'.
+  let columns;       // Initialized in 'reset()'.
+  let foundations;   // Initialized in 'reset()'.
+  let runs;          // Initialized in 'reset()'.
+  let won;           // Initialized in 'reset()'.
+  let moves;         // Initialized in 'reset()'.
+  let stock;         // Initialized in 'reset()'.
+
+
+  function shuffle() {
+    deck = shuffle(logic.getCards());
+  }
 
   function reset() {
     columns = [
@@ -39,13 +42,9 @@
     stock = [];
   }
 
-  function shuffle() {
-    deck = dealer.shuffle();
-  }
-
   function deal() {
     let i = 0;
-    function pushFaceDown(column) {
+    function pushHidden(column) {
         column.hidden.push(deck[i++]);
     }
     function pushHidden(column) {
