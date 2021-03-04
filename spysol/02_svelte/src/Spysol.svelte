@@ -3,39 +3,41 @@
   import shuffle from "array-shuffle";
   import * as logic from "./logic.js";
 
-  // Props, reactive variables, and their dependencies.
-  let debug = true;
-  let sorted = logic.getCards();   // For debugging.
-  let total = deck.length;
-  let maxFaceDownRows = 5;
+  const maxCards = 105;
+  const maxHiddenRows = 4;
 
-  let columns;       // Initialized in 'reset()'.
-  let foundations;   // Initialized in 'reset()'.
-  let runs;          // Initialized in 'reset()'.
-  let won;           // Initialized in 'reset()'.
-  let moves;         // Initialized in 'reset()'.
-  let stock;         // Initialized in 'reset()'.
+  function makeColumns() {
+    //        0   1   2   3   4   5   6   7   8   9
+    return [ [], [], [], [], [], [], [], [], [], [] ];
+  }
+
+  // Props, reactive variables, and their dependencies.
+  export let debug = true;
+  export let deck = null;
+  let sorted = null;   // For debugging.
+  let columns = makeColumns();
+  let stock = [];
+  let foundations = 0;
+  let runs = 0;
+  let won = false;
+  let history = [];
+  let historyIndex = -1;
+  let isHelp = false;
+  let isOptions = false;
+  let isScores = false;
 
 
   function reset() {
-    columns = [
-        {hidden: [], visible: []},   // 0
-        {hidden: [], visible: []},   // 1
-        {hidden: [], visible: []},   // 2
-        {hidden: [], visible: []},   // 3
-        {hidden: [], visible: []},   // 4
-        {hidden: [], visible: []},   // 5
-        {hidden: [], visible: []},   // 6
-        {hidden: [], visible: []},   // 7
-        {hidden: [], visible: []},   // 8
-        {hidden: [], visible: []},   // 9
-    ];
+    columns = [ [], [], [], [], [], [], [], [], [], [] ];
+    stock = [];
     foundations = 0;
     runs = 0;
     won = false;
-    moves = [];
-    stock = [];
+    history = [];
+    historyIndex = -1;
   }
+
+  reset();
 
   function deal(redeal=false) {
     stock = redeal ? deck.slice() : shuffle(logic.getCards());
