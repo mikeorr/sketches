@@ -14,7 +14,6 @@
   // Props, reactive variables, and their dependencies.
   export let debug = true;
   export let deck = null;
-  let sorted = null;   // For debugging.
   let columns = makeColumns();
   let stock = [];
   let foundations = 0;
@@ -26,6 +25,7 @@
   let isOptions = false;
   let isScores = false;
 
+  let sorted = logic.makeCardDeck();   // For debugging.
 
   function reset() {
     columns = [ [], [], [], [], [], [], [], [], [], [] ];
