@@ -2,16 +2,17 @@ import shuffleArray from "array-shuffle";
 
 export class Card {
     static _letterRanks = {1: "A", 11: "J", 12: "Q", 13: "K"};
-    constructor (id, rank, clubs) {
+    constructor (id, rank, clubs, visible=true) {
         const chrBase = clubs ? 0x1F0D1 : 0x1F0B1;
         this.id = id;
         this.rank = rank;
-        this.red = !clubs;
         this.suit = String.fromCodePoint(clubs ? 0x2663 : 0x2665);
         this.black = clubs;
         this.red = !clubs;
-        this.name = this.constructor._letterRanks[rank] || rank.toString();
-        this.chr = String.fromCharCode(chrBase + rank - 1);
+        this.color = clubs ? "black" : "red";
+        this.name = (this.constructor._letterRanks[rank] || rank) + this.suit;
+        this.chr = String.fromCodePoint(chrBase + rank - 1);
+        this.visible = visible;
     }
 }
 
