@@ -120,5 +120,6 @@
       {#each sorted as card (card.id)}
       <span class="card card-name card-{card.color}">{card.name.padStart(3)}</span>
       {/each}
+      <p class="card card-chr">&#x1f0a0;</p>
   </details>
 </div>
