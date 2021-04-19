@@ -83,5 +83,5 @@ export function countRuns(column) {
 }
 
 export function isWon(foundations) {
-    return foundations === max.cards;
+    return foundations === maxCards;
 }
