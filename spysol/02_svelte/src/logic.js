@@ -48,6 +48,41 @@ export function makeCardDeck(faceUp=true, shuffled=false, order=null) {
     return deck;
 }
 
+export function getCardDeck(order=true, faceUp=true) {
+    const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    const suits = [true, false, true, false, true, false, true, false];
+    let deck = [];
+    let id = 0;
+    let rank, suit, card;
+    for (suit of suits) {
+         for (rank of ranks) {
+            card = {
+                id: ++id,
+                rank: rank,
+                suit: suit,
+                faceUp: faceUp,
+            };
+            deck.push(card);
+        }
+     }
+     if (order === true) {
+        return deck;
+     } else if (order === false) {
+        return shuffle(deck);
+     } else if (Array.isArray(order)) {
+        return order.map(i => deck[i - 1]);
+     }
+}
+
+export function getCardText(rank, suit, series) {
+    let base, offset;
+    if (series == "Playing Cards") {
+        base = [0x1f0d1, 0x1f0b1][suit];
+        offset = (rank < 12) ? (rank - 1) : rank;
+        return String.fromCodePoint(base + offset);
+    }
+}
+
 export function makeTableau() {
     //        0   1   2   3   4   5   6   7   8   9
     return [ [], [], [], [], [], [], [], [], [], [] ];
