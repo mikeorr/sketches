@@ -17,7 +17,7 @@
   let isHelp = false;
   let isOptions = false;
   let isScores = false;
-  let sorted = logic.makeCardDeck();   // For debugging.
+  let sorted = logic.getCardDeck();   // For debugging.
 
   function reset() {
     stock = [];
@@ -30,7 +30,7 @@
   }
 
   function deal() {
-    let cards = logic.makeCardDeck(false, true);
+    let cards = logic.getCardDeck(false, true);
     tableau = logic.makeTableau();
     tableau[0] = cards.splice(0, 6);
     tableau[1] = cards.splice(0, 6);
