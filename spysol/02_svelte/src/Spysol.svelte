@@ -2,6 +2,7 @@
   import * as svelte from 'svelte';
   import shuffle from "array-shuffle";
   import * as logic from "./logic.js";
+  import Card from "./Card.svelte";
 
   const maxCards = 105;
   const maxHiddenRows = 4;
@@ -112,6 +113,10 @@
   -->
   <details open="open">
     <summary>Testing</summary>
+      <h1>Sorted card components</h1>
+      {#each sorted as card (card.id)}
+      <Card card={card} />
+      {/each}
       <h1>Sorted card chars</h1>
       {#each sorted as card (card.id)}
       <span class="card card-chr card-{card.color}">{card.chr}</span>
