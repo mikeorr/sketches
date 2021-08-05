@@ -1,45 +1,54 @@
 import shuffleArray from "array-shuffle";
 
 const maxCards = 104;
-const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-const suits = [0, 1, 0, 1, 0, 1, 0, 1];
-const rankLetters = {1: "A", 11: "J", 12: "Q", 13: "K"};
+
+const CLUBS = {base: 0x1F0D1, black: true, chr: "\u{2663}", name: "C"};
+const HEARTS = {base: 0x1F0B1, black: false, chr: "\u{2665}", name: "H"};
+const RANKS = [
+    {rank: 1,  name: "A",  offset: 0},
+    {rank: 2,  name: "2",  offset: 1},
+    {rank: 3,  name: "3",  offset: 2},
+    {rank: 4,  name: "4",  offset: 3},
+    {rank: 5,  name: "5",  offset: 4},
+    {rank: 6,  name: "6",  offset: 5},
+    {rank: 7,  name: "7",  offset: 6},
+    {rank: 8,  name: "8",  offset: 7},
+    {rank: 9,  name: "9",  offset: 8},
+    {rank: 10, name: "10", offset: 9},
+    {rank: 11, name: "J",  offset: 10},
+    {rank: 12, name: "Q",  offset: 12},   // Skip offset 11 (Cavalier card).
+    {rank: 13, name: "K",  offset: 13},
+];
 
 export class Card {
-    constructor (rank, suit, id, faceUp=true) {
+
+    constructor (id, faceUp=false) {
+        if (!Number.isInteger(id) || id < 1) {
+            throw new Error("card ID must be integer >= 1");
+        }
         this.id = id;
-        this.rank = rank;
-        this.suit = suit;
         this.faceUp = faceUp;
-        this.name = this._getName(rank, suit);
-        this.chr = this._getChr(rank, suit);
-        this.black = Boolean(suit);
-        this.color = suit ? "red" : "black";
+        const c = this.constructor;
+        const rs = (id - 1) % 26;    // 0-12 = clubs A-K, 13-25 = hearts A-K.
+        const rank = RANKS[rs % 13];
+        const suit = (rs < 13) ? CLUBS : HEARTS;
+        this.rank = rank.rank;
+        this.name = rank.name + suit.chr;
+        this.chr = String.fromCodePoint(suit.base + rank.offset);
+        this.black = suit.black;
+        this.color = suit.black ? "black" : "red";
     }
 
-    _getChr(rank, suit) {
-        const base = suit ? 0x1f0b1 : 0x1f0d1;
-        const offset = (rank < 12) ? (rank - 1) : rank;
-        return String.fromCodePoint(base + offset);
-    }
-
-    _getName(rank, suit) {
-        const rankName = rankLetters[rank] || rank;
-        const suitName = suit ? "\u{2665}" : "\u{2663}";   // clubs, hearts.
-        return rankName + suitName;
-    }
 }
 
 
 export function getCardDeck(faceUp=true, order=true) {
     let deck = [];
-    let id = 0;
-    let rank, suit, card;
-    for (suit of suits) {
-         for (rank of ranks) {
-            card = new Card(rank, suit, ++id, faceUp);
-            deck.push(card);
-        }
+    let id;
+    let card;
+    for (id = 1; id <= maxCards; id++) {
+        card = new Card(id, faceUp);
+        deck.push(card);
      }
      if (order === false) {
         shuffle(deck);
@@ -47,15 +56,6 @@ export function getCardDeck(faceUp=true, order=true) {
         deck - order.map(i => deck[i - 1]);
      }
      return deck;
-}
-
-export function getCardText(rank, suit, series) {
-    let base, offset;
-    if (series == "Playing Cards") {
-        base = [0x1f0d1, 0x1f0b1][suit];
-        offset = (rank < 12) ? (rank - 1) : rank;
-        return String.fromCodePoint(base + offset);
-    }
 }
 
 export function makeTableau() {
