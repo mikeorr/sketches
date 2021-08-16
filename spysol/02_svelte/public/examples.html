@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spysol Examples</title>
+    <style>
+      @font-face {
+        font-family: "neaveill-playing-cards";
+        src: url("CARDS.TTF");
+      }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .card {
+        font-family: monospace;
+      }
+      .card-black {
+        color: black;
+      }
+      .card-red {
+        color: red;
+      }
+      .card-name {
+        font-size: 20px;
+        border: solid 1px;
+      }
+      .card-chr {
+        font-size: 40px;
+      }
+      .card-neaveill {
+        font-family: neaveill-playing-cards;
+        font-size: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Spysol Example Fragments</h1>
+
+    <h2>Unicode card characters</h2>
+    <div class="card card-chr card-black">
+      &#x1F0D1;&#x1F0D2;&#x1F0D3;&#x1F0D4;&#x1F0D5;&#x1F0D6;&#x1F0D7;&#x1F0D8;&#x1F0D9;&#x1F0DA;&#x1F0DB;&#x1F0DD;&#x1F0DE;
+    </div>
+    <div class="card card-chr card-red">
+      &#x1F0B1;&#x1F0B2;&#x1F0B3;&#x1F0B4;&#x1F0B5;&#x1F0B6;&#x1F0B7;&#x1F0B8;&#x1F0B9;&#x1F0BA;&#x1F0BB;&#x1F0BD;&#x1F0BE;
+    </div>
+    <div class="card card-chr card-back">
+      &#x1F0A0;
+    </div>
+
+    <h2>Card names</h2>
+    <div>
+      <span class="card card-name card-black"> A&clubs;</span>
+      <span class="card card-name card-black"> 2&clubs;</span>
+      <span class="card card-name card-black"> 3&clubs;</span>
+      <span class="card card-name card-black"> 4&clubs;</span>
+      <span class="card card-name card-black"> 5&clubs;</span>
+      <span class="card card-name card-black"> 6&clubs;</span>
+      <span class="card card-name card-black"> 7&clubs;</span>
+      <span class="card card-name card-black"> 8&clubs;</span>
+      <span class="card card-name card-black"> 9&clubs;</span>
+      <span class="card card-name card-black">10&clubs;</span>
+      <span class="card card-name card-black"> J&clubs;</span>
+      <span class="card card-name card-black"> Q&clubs;</span>
+      <span class="card card-name card-black"> K&clubs;</span>
+    </div>
+    <div>
+      <span class="card card-name card-red"> A&hearts;</span>
+      <span class="card card-name card-red"> 2&hearts;</span>
+      <span class="card card-name card-red"> 3&hearts;</span>
+      <span class="card card-name card-red"> 4&hearts;</span>
+      <span class="card card-name card-red"> 5&hearts;</span>
+      <span class="card card-name card-red"> 6&hearts;</span>
+      <span class="card card-name card-red"> 7&hearts;</span>
+      <span class="card card-name card-red"> 8&hearts;</span>
+      <span class="card card-name card-red"> 9&hearts;</span>
+      <span class="card card-name card-red">10&hearts;</span>
+      <span class="card card-name card-red"> J&hearts;</span>
+      <span class="card card-name card-red"> Q&hearts;</span>
+      <span class="card card-name card-red"> K&hearts;</span>
+    </div>
+
+    <h2>Dafont ASCII cards and dice</h2>
+
+    <div class="card-neaveill">
+      <div class="card-black">nopqrstuvwxyz</div>
+      <div class="card-red">NOPQRSTUVWXYZ</div>
+      <div>123456 &amp;</div>
+    </div>
+
+
+    <!--
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script type="module" src="/dist/index.js"></script>
+    <div id="spysol"></div>
+    -->
+  </body>
+</html>
