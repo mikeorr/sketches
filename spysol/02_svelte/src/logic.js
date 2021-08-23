@@ -41,7 +41,6 @@ export class Card {
 
 }
 
-
 export function getCardDeck(faceUp=true, order=true) {
     let deck = [];
     let id;
@@ -74,7 +73,7 @@ export function canMove(cards, target) {
     return true;
 };
 
-export function canPrompte(cards) {
+export function canPromote(cards) {
     if (cards.length !== 13) {
         return false;
     }
