@@ -1,7 +1,20 @@
 <script>
 
-// Properties.
-export let card;
+  /*
+  const unicodeChars = [
+    // Suit 0: Clubs.
+    [0x1f0d1, 0x1f0d2, 0x1f0d3, 0x1f0d4, 0x1f0d5,
+     0x1f0d6, 0x1f0d7, 0x1f0d8, 0x1f0d8, 0x1f0da,
+     0x1f0db, 0x1fdd, 0x1fde].map(String.fromCodePoint),
+    // Suit 1: Hearts.
+    [0x1f0b1, 0x1f0b2, 0x1f0b3, 0x10fb4, 0x1f0b5,
+     0x1f0b6, 0x1f0b7, 0x1f0b8, 0x1f0b8, 0x1f0ba,
+     0x1f0bb, 0x1fbd, 0x1fbe].map(String.fromCodePoint),
+  ]
+
+  console.log("Initialized unicodeChars", unicodeChars);
+  */
+
 
   // Properties.
   export let card = {id: 0, rank: 1, suit: 0};
@@ -14,6 +27,25 @@ export let card;
   let suitClass;
   let text;
 
+  function getCardChar() {
+    let suitOffset, rankOffset;
+    suitOffset = card.suit ? 0x1f0b1 : 0x1f0d1;
+    if (card.rank < 12) {
+        rankOffset = card.rank - 1;
+    } else {
+      rankOffset = card.rank;
+    }
+    return String.fromCodePoint(suitOffset + rankOffset);
+    console.log("getCardChar card", card);
+  }
+
+  function getCardColor() {
+    console.log("getCardColor card", card);
+    return (card.suit % 2) ? "red" : "black";
+  }
+
+
+  /*
   const patterns = {
     letters: {
         suitRanks: [
@@ -33,9 +65,8 @@ export let card;
              0x1f0bb, 0x1fbd, 0x1fbe].map(String.fromCodePoint),
         ],
         back: String.fromCodePoint(0x1f0a0),
-        align: "right".
+        align: "right",
     },
-    ;
   }
 
   $: if (card.faceUp) {
@@ -61,7 +92,7 @@ export let card;
   }
 
   let cssClass = "";
-  let text = "";
+  //let text = "";
 
   $: {
   }
@@ -84,15 +115,16 @@ export let card;
   function getCardClass() {
     let classes = ["card"]
     if (card.faceUp) {
-        return card.clubs ? "card clib
-        classes.push(card.clubs : "clubs" : "heartw");
-    } elif (peek) {
-        classes.push(card.clubs : "peek-clibs" : "peek-hearts");
+        classes.push(card.clubs ? "clubs" : "hearts");
+    } else if (peek) {
+        classes.push(card.clubs ? "peek-clubs" : "peek-hearts");
     } else {
         classes.push("back");
     }
     return classes.join(" ");
   }
+
+  */
 
   //svelte.onMount(() => {
   //});
@@ -114,6 +146,7 @@ export let card;
 </style>
 
 {#if false}
-{#else}
-<span class="card card-chr card-{card.color}">{card.chr}</span>
+XXX
+{:else}
+<span class="card card-chr card-{getCardColor()}">{getCardChar()}</span>
 {/if}
