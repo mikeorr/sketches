@@ -78,31 +78,6 @@
   });
 </script>
 
-<style>
-  :global(body) {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  .Spysol {
-  }
-  .card {
-    font-family: monospace;
-  }
-  .card-black {
-    color: black;
-  }
-  .card-red {
-    color: red;
-  }
-  .card-name {
-    font-size: 20px;
-    border: solid 1px;
-  }
-  .card-chr {
-    font-size: 40px;
-  }
-</style>
-
 <div class="Spysol">
   <header class="Spysol-header">
   </header>
