@@ -13,6 +13,7 @@
   "dependencies": {
     "array-shuffle": "^2.0.0",
     "fill-range": "^7.0.1",
+    "random-seedable": "^1.0.7",
     "svelte": "^3.24.0"
   },
   "devDependencies": {
