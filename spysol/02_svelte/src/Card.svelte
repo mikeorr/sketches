@@ -36,11 +36,11 @@
       rankOffset = card.rank;
     }
     return String.fromCodePoint(suitOffset + rankOffset);
-    console.log("getCardChar card", card);
+    //console.log("getCardChar card", card);
   }
 
   function getCardColor() {
-    console.log("getCardColor card", card);
+    //console.log("getCardColor card", card);
     return (card.suit % 2) ? "red" : "black";
   }
 

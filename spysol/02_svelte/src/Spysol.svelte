@@ -41,30 +41,17 @@
   }
 
   function deal() {
+    let i;
     let cards = logic.getCardDeck();
     logic.shuffle(cards);
-    tableau = logic.makeTableau();
-    tableau[0] = cards.splice(0, 6);
-    tableau[1] = cards.splice(0, 6);
-    tableau[2] = cards.splice(0, 6);
-    tableau[3] = cards.splice(0, 6);
-    tableau[4] = cards.splice(0, 5);
-    tableau[5] = cards.splice(0, 5);
-    tableau[6] = cards.splice(0, 5);
-    tableau[7] = cards.splice(0, 5);
-    tableau[8] = cards.splice(0, 5);
-    tableau[9] = cards.splice(0, 5);
+    for (i of logic.tableauRange) {
+        reserve[i] = cards.splice(0, 4);
+    }
+    for (i of logic.tableauRange) {
+        tableau[i].push(cards.shift());
+        tableau[i] = tableau[i];
+    }
     stock = cards;
-    tableau[0][-1].faceUp = true;
-    tableau[1][-1].faceUp = true;
-    tableau[2][-1].faceUp = true;
-    tableau[3][-1].faceUp = true;
-    tableau[4][-1].faceUp = true;
-    tableau[5][-1].faceUp = true;
-    tableau[6][-1].faceUp = true;
-    tableau[7][-1].faceUp = true;
-    tableau[8][-1].faceUp = true;
-    tableau[9][-1].faceUp = true;
   }
 
   clear();
@@ -102,6 +89,10 @@
   -->
   <details open="open">
     <summary>Testing</summary>
+      <h1>Shuffled card components</h1>
+      {#each shuffled as card (card.id)}
+      <Card card={card} />
+      {/each}
       <h1>Sorted card components</h1>
       {#each sorted as card (card.id)}
       <Card card={card} />

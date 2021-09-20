@@ -2,6 +2,7 @@ import * as randomizers from "random-seedable";
 //import shuffleArray from "array-shuffle";
 
 const maxCards = 104;
+const tableauRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const CLUBS = {base: 0x1F0D1, black: true, chr: "\u{2663}", name: "C"};
 const HEARTS = {base: 0x1F0B1, black: false, chr: "\u{2665}", name: "H"};
@@ -58,15 +59,11 @@ export function getCardDeck(faceUp=true, order=true) {
 export function shuffle(arr, seed=undefined, algorithm=undefined) {
     let prng;
     let random;
-    console.log(randomizers);
     if (algorithm == "mersenne") {
         prng = randomizers.MersenneTwister;
-        console.log("PRNG is MersenneTwister.");
     } else {
         prng = randomizers.XORShift64;
-        console.log("PNG is XORShift64.");
     }
-    console.log(prng);
     if (seed) {
         random = new prng(seed);
     } else {
