@@ -75,6 +75,10 @@
     }
   }
 
+  function onChangeLayout(event) {
+    horizontal = !horizontal;
+  }
+
 
   svelte.onMount(() => {
   });
@@ -106,6 +110,8 @@
   {/if}
   </table>
   <!-- End Tableau -->
+
+  <p><button on:click={onChangeLayout}>Change Layout</button></p>
 
   <!-- BEGIN Testing -->
   <details open="open">
