@@ -9,6 +9,7 @@
 
   // Properties.
   export let seed = null;   // Random number seed: 1 to 2,147,483,647.
+  export let horizontal = false;  // Horizontal or vertical layout.
 
   // Reactive variables.
   let stock;
@@ -55,7 +56,7 @@
   }
 
   clear();
-  //deal();
+  deal();
 
   $: {
     let count = foundations;
@@ -82,11 +83,31 @@
 <div class="Spysol">
   <header class="Spysol-header">
   </header>
-  <!--
-  <div id="rows">
-    <p>{model.columns[0].hidden.map(x => x.chr).join(" ")} | {model.columns[0].faceUp.map(x => x.chr).join(" ")}</p>
-  </div>
-  -->
+
+  <!-- BEGIN Tableau -->
+  <table id="tableau">
+  {#if horizontal}
+  <p>Horizontal layout under construction.</p>
+  {:else}
+    <tr>
+      {#each logic.tableauRange as i (i)}
+        <td>
+          {#each reserve[i] as card (card.id)}
+          <div>
+          <Card card={card} />
+          </div>
+          {/each}
+          <div>
+          <Card card={tableau[i][0]} />
+          </div>
+        </td>
+      {/each}
+    </tr>
+  {/if}
+  </table>
+  <!-- End Tableau -->
+
+  <!-- BEGIN Testing -->
   <details open="open">
     <summary>Testing</summary>
       <h1>Shuffled card components</h1>
@@ -107,4 +128,6 @@
       {/each}
       <p class="card card-chr">&#x1f0a0;</p>
   </details>
+  <!-- END Testing -->
+
 </div>

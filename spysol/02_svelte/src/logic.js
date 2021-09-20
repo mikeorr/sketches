@@ -2,7 +2,6 @@ import * as randomizers from "random-seedable";
 //import shuffleArray from "array-shuffle";
 
 const maxCards = 104;
-const tableauRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const CLUBS = {base: 0x1F0D1, black: true, chr: "\u{2663}", name: "C"};
 const HEARTS = {base: 0x1F0B1, black: false, chr: "\u{2665}", name: "H"};
@@ -21,6 +20,8 @@ const RANKS = [
     {rank: 12, name: "Q",  offset: 12},   // Skip offset 11 (Cavalier card).
     {rank: 13, name: "K",  offset: 13},
 ];
+
+export const tableauRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export class Card {
 
