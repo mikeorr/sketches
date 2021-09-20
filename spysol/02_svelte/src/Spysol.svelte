@@ -7,23 +7,33 @@
   const maxCards = 105;
   const maxHiddenRows = 4;
 
+  // Properties.
+  export let seed = null;   // Random number seed: 1 to 2,147,483,647.
+
   // Reactive variables.
-  let stock = [];
-  let tableau = logic.makeTableau();
-  let foundations = 0;
-  let runs = 0;
-  let won = false;
-  let history = [];
-  let historyIndex = -1;
+  let stock;
+  let reserve;
+  let tableau;
+  let foundations;
+  let runs;
+  let won;
+  let history;
+  let historyIndex;
   let isHelp = false;
   let isOptions = false;
   let isScores = false;
-  let sorted = logic.getCardDeck();   // For debugging.
 
-  function reset() {
+
+  // For debugging.
+  let shuffled = logic.getCardDeck();
+  let sorted = logic.getCardDeck();
+  logic.shuffle(shuffled);
+
+  function clear() {
     stock = [];
+    reserve = logic.makeTableau();
     tableau = logic.makeTableau();
-    foundations = 0;
+    foundations = logic.makeTableau();
     history = [];
     historyIndex = -1;
     runs = 0;
@@ -31,7 +41,8 @@
   }
 
   function deal() {
-    let cards = logic.getCardDeck(false, true);
+    let cards = logic.getCardDeck();
+    logic.shuffle(cards);
     tableau = logic.makeTableau();
     tableau[0] = cards.splice(0, 6);
     tableau[1] = cards.splice(0, 6);
@@ -55,6 +66,9 @@
     tableau[8][-1].faceUp = true;
     tableau[9][-1].faceUp = true;
   }
+
+  clear();
+  //deal();
 
   $: {
     let count = foundations;

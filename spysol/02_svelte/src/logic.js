@@ -1,4 +1,5 @@
-import shuffleArray from "array-shuffle";
+import * as randomizers from "random-seedable";
+//import shuffleArray from "array-shuffle";
 
 const maxCards = 104;
 
@@ -50,12 +51,28 @@ export function getCardDeck(faceUp=true, order=true) {
         card = new Card(id, faceUp);
         deck.push(card);
      }
-     if (order === false) {
-        shuffle(deck);
-     } else if (Array.isArray(order)) {
-        deck - order.map(i => deck[i - 1]);
-     }
      return deck;
+}
+
+// Shuffle an array.
+export function shuffle(arr, seed=undefined, algorithm=undefined) {
+    let prng;
+    let random;
+    console.log(randomizers);
+    if (algorithm == "mersenne") {
+        prng = randomizers.MersenneTwister;
+        console.log("PRNG is MersenneTwister.");
+    } else {
+        prng = randomizers.XORShift64;
+        console.log("PNG is XORShift64.");
+    }
+    console.log(prng);
+    if (seed) {
+        random = new prng(seed);
+    } else {
+        random = new prng();
+    }
+    return random.shuffle(arr);
 }
 
 export function makeTableau() {
