@@ -41,6 +41,7 @@ export class Card {
         this.chr = String.fromCodePoint(suit.base + rank.offset);
         this.black = suit.black;
         this.color = suit.black ? "black" : "red";
+        this.selected = false;
     }
 
 }
