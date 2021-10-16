@@ -79,6 +79,88 @@ export function makeTableau() {
     return [ [], [], [], [], [], [], [], [], [], [] ];
 }
 
+
+class Changes {
+    constructor() {
+        this.tableau = [];
+        this.reserve = [];
+        this.clear();
+    }
+
+    clear() {
+        this.tableau.splice(0);
+        this.reserve.splice(0);
+        this.foundations = false;
+        this.outcome = false;
+    }
+}
+
+
+export class SpysolGame {
+    constructor() {
+        // Board
+        this.tableau = [ [], [], [], [], [], [], [], [], [], [] ];
+        this.reserve = [ [], [], [], [], [], [], [], [], [], [] ];
+        this.colNums = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9 ];
+        this.foundations = [];
+
+        // Outcome flags
+        this.finished = false;
+        this.won = false;
+        this.lost = false;
+
+        // UI helpers
+        this.changes = new Changes();
+
+        // Internal housekeeping
+
+        // Constants
+        this.maxFoundations = 8;
+        this.fullSuitLength = 13;
+    }
+
+    canNove(col1, index, col2) {
+        const c1 = this.tableau[col1];
+        const c2 = this.tableau[col2];
+        if (!c1.length) {
+            return false;
+        }
+        let rank = target.rank - 1;
+        for (card of cards) {
+            if (rank < 1 || card.rank !== rank) {
+                return false;
+            }
+            rank--;
+        }
+        // TODO: Rank is wrong.
+        if (c2.length) {
+            return c2[0].rank = rank + 1;
+        } else {
+            return true;
+        }
+    }
+
+    canPromote(column) {
+        const cards = this.tableau[column];
+        if (cards.length !== 13) {
+            return false;
+        }
+        const suit = cards[0].suit;
+        let rank = 13;
+        for (card of cards) {
+            if (card.suit !== suit || cards.rank !== rank--) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    isWon() {
+        return this.foundations.length >= this.maxFoundations;
+    }
+}
+
+
 export function canMove(cards, target) {
     let rank = target.rank - 1;
     for (card of cards) {

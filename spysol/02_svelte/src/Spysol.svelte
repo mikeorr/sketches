@@ -12,6 +12,7 @@
   export let horizontal = false;  // Horizontal or vertical layout.
 
   // Reactive variables.
+  let game = new logic.SpysolGame();
   let stock;
   let reserve;
   let tableau;
