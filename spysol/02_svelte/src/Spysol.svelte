@@ -115,7 +115,7 @@
   <p><button on:click={onChangeLayout}>Change Layout</button></p>
 
   <!-- BEGIN Testing -->
-  <details open="open">
+  <details>
     <summary>Testing</summary>
       <h1>Shuffled card components</h1>
       {#each shuffled as card (card.id)}
