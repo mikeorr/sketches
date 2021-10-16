@@ -90,7 +90,7 @@
   </header>
 
   <!-- BEGIN Tableau -->
-  <table id="tableau">
+  <table id="tableau" class="tableau">
   {#if horizontal}
   <p>Horizontal layout under construction.</p>
   {:else}

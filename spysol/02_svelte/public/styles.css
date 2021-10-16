@@ -33,3 +33,12 @@ body {
     font-family: neaveill;
     font-size: 60px;
 }
+
+table.tableau {
+    border-spacing: 0.5em;
+}
+
+table.tableau td {
+    padding: 0.5em;
+    border: solid 1px;
+}
