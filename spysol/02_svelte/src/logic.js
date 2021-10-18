@@ -122,7 +122,9 @@ export class SpysolGame {
 
     // UI helpers.
     changed = false;
+    changedSelection = false;
     won = false;
+    selection = {column: null, index: null};
 
     constructor() {
         // Board
