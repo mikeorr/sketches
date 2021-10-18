@@ -13,17 +13,6 @@
 
   // Reactive variables.
   let game = new logic.SpysolGame();
-  let stock;
-  let reserve;
-  let tableau;
-  let foundations;
-  let runs;
-  let won;
-  let history;
-  let historyIndex;
-  let isHelp = false;
-  let isOptions = false;
-  let isScores = false;
 
 
   // For debugging.
@@ -31,59 +20,7 @@
   let sorted = logic.getCardDeck();
   logic.shuffle(shuffled);
 
-  function renderAll() {
-    game.reserve = game.reserve;
-    game.tableau = game.tableau;
-  }
-
-  function renderChanged() {
-    renderAll();
-  }
-
-  function clear() {
-    stock = [];
-    reserve = logic.makeTableau();
-    tableau = logic.makeTableau();
-    foundations = logic.makeTableau();
-    history = [];
-    historyIndex = -1;
-    runs = 0;
-    won = false;
-  }
-
-  function deal() {
-    let i;
-    let cards = logic.getCardDeck();
-    logic.shuffle(cards);
-    for (i of logic.tableauRange) {
-        reserve[i] = cards.splice(0, 4);
-    }
-    for (i of logic.tableauRange) {
-        tableau[i].push(cards.shift());
-        tableau[i] = tableau[i];
-    }
-    stock = cards;
-  }
-
-  clear();
-  deal();
-
-  $: {
-    let count = foundations;
-    count += logic.countRuns(tableau[0]);
-    count += logic.countRuns(tableau[2]);
-    count += logic.countRuns(tableau[2]);
-    count += logic.countRuns(tableau[3]);
-    count += logic.countRuns(tableau[4]);
-    count += logic.countRuns(tableau[5]);
-    count += logic.countRuns(tableau[6]);
-    count += logic.countRuns(tableau[7]);
-    count += logic.countRuns(tableau[8]);
-    count += logic.countRuns(tableau[9]);
-    if (runs !== count) {
-        runs = count;
-    }
-  }
+  game.deal();
 
   function onChangeLayout(event) {
     horizontal = !horizontal;
@@ -104,16 +41,18 @@
   <p>Horizontal layout under construction.</p>
   {:else}
     <tr>
-      {#each logic.tableauRange as i (i)}
+      {#each game.columns as c (c.id)}
         <td>
-          {#each reserve[i] as card (card.id)}
+          {#each c.reserve as card (card.id)}
           <div>
           <Card card={card} />
           </div>
           {/each}
+          {#each c.cards as card (card.id)}
           <div>
-          <Card card={tableau[i][0]} />
+          <Card card={card} />
           </div>
+          {/each}
         </td>
       {/each}
     </tr>

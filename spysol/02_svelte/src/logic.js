@@ -96,30 +96,78 @@ class Changes {
 }
 
 
+class Column {
+    constructor(id) {
+        this.id = id;
+        this.reserve = [];   // Array of Card.
+        this.cards = [];   // Array of Card.
+    }
+
+    clear() {
+        this.reserve.splice();
+        this.cards.splice();
+    }
+}
+
+
 export class SpysolGame {
+
+    // Constants.
+    maxfoundations = 8;
+    suitLength = 13;
+
+    // Board.
+    //columns: Defined in constructor.
+    foundations = [];
+
+    // UI helpers.
+    changed = false;
+    won = false;
+
     constructor() {
         // Board
-        this.tableau = [ [], [], [], [], [], [], [], [], [], [] ];
-        this.reserve = [ [], [], [], [], [], [], [], [], [], [] ];
-        this.colNums = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9 ];
-        this.foundations = [];
-
-        // Outcome flags
-        this.finished = false;
-        this.won = false;
-        this.lost = false;
-
-        // UI helpers
-        this.changes = new Changes();
+        this.columns = [
+            new Column(0), // 0.
+            new Column(1), // 1.
+            new Column(2), // 2.
+            new Column(3), // 3.
+            new Column(4), // 4.
+            new Column(5), // 5.
+            new Column(6), // 6.
+            new Column(7), // 7.
+            new Column(8), // 8.
+            new Column(9), // 9.
+        ];
+        //this.tableau = [ [], [], [], [], [], [], [], [], [], [] ];
+        //this.reserve = [ [], [], [], [], [], [], [], [], [], [] ];
+        //this.colNums = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9 ];
+        //this.foundations = [];
 
         // Internal housekeeping
 
-        // Constants
-        this.maxFoundations = 8;
-        this.fullSuitLength = 13;
+        this.clear();
     }
 
-    canNove(col1, index, col2) {
+    clear() {
+        this.columns.forEach( x => x.clear() );
+        this.foundations.splice();
+        this.won = false;
+        this.changed = true;
+    }
+
+    deal() {
+      let c;
+      let cards = getCardDeck();
+      shuffle(cards);
+      for (let c of this.columns) {
+          c.reserve.push(...cards.splice(0, 4));
+          c.cards.push(cards.shift())
+          c.changed = true;
+      }
+      this.stock = cards;
+    }
+
+    canMove(col1, index, col2) {
         const c1 = this.tableau[col1];
         const c2 = this.tableau[col2];
         if (!c1.length) {
@@ -158,38 +206,4 @@ export class SpysolGame {
     isWon() {
         return this.foundations.length >= this.maxFoundations;
     }
-}
-
-
-export function canMove(cards, target) {
-    let rank = target.rank - 1;
-    for (card of cards) {
-        if (rank < 1 || card.rank !== rank) {
-            return false;
-        }
-        rank--;
-    }
-    return true;
-};
-
-export function canPromote(cards) {
-    if (cards.length !== 13) {
-        return false;
-    }
-    const suit = cards[0].suit;
-    let rank = 13;
-    for (card of cards) {
-        if (card.suit !== suit || cards.rank !== rank--) {
-            return false;
-        }
-    return true;
-    }
-}
-
-export function countRuns(column) {
-    return 0;
-}
-
-export function isWon(foundations) {
-    return foundations === maxCards;
 }
