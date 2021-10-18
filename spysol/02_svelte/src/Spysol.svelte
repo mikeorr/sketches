@@ -31,6 +31,15 @@
   let sorted = logic.getCardDeck();
   logic.shuffle(shuffled);
 
+  function renderAll() {
+    game.reserve = game.reserve;
+    game.tableau = game.tableau;
+  }
+
+  function renderChanged() {
+    renderAll();
+  }
+
   function clear() {
     stock = [];
     reserve = logic.makeTableau();
