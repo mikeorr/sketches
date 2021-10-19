@@ -62,6 +62,14 @@
 
   <p><button on:click={onChangeLayout}>Change Layout</button></p>
 
+  <!-- BEGIN Help -->
+  <details>
+    <summary>Help</summary>
+    Rules
+    Navigation
+  </details>
+  <!-- END Help -->
+
   <!-- BEGIN Testing -->
   <details>
     <summary>Testing</summary>
