@@ -209,3 +209,22 @@ export class SpysolGame {
         return this.foundations.length >= this.maxFoundations;
     }
 }
+
+
+export class Selection {
+    active = false;
+    column = null;
+    index = null;
+
+    set(column, index) {
+        this.column = column;
+        this.index = index;
+        this.active = true;
+    }
+
+    clear() {
+        this.active = false;
+        this.column = null;
+        this.index = null;
+    }
+}

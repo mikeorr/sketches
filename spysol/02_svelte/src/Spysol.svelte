@@ -14,6 +14,8 @@
   // Reactive variables.
   let game = new logic.SpysolGame();
 
+  let selection = new logic.Selection();
+
 
   // For debugging.
   let shuffled = logic.getCardDeck();
