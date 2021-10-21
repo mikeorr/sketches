@@ -25,9 +25,14 @@
 
   game.deal();
 
-  function onClick(event) {
-    //event.preventDefault();
+  function onClick(colnum, index) {
     console.debug("Clicked card:", ...arguments);
+    if (selection.active) {
+        console.log("Destination click not implemented.");
+        selection.clear();
+    } else {
+        selection.set(colnum, index);
+    }
   }
 
   function onChangeLayout(event) {
@@ -49,7 +54,7 @@
   <p>Horizontal layout under construction.</p>
   {:else}
     <tr>
-      {#each game.columns as c, col (c.id)}
+      {#each game.columns as c, colnum (c.id)}
         <td>
           {#each c.reserve as card, index (card.id)}
           <div>
@@ -59,7 +64,7 @@
           <hr />
           {#each c.cards as card, index (card.id)}
           <div>
-          <Card card={card} click={onClick.bind(this, col, index)} faceUp={true} peek={false} />
+          <Card card="{card}" click="{onClick.bind(this, colnum, index)}" selected="{selection.isCardSelected(colnum, index)}" />
           </div>
           {/each}
         </td>

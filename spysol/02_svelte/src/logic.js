@@ -213,18 +213,22 @@ export class SpysolGame {
 
 export class Selection {
     active = false;
-    column = null;
+    colnum = null;
     index = null;
 
-    set(column, index) {
-        this.column = column;
+    set(colnum, index) {
+        this.colnum = colnum;
         this.index = index;
         this.active = true;
     }
 
     clear() {
         this.active = false;
-        this.column = null;
+        this.colnum = null;
         this.index = null;
+    }
+
+    isCardSelected(colnum, index) {
+        return this.active && colnum === this.colnum && index >= this.index;
     }
 }

@@ -22,6 +22,7 @@
   export let faceUp = true;
   export let peek = false;
   export let deck = "unicode";
+  export let selected = false;
 
 
   // Other reactive variables.
@@ -46,29 +47,26 @@
   }
 
 
-  /*
-  const patterns = {
-    letters: {
-        suitRanks: [
-            ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"],
-            ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"],
-        ],
-        back: "X",
-        align: "center",
-    },
-    cards: {
-        suitRanks: [
-            [0x1f0d1, 0x1f0d2, 0x1f0d3, 0x1fd4, 0x1fd5,
-             0x1fd6, 0x1f0d7, 0x1f0d8, 0x1f0d8, 0x1f0da,
-             0x1f0db, 0x1fdd, 0x1fde].map(String.fromCodePoint),
-            [0x1f0b1, 0x1f0b2, 0x1f0b3, 0x10fb4, 0x1fb5,
-             0x1fb6, 0x1f0b7, 0x1f0b8, 0x1f0b8, 0x1f0ba,
-             0x1f0bb, 0x1fbd, 0x1fbe].map(String.fromCodePoint),
-        ],
-        back: String.fromCodePoint(0x1f0a0),
-        align: "right",
-    },
+  function getClass() {
+    let classes = ["card", "card-chr"];
+    let c;
+    if (true) {
+        classes.push("card-chr");
+    }
+    if (true) {
+        c = "card-" + getCardColor();
+        if (selected) {
+            c += "-selected";
+        } else if (peek) {
+            c += "peek";
+        }
+        classes.push(c);
+    }
+    return classes.join(" ");
   }
+
+
+  /*
 
   $: if (card.faceUp) {
     suitClass = card.clubs ? "clubs" : "hearts";
@@ -113,18 +111,6 @@
     }
   }
 
-  function getCardClass() {
-    let classes = ["card"]
-    if (card.faceUp) {
-        classes.push(card.clubs ? "clubs" : "hearts");
-    } else if (peek) {
-        classes.push(card.clubs ? "peek-clubs" : "peek-hearts");
-    } else {
-        classes.push("back");
-    }
-    return classes.join(" ");
-  }
-
   */
 
   //svelte.onMount(() => {
@@ -135,27 +121,37 @@
   .card {
     font-family: monospace;
   }
-  .card-black {
-    color: black;
-  }
-  .card-red {
-    color: red;
-  }
   .card-chr {
     font-size: 40px;
   }
-  .reserve .card-black {
-    color: gray;
+  .card-black {
+    color: black;
+    background-color: white;
   }
-  .reserve .card-red {
-    color: LightRed;
+  .card-red {
+    color: red;
+    background-color: white;
+  }
+  .card-black-peek {
+    color: gray;
+    background-color: white;
+  }
+  .card-red-peek {
+    color: salmon;
+    background-color: white;
+  }
+  .card-black-selected {
+    color: white;
+    background-color: black;
+  }
+  .card-red-selected {
+    color: red;
+    background-color: black;
   }
 </style>
 
-{#if false}
-XXX
-{:else if click}
-<span class="card card-chr card-{getCardColor()}" on:click="{click}">{getCardChar()}</span>
+{#if click}
+<span class="{getClass()}" on:click="{click}">{getCardChar()}</span>
 {:else}
-<span class="card card-chr card-{getCardColor()}">{getCardChar()}</span>
+<span class="{getClass()}">{getCardChar()}</span>
 {/if}
