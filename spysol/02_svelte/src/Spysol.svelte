@@ -24,6 +24,11 @@
 
   game.deal();
 
+  function onClick(event) {
+    //event.preventDefault();
+    console.debug("Clicked card:", ...arguments);
+  }
+
   function onChangeLayout(event) {
     horizontal = !horizontal;
   }
@@ -43,16 +48,17 @@
   <p>Horizontal layout under construction.</p>
   {:else}
     <tr>
-      {#each game.columns as c (c.id)}
+      {#each game.columns as c, col (c.id)}
         <td>
-          {#each c.reserve as card (card.id)}
+          {#each c.reserve as card, index (card.id)}
           <div>
           <Card card={card} />
           </div>
           {/each}
-          {#each c.cards as card (card.id)}
+          <hr />
+          {#each c.cards as card, index (card.id)}
           <div>
-          <Card card={card} />
+          <Card card={card} click={onClick.bind(this, col, index)} />
           </div>
           {/each}
         </td>
