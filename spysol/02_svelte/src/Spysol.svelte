@@ -10,6 +10,7 @@
   // Properties.
   export let seed = null;   // Random number seed: 1 to 2,147,483,647.
   export let horizontal = false;  // Horizontal or vertical layout.
+  export let peek = false;
 
   // Reactive variables.
   let game = new logic.SpysolGame();
@@ -52,13 +53,13 @@
         <td>
           {#each c.reserve as card, index (card.id)}
           <div>
-          <Card card={card} />
+          <Card card={card} faceUp={false} peek={peek} />
           </div>
           {/each}
           <hr />
           {#each c.cards as card, index (card.id)}
           <div>
-          <Card card={card} click={onClick.bind(this, col, index)} />
+          <Card card={card} click={onClick.bind(this, col, index)} faceUp={true} peek={false} />
           </div>
           {/each}
         </td>

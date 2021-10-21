@@ -144,6 +144,12 @@
   .card-chr {
     font-size: 40px;
   }
+  .reserve .card-black {
+    color: gray;
+  }
+  .reserve .card-red {
+    color: LightRed;
+  }
 </style>
 
 {#if false}
