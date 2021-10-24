@@ -29,6 +29,7 @@
 
   // Other reactive variables.
   let classes;
+  let side;   // 1 = face up, 2 = peek, 3 = back.
   let suitClass;
   let text;
 
@@ -49,8 +50,18 @@
     return (card.suit % 2) ? "red" : "black";
   }
 
+  function getSide(faceUp, peek) {
+    if (faceUp) {
+        return 1;
+    } else if (peek) {
+        return 2;
+    } else {
+        return 3;
+    }
+  }
 
-  function getClasses(card, faceUp, peek, selected) {
+
+  function getClasses(card, side, selected) {
     let classes = ["card"];
     let c;
     if (true) {
@@ -60,7 +71,7 @@
         c = "card-" + getCardColor(card);
         if (selected) {
             c += "-selected";
-        } else if (peek) {
+        } else if (side == 2) {
             c += "peek";
         }
         classes.push(c);
@@ -68,16 +79,18 @@
     return classes.join(" ");
   }
 
-  function  getContent(card, faceUp, peek) {
-    if (faceUp || peek) {
+  function  getContent(card, side) {
+    console.log(side, faceUp, peek);
+    if (side != 3) {
         return getCardChar();
     } else {
         return BACK;
     }
   }
 
-  $: classes = getClasses(card, faceUp, peek, selected);
-  $: content = getContent(card, faceUp, peek);
+  $: side = getSide(faceUp, peek);
+  $: classes = getClasses(card, side, selected);
+  $: content = getContent(card, side);
 
 
   /*
