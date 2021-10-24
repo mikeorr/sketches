@@ -26,6 +26,7 @@
 
 
   // Other reactive variables.
+  let classes;
   let suitClass;
   let text;
 
@@ -41,20 +42,20 @@
     //console.log("getCardChar card", card);
   }
 
-  function getCardColor() {
+  function getCardColor(card) {
     //console.log("getCardColor card", card);
     return (card.suit % 2) ? "red" : "black";
   }
 
 
-  function getClass() {
-    let classes = ["card", "card-chr"];
+  function getClasses(card, faceUp, peek, selected) {
+    let classes = ["card"];
     let c;
     if (true) {
         classes.push("card-chr");
     }
     if (true) {
-        c = "card-" + getCardColor();
+        c = "card-" + getCardColor(card);
         if (selected) {
             c += "-selected";
         } else if (peek) {
@@ -63,6 +64,10 @@
         classes.push(c);
     }
     return classes.join(" ");
+  }
+
+  $: {
+    classes = getClasses(card, faceUp, peek, selected);
   }
 
 
@@ -151,7 +156,7 @@
 </style>
 
 {#if click}
-<span class="{getClass()}" on:click="{click}">{getCardChar()}</span>
+<span class="{classes}" on:click="{click}">{getCardChar()}</span>
 {:else}
-<span class="{getClass()}">{getCardChar()}</span>
+<span class="{classes}">{getCardChar()}</span>
 {/if}

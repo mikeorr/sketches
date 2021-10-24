@@ -33,6 +33,7 @@
     } else {
         selection.set(colnum, index);
     }
+    game.columns[colnum] = game.columns[colnum];
   }
 
   function onChangeLayout(event) {
