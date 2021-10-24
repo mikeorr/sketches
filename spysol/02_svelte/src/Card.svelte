@@ -93,53 +93,6 @@
   $: content = getContent(card, side);
 
 
-  /*
-
-  $: if (card.faceUp) {
-    suitClass = card.clubs ? "clubs" : "hearts";
-  } else if (peek) {
-    suitClass = card.clubs ? "peek-clubs" : "peek-hearts";
-  } else {
-    suitClass = "back";
-  }
-
-  $: {
-    const front = faceUp || peek;
-    if (pattern == "letters") {
-      if (front) {
-        const base = clubs ? 65 : 97;
-        text = String.fromCodePoint(base + rank - 1);
-      } else {
-        text = "X";
-      }
-    } else {
-      text = "?";
-    }
-  }
-
-  let cssClass = "";
-  //let text = "";
-
-  $: {
-  }
-
-  function getCardText() {
-    const front = card.faceUp || peek;
-    if (pattern === "letters") {
-      if (front) {
-        const base = clubs ? 65 : 97;
-        return String.fromCodePoint(base + rank - 1);
-      } else {
-        return "X";
-      }
-    } else {
-      console.log("Error in 'getCardText()': invalid pattern:", pattern)
-      return undefined;
-    }
-  }
-
-  */
-
   //svelte.onMount(() => {
   //});
 </script>
