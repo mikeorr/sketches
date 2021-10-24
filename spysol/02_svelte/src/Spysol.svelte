@@ -10,7 +10,7 @@
   // Properties.
   export let seed = null;   // Random number seed: 1 to 2,147,483,647.
   export let horizontal = false;  // Horizontal or vertical layout.
-  export let peek = false;
+  export let peek = true;
 
   // Reactive variables.
   let game = new logic.SpysolGame();
@@ -40,6 +40,10 @@
     horizontal = !horizontal;
   }
 
+  function onChangePeek(event) {
+    peek = !peek;
+  }
+
 
   svelte.onMount(() => {
   });
@@ -65,7 +69,7 @@
           <hr />
           {#each c.cards as card, index (card.id)}
           <div>
-          <Card card="{card}" click="{onClick.bind(this, colnum, index)}" selected="{selection.isCardSelected(colnum, index)}" />
+          <Card card="{card}" click="{onClick.bind(this, colnum, index)}" peek="{peek}" selected="{selection.isCardSelected(colnum, index)}" />
           </div>
           {/each}
         </td>
@@ -75,7 +79,10 @@
   </table>
   <!-- End Tableau -->
 
-  <p><button on:click={onChangeLayout}>Change Layout</button></p>
+  <p>
+    <button on:click={onChangeLayout}>Change Layout</button>
+    <button on:click={onChangePeek}>Toggle Peek</button>
+  </p>
 
   <!-- BEGIN Help -->
   <details>
