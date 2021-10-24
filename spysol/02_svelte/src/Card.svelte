@@ -72,7 +72,7 @@
         if (selected) {
             c += "-selected";
         } else if (side == 2) {
-            c += "peek";
+            c += "-peek";
         }
         classes.push(c);
     }
