@@ -1,5 +1,7 @@
 <script>
 
+  const BACK = String.fromCodePoint(0x1f0a0);  // PLAYING CARD BACK character.
+
   /*
   const unicodeChars = [
     // Suit 0: Clubs.
@@ -66,9 +68,16 @@
     return classes.join(" ");
   }
 
-  $: {
-    classes = getClasses(card, faceUp, peek, selected);
+  function  getContent(card, faceUp, peek) {
+    if (faceUp || peek) {
+        return getCardChar();
+    } else {
+        return BACK;
+    }
   }
+
+  $: classes = getClasses(card, faceUp, peek, selected);
+  $: content = getContent(card, faceUp, peek);
 
 
   /*
@@ -156,7 +165,7 @@
 </style>
 
 {#if click}
-<span class="{classes}" on:click="{click}">{getCardChar()}</span>
+<span class="{classes}" on:click="{click}">{content}</span>
 {:else}
-<span class="{classes}">{getCardChar()}</span>
+<span class="{classes}">{content}</span>
 {/if}
