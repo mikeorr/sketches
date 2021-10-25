@@ -20,11 +20,6 @@
   let selection = new logic.Selection();
 
 
-  // For debugging.
-  let shuffled = logic.getCardDeck();
-  let sorted = logic.getCardDeck();
-  logic.shuffle(shuffled);
-
   game.deal();
 
   function onClickCard(colnum, index) {
@@ -152,23 +147,6 @@
   <!-- BEGIN Testing -->
   <details>
     <summary>Testing</summary>
-      <h1>Shuffled card components</h1>
-      {#each shuffled as card (card.id)}
-      <Card card={card} />
-      {/each}
-      <h1>Sorted card components</h1>
-      {#each sorted as card (card.id)}
-      <Card card={card} />
-      {/each}
-      <h1>Sorted card chars</h1>
-      {#each sorted as card (card.id)}
-      <span class="card card-chr card-{card.color}">{card.chr}</span>
-      {/each}
-      <h1>Sorted card names</h1>
-      {#each sorted as card (card.id)}
-      <span class="card card-name card-{card.color}">{card.name.padStart(3)}</span>
-      {/each}
-      <p class="card card-chr">&#x1f0a0;</p>
   </details>
   <!-- END Testing -->
 
