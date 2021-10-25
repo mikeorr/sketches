@@ -77,8 +77,4 @@
   }
 </style>
 
-{#if click}
 <span class="{classes}" on:click="{click}">{content}</span>
-{:else}
-<span class="{classes}">{content}</span>
-{/if}

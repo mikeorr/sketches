@@ -78,6 +78,7 @@
           {#each c.reserve as card, index (card.id)}
           <Card
             card="{card}"
+            click="{null}"
             faceUp="{false}"
             peek="{peek}"
             selected="{false}"
@@ -106,6 +107,7 @@
           <div>
           <Card
             card="{card}"
+            click="{null}"
             faceUp="{false}"
             peek="{peek}"
             selected="{false}"
