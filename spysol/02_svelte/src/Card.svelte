@@ -21,6 +21,10 @@
             return new renderers.NeaveillCardRenderer(card, faceUp, peek, selected);
         case 2:
             return new renderers.TextCardRenderer(card, faceUp, peek, selected);
+        case 3:
+            return new renderers.CompactCardRenderer(card, faceUp, peek, selected);
+        case 4:
+            return new renderers.HexCardRenderer(card, faceUp, peek, selected);
         default:
             return new renderers.UnicodeCardRenderer(card, faceUp, peek, selected);
     }
@@ -45,6 +49,10 @@
   .text {
     font-size: 20px;
     border: solid 1px;
+  }
+  .compact {
+  }
+  .hex {
   }
   .neaveill {
     font-family: neaveill;

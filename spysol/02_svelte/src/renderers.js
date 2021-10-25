@@ -49,6 +49,25 @@ class CardRenderer {
     }
 }
 
+export class CompactCardRenderer extends CardRenderer {
+    static name = "Compact";
+    static deckClass = "compact";
+    static charsRanks = "A23456789TJQKI".split("");
+
+    getFace() {
+        const rank = this.constructor.charsRanks[this.card.rank - 1];
+        return rank;
+    }
+}
+
+
+export class HexCardRenderer extends CompactCardRenderer {
+    static name = "Hex";
+    static deckClass = "hex";
+    static charsRanks = "123456789ABCDE".split("");
+}
+
+
 export class TextCardRenderer extends CardRenderer {
     static name = "Text";
     static deckClass = "text";

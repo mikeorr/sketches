@@ -7,7 +7,7 @@
   const maxCards = 105;
   const maxHiddenRows = 4;
 
-  const decks = ["Unicode", "Neaveill", "Text"];
+  const decks = ["Unicode", "Neaveill", "Text", "Compact", "Hex"];
 
   // Properties.
   export let seed = null;   // Random number seed: 1 to 2,147,483,647.
