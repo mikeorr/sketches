@@ -39,32 +39,41 @@
   .card {
     font-family: monospace;
   }
-  .card-chr {
+  .unicode {
     font-size: 40px;
   }
-  .card-black {
+  .text {
+    font-size: 20px;
+    border: solid 1px;
+  }
+  .neaveill {
+    font-family: neaveill;
+    font-size: 40px;
+  }
+  .black {
     color: black;
     background-color: white;
   }
-  .card-red {
+  .red {
     color: red;
     background-color: white;
   }
-  .card-black-peek {
+  .black-peek {
     color: gray;
-    background-color: white;
   }
-  .card-red-peek {
+  .red-peek {
     color: salmon;
-    background-color: white;
   }
-  .card-black-selected {
+  .black-selected {
     color: white;
     background-color: black;
   }
-  .card-red-selected {
+  .red-selected {
     color: red;
     background-color: black;
+  }
+  .back {
+    color: gray;
   }
 </style>
 

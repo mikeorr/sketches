@@ -2,16 +2,10 @@
 
 // Unicode characters.
 
-export class TextCardRenderer {
-    static name = "ASCII";
-    static charsClubs = [
-        "A\u2663", "2\u2663", "3\u2663", "4\u2663", "5\u2663", "6\u2663",
-        "7\u2663", "8\u2663", "9\u2663", "10\u2663", "J\u2663", "Q\u2663", "K\u2663"];
-    static charsHearts = [
-        "A\u2665", "2\u2665", "3\u2665", "4\u2665", "5\u2665", "6\u2665",
-        "7\u2665", "8\u2665", "9\u2665", "10\u2665", "J\u2665", "Q\u2665", "K\u2665"];
-    static charBack = "\u{1F0A0}";   // PLAYING CARD BACK.
-    static deckClass = "card-chr";
+class CardRenderer {
+    static charBack = "\u{1F0A0}";
+    static charClubs = [];
+    static charHearts = [];
 
     constructor(card, faceUp, peek, selected) {
         this.card = card;
@@ -23,38 +17,69 @@ export class TextCardRenderer {
 
     getClasses() {
         let classes = ["card", this.constructor.deckClass];
-        if (this.constructor.deckClass) {
-            classes.push(this.constructor.deckClass);
-        }
-        let c = "card-" + this.color;
-        if (this.selected) {
-            c += "-selected";
-        } else if (this.faceUp) {
-        } else if (this.peek) {
-            c += "-peek";
+        if (this.faceUp || this.peek) {
+            let c = this.color;
+            if (this.selected) {
+                c += "-selected";
+            } else if (this.faceUp) {
+            } else if (this.peek) {
+                c += "-peek";
+            }
+            classes.push(c);
         } else {
-            c += "-back";
+            classes.push("back");
         }
-        classes.push(c);
         return classes;
     }
 
     getContent() {
         if (this.faceUp || this.peek) {
-            if (this.rank % 2) {   // Hearts (representing any red suit).
-                return this.constructor.charsHearts[this.card.rank - 1];
-            } else {   // Clubs (representing any black suit).
-                return this.constructor.charsClubs[this.card.rank - 1];
-            }
+            return this.getFace();
         } else {
-            return charBack;
+            return this.constructor.charBack;
+        }
+    }
+
+    getFace () {
+        if (this.card.rank % 2) {   // Hearts (representing any red suit).
+            return this.constructor.charsHearts[this.card.rank - 1];
+        } else {   // Clubs (representing any black suit).
+            return this.constructor.charsClubs[this.card.rank - 1];
+        }
+    }
+}
+
+export class TextCardRenderer extends CardRenderer {
+    static name = "Text";
+    static deckClass = "text";
+    static charsRanks = [
+        "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    static charClubs = "\u2663";
+    static charHearts = "\u2665";
+    static charClubsPeek = "\u2667";
+    static charHeartsPeek = "\u2661";
+
+    getFace() {
+        const rank = this.constructor.charsRanks[this.card.rank - 1];
+        const suit = this.getSuit();
+        const text = rank + suit;
+        return text.padStart(3);
+    }
+
+    getSuit() {
+        const cls = this.constructor;
+        if (this.card.suit % 2) {
+            return this.peek ? cls.charHeartsPeek : cls.charHearts;
+        } else {
+            return this.peek ? cls.charClubsPeek : cls.charClubs;
         }
     }
 }
 
 
-export class UnicodeCardRenderer extends TextCardRenderer {
+export class UnicodeCardRenderer extends CardRenderer {
     static name = "Unicode";
+    static deckClass = "unicode";
     static charsClubs = [
         "\u{1F0D1}",  // PLAYING CARD ACE OF CLuBS.
         "\u{1F0D2}",  // PLAYING CARD TWO OF CLuBS.
@@ -89,9 +114,9 @@ export class UnicodeCardRenderer extends TextCardRenderer {
 }
 
 
-export class NeaveillCardRenderer extends TextCardRenderer {
+export class NeaveillCardRenderer extends CardRenderer {
     static name = "Neaveill";
-    static charsClubs = "nopqrstuvwxyz".split();
-    static charsHearts = "NOPQRSTUVWXYZ".split();
-    static deckClass = "nv";
+    static deckClass = "neaveill";
+    static charsClubs = "nopqrstuvwxyz".split("");
+    static charsHearts = "NOPQRSTUVWXYZ".split("");
 }
