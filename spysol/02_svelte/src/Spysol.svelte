@@ -27,15 +27,16 @@
 
   game.deal();
 
-  function onClick(colnum, index) {
+  function onClickCard(colnum, index) {
     console.debug("Clicked card:", ...arguments);
     if (selection.active) {
         console.log("Destination click not implemented.");
         selection.clear();
+        game.columns[colnum] = game.columns[colnum];
     } else {
         selection.set(colnum, index);
+        game.columns[colnum] = game.columns[colnum];
     }
-    game.columns[colnum] = game.columns[colnum];
   }
 
   function onChangeDeck(event) {
@@ -114,7 +115,7 @@
           <div>
           <Card
             card="{card}"
-            click="{onClick.bind(this, colnum, index)}"
+            click="{onClickCard.bind(this, colnum, index)}"
             selected="{selection.isCardSelected(colnum, index)}"
             deck="{deck}"
           />
