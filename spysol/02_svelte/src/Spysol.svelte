@@ -7,14 +7,16 @@
   const maxCards = 105;
   const maxHiddenRows = 4;
 
+  const decks = ["unicode", "neveill"];
+
   // Properties.
   export let seed = null;   // Random number seed: 1 to 2,147,483,647.
   export let horizontal = false;  // Horizontal or vertical layout.
   export let peek = true;
 
   // Reactive variables.
+  let deck = 0;
   let game = new logic.SpysolGame();
-
   let selection = new logic.Selection();
 
 
@@ -34,6 +36,14 @@
         selection.set(colnum, index);
     }
     game.columns[colnum] = game.columns[colnum];
+  }
+
+  function onChangeDeck(event) {
+    if (deck < decks.length - 1) {
+        deck++;
+    } else {
+        deck = 0;
+    }
   }
 
   function onChangeLayout(event) {
@@ -63,13 +73,24 @@
         <td>
           {#each c.reserve as card, index (card.id)}
           <div>
-          <Card card={card} faceUp={false} peek={peek} />
+          <Card
+            card="{card}"
+            faceUp="{false}"
+            peek="{peek}"
+            selected="{false}"
+            deck="{deck}"
+          />
           </div>
           {/each}
           <hr />
           {#each c.cards as card, index (card.id)}
           <div>
-          <Card card="{card}" click="{onClick.bind(this, colnum, index)}" peek="{peek}" selected="{selection.isCardSelected(colnum, index)}" />
+          <Card
+            card="{card}"
+            click="{onClick.bind(this, colnum, index)}"
+            selected="{selection.isCardSelected(colnum, index)}"
+            deck="{deck}"
+          />
           </div>
           {/each}
         </td>
@@ -80,8 +101,9 @@
   <!-- End Tableau -->
 
   <p>
-    <button on:click={onChangeLayout}>Change Layout</button>
-    <button on:click={onChangePeek}>Toggle Peek</button>
+    <button on:click={onChangeLayout}>Layout</button>
+    <button on:click={onChangePeek}>Peek</button>
+    <button on:click={onChangeDeck}>Deck</button>
   </p>
 
   <!-- BEGIN Help -->
