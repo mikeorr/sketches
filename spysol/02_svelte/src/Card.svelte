@@ -6,7 +6,7 @@
   export let click = null;
   export let faceUp = true;
   export let peek = false;
-  export let deck = "unicode";
+  export let deck = 0;
   export let selected = false;
 
 
@@ -15,15 +15,18 @@
   let content;
   let renderer;
 
-  function  getContent(card, side) {
-    if (side != 3) {
-        return getCardChar();
-    } else {
-        return BACK;
+  function getRenderer(card, faceUp, peek, selected, deck) {
+    switch (deck) {
+        case 1:
+            return new renderers.NeaveillCardRenderer(card, faceUp, peek, selected);
+        case 2:
+            return new renderers.TextCardRenderer(card, faceUp, peek, selected);
+        default:
+            return new renderers.UnicodeCardRenderer(card, faceUp, peek, selected);
     }
   }
 
-  $: renderer = new renderers.UnicodeCardRenderer(card, faceUp, peek, selected);
+  $: renderer = new getRenderer(card, faceUp, peek, selected, deck);
   $: classes = renderer.getClasses().join(" ");
   $: content = renderer.getContent();
 
