@@ -66,7 +66,32 @@
   <!-- BEGIN Tableau -->
   <table id="tableau" class="tableau">
   {#if horizontal}
-  <p>Horizontal layout under construction.</p>
+    {#each game.columns as c, colnum (c.id)}
+      <tr>
+        <td>
+          {#each c.reserve as card, index (card.id)}
+          <Card
+            card="{card}"
+            faceUp="{false}"
+            peek="{peek}"
+            selected="{false}"
+            deck="{deck}"
+          />
+          {/each}
+          {#if c.reserve.length}
+          |
+          {/if}
+          {#each c.cards as card, index (card.id)}
+          <Card
+            card="{card}"
+            click="{onClick.bind(this, colnum, index)}"
+            selected="{selection.isCardSelected(colnum, index)}"
+            deck="{deck}"
+          />
+          {/each}
+        </td>
+      </tr>
+    {/each}
   {:else}
     <tr>
       {#each game.columns as c, colnum (c.id)}
@@ -82,7 +107,9 @@
           />
           </div>
           {/each}
+          {#if c.reserve.length}
           <hr />
+          {/if}
           {#each c.cards as card, index (card.id)}
           <div>
           <Card
