@@ -1,4 +1,5 @@
 <script>
+  import * as renderers from "./renderers.js";
 
   const BACK = String.fromCodePoint(0x1f0a0);  // PLAYING CARD BACK character.
 
@@ -29,6 +30,7 @@
 
   // Other reactive variables.
   let classes;
+  let rendeerer;
   let side;   // 1 = face up, 2 = peek, 3 = back.
   let suitClass;
   let text;
@@ -42,11 +44,9 @@
       rankOffset = card.rank;
     }
     return String.fromCodePoint(suitOffset + rankOffset);
-    //console.log("getCardChar card", card);
   }
 
   function getCardColor(card) {
-    //console.log("getCardColor card", card);
     return (card.suit % 2) ? "red" : "black";
   }
 
@@ -80,7 +80,6 @@
   }
 
   function  getContent(card, side) {
-    console.log(side, faceUp, peek);
     if (side != 3) {
         return getCardChar();
     } else {
@@ -88,9 +87,9 @@
     }
   }
 
-  $: side = getSide(faceUp, peek);
-  $: classes = getClasses(card, side, selected);
-  $: content = getContent(card, side);
+  $: renderer = new renderers.UnicodeCardRenderer(card, faceUp, peek, selected);
+  $: classes = renderer.getClasses().join(" ");
+  $: content = renderer.getContent();
 
 
   //svelte.onMount(() => {

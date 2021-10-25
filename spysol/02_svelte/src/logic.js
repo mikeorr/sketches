@@ -36,7 +36,7 @@ export class Card {
         const rank = RANKS[rs % 13];
         const suit = (rs < 13) ? CLUBS : HEARTS;
         this.rank = rank.rank;
-        this.suit = rs >= 13;
+        this.suit = rs >= 13 ? 1 : 0;
         this.name = rank.name + suit.chr;
         this.chr = String.fromCodePoint(suit.base + rank.offset);
         this.black = suit.black;
