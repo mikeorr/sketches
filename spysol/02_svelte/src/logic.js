@@ -169,6 +169,17 @@ export class SpysolGame {
       this.stock = cards;
     }
 
+    move(col1, index, col2, force=false) {
+        const src = this.columns[col1];
+        const dst = this.columns[col2];
+        const cards = src.cards.splice(index);
+        dst.cards.push(...cards);
+        if (!src.cards.length && src.reserve.length) {
+            src.cards.push(src.reserve.pop());
+        }
+        return true;
+    }
+
     canMove(col1, index, col2) {
         const c1 = this.tableau[col1];
         const c2 = this.tableau[col2];

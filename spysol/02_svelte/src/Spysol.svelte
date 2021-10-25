@@ -30,9 +30,14 @@
   function onClickCard(colnum, index) {
     console.debug("Clicked card:", ...arguments);
     if (selection.active) {
-        console.log("Destination click not implemented.");
-        selection.clear();
-        game.columns[colnum] = game.columns[colnum];
+        const success = game.move(selection.colnum, selection.index, colnum, true);
+        if (success) {
+            selection.clear();
+            game.columns[selection.colnum] = game.columns[selection.colnum];
+            game.columns[colnum] = game.columns[colnum];
+        } else {
+            console.debug("Move failed.");
+        }
     } else {
         selection.set(colnum, index);
         game.columns[colnum] = game.columns[colnum];
@@ -85,7 +90,7 @@
           {#each c.cards as card, index (card.id)}
           <Card
             card="{card}"
-            click="{onClick.bind(this, colnum, index)}"
+            click="{onClickCard.bind(this, colnum, index)}"
             selected="{selection.isCardSelected(colnum, index)}"
             deck="{deck}"
           />
