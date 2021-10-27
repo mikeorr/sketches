@@ -1,5 +1,21 @@
 // Card rendering classes.
 
+export function getRenderer(card, faceUp, peek, selected, deck) {
+  switch (deck) {
+      case 1:
+          return new NeaveillCardRenderer(card, faceUp, peek, selected);
+      case 2:
+          return new TextCardRenderer(card, faceUp, peek, selected);
+      case 3:
+          return new CompactCardRenderer(card, faceUp, peek, selected);
+      case 4:
+          return new HexCardRenderer(card, faceUp, peek, selected);
+      default:
+          return new UnicodeCardRenderer(card, faceUp, peek, selected);
+  }
+}
+
+
 // Unicode characters.
 
 class CardRenderer {

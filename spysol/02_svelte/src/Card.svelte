@@ -15,22 +15,7 @@
   let content;
   let renderer;
 
-  function getRenderer(card, faceUp, peek, selected, deck) {
-    switch (deck) {
-        case 1:
-            return new renderers.NeaveillCardRenderer(card, faceUp, peek, selected);
-        case 2:
-            return new renderers.TextCardRenderer(card, faceUp, peek, selected);
-        case 3:
-            return new renderers.CompactCardRenderer(card, faceUp, peek, selected);
-        case 4:
-            return new renderers.HexCardRenderer(card, faceUp, peek, selected);
-        default:
-            return new renderers.UnicodeCardRenderer(card, faceUp, peek, selected);
-    }
-  }
-
-  $: renderer = new getRenderer(card, faceUp, peek, selected, deck);
+  $: renderer = new renderers.getRenderer(card, faceUp, peek, selected, deck);
   $: classes = renderer.getClasses().join(" ");
   $: content = renderer.getContent();
 
