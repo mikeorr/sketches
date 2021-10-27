@@ -1,6 +1,4 @@
 <script>
-  import * as renderers from "./renderers.js";
-
   // Properties.
   export let card = {id: 0, rank: 1, suit: 0};
   export let click = null;
@@ -8,14 +6,13 @@
   export let peek = false;
   export let deck = 0;
   export let selected = false;
+  export let renderer;
 
 
   // Other reactive variables.
   let classes;
   let content;
-  let renderer;
 
-  $: renderer = new renderers.getRenderer(deck);
   $: classes = renderer.getClasses(card, faceUp, peek, selected).join(" ");
   $: content = renderer.getContent(card, faceUp, peek);
 

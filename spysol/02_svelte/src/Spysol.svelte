@@ -2,7 +2,9 @@
   import * as svelte from 'svelte';
   import shuffle from "array-shuffle";
   import * as logic from "./logic.js";
+  import * as renderers from "./renderers.js";
   import Card from "./Card.svelte";
+
 
   const maxCards = 105;
   const maxHiddenRows = 4;
@@ -17,8 +19,10 @@
   // Reactive variables.
   let deck = 0;
   let game = new logic.SpysolGame();
+  let renderer;
   let selection = new logic.Selection();
 
+  $: renderer = new renderers.getRenderer(deck);
 
   game.deal();
 
@@ -86,6 +90,7 @@
           {#each c.cards as card, index (card.id)}
           <Card
             card="{card}"
+            renderer="{renderer}"
             click="{onClickCard.bind(this, colnum, index)}"
             selected="{selection.isCardSelected(colnum, index)}"
             deck="{deck}"
@@ -102,6 +107,7 @@
           <div>
           <Card
             card="{card}"
+            renderer="{renderer}"
             click="{null}"
             faceUp="{false}"
             peek="{peek}"
@@ -117,6 +123,7 @@
           <div>
           <Card
             card="{card}"
+            renderer="{renderer}"
             click="{onClickCard.bind(this, colnum, index)}"
             selected="{selection.isCardSelected(colnum, index)}"
             deck="{deck}"
