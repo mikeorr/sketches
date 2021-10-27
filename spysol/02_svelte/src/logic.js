@@ -1,61 +1,34 @@
 import * as randomizers from "random-seedable";
 //import shuffleArray from "array-shuffle";
 
-const maxCards = 104;
-
-const CLUBS = {base: 0x1F0D1, black: true, chr: "\u{2663}", name: "C"};
-const HEARTS = {base: 0x1F0B1, black: false, chr: "\u{2665}", name: "H"};
-const RANKS = [
-    {rank: 1,  name: "A",  offset: 0},
-    {rank: 2,  name: "2",  offset: 1},
-    {rank: 3,  name: "3",  offset: 2},
-    {rank: 4,  name: "4",  offset: 3},
-    {rank: 5,  name: "5",  offset: 4},
-    {rank: 6,  name: "6",  offset: 5},
-    {rank: 7,  name: "7",  offset: 6},
-    {rank: 8,  name: "8",  offset: 7},
-    {rank: 9,  name: "9",  offset: 8},
-    {rank: 10, name: "10", offset: 9},
-    {rank: 11, name: "J",  offset: 10},
-    {rank: 12, name: "Q",  offset: 12},   // Skip offset 11 (Cavalier card).
-    {rank: 13, name: "K",  offset: 13},
-];
-
-export const tableauRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export class Card {
-
-    constructor (id, faceUp=false) {
+    constructor (id) {
         if (!Number.isInteger(id) || id < 1) {
             throw new Error("card ID must be integer >= 1");
         }
         this.id = id;
-        this.faceUp = faceUp;
-        const c = this.constructor;
         const rs = (id - 1) % 26;    // 0-12 = clubs A-K, 13-25 = hearts A-K.
-        const rank = RANKS[rs % 13];
-        const suit = (rs < 13) ? CLUBS : HEARTS;
-        this.rank = rank.rank;
+        this.rank = (rs % 13) +1;
         this.suit = rs >= 13 ? 1 : 0;
-        this.name = rank.name + suit.chr;
-        this.chr = String.fromCodePoint(suit.base + rank.offset);
-        this.black = suit.black;
-        this.color = suit.black ? "black" : "red";
-        this.selected = false;
     }
 
 }
 
-export function getCardDeck(faceUp=true, order=true) {
+export function getCardDeck() {
     let deck = [];
     let id;
     let card;
+    const maxCards = 104;   // 13 * 8.
     for (id = 1; id <= maxCards; id++) {
-        card = new Card(id, faceUp);
+        card = new Card(id);
         deck.push(card);
      }
      return deck;
 }
+
+// TODO: 'getRandomSeed()' function.
+
 
 // Shuffle an array.
 export function shuffle(arr, seed=undefined, algorithm=undefined) {
@@ -74,22 +47,15 @@ export function shuffle(arr, seed=undefined, algorithm=undefined) {
     return random.shuffle(arr);
 }
 
-export function makeTableau() {
-    //        0   1   2   3   4   5   6   7   8   9
-    return [ [], [], [], [], [], [], [], [], [], [] ];
-}
-
 
 class Changes {
     constructor() {
-        this.tableau = [];
-        this.reserve = [];
         this.clear();
     }
 
     clear() {
-        this.tableau.splice(0);
-        this.reserve.splice(0);
+        this.tableau = [];
+        this.reserve = [];
         this.foundations = false;
         this.outcome = false;
     }
@@ -127,26 +93,18 @@ export class SpysolGame {
     selection = {column: null, index: null};
 
     constructor() {
-        // Board
         this.columns = [
-            new Column(0), // 0.
-            new Column(1), // 1.
-            new Column(2), // 2.
-            new Column(3), // 3.
-            new Column(4), // 4.
-            new Column(5), // 5.
-            new Column(6), // 6.
-            new Column(7), // 7.
-            new Column(8), // 8.
-            new Column(9), // 9.
+            new Column(0),
+            new Column(1),
+            new Column(2),
+            new Column(3),
+            new Column(4),
+            new Column(5),
+            new Column(6),
+            new Column(7),
+            new Column(8),
+            new Column(9),
         ];
-        //this.tableau = [ [], [], [], [], [], [], [], [], [], [] ];
-        //this.reserve = [ [], [], [], [], [], [], [], [], [], [] ];
-        //this.colNums = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9 ];
-        //this.foundations = [];
-
-        // Internal housekeeping
-
         this.clear();
     }
 
