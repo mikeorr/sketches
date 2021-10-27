@@ -1,17 +1,17 @@
 // Card rendering classes.
 
-export function getRenderer(card, faceUp, peek, selected, deck) {
+export function getRenderer(deck) {
   switch (deck) {
       case 1:
-          return new NeaveillCardRenderer(card, faceUp, peek, selected);
+          return new NeaveillCardRenderer();
       case 2:
-          return new TextCardRenderer(card, faceUp, peek, selected);
+          return new TextCardRenderer();
       case 3:
-          return new CompactCardRenderer(card, faceUp, peek, selected);
+          return new CompactCardRenderer();
       case 4:
-          return new HexCardRenderer(card, faceUp, peek, selected);
+          return new HexCardRenderer();
       default:
-          return new UnicodeCardRenderer(card, faceUp, peek, selected);
+          return new UnicodeCardRenderer();
   }
 }
 
@@ -23,44 +23,36 @@ class CardRenderer {
     static charClubs = [];
     static charHearts = [];
 
-    constructor(card, faceUp, peek, selected) {
-        this.card = card;
-        this.faceUp = faceUp;
-        this.peek = peek;
-        this.selected = selected;
-        this.color = card.suit % 2 ? "red" : "black";
-    }
-
-    getClasses() {
+    getClasses(card, faceUp, peek, selected) {
         let classes = ["card", this.constructor.deckClass];
-        if (this.faceUp || this.peek) {
-            let c = this.color;
-            if (this.selected) {
-                c += "-selected";
-            } else if (this.faceUp) {
-            } else if (this.peek) {
-                c += "-peek";
+        if (faceUp || peek) {
+            let color = card.suit %2 ? "red" : "black";
+            if (selected) {
+                color += "-selected";
+            } else if (faceUp) {
+            } else if (peek) {
+                color += "-peek";
             }
-            classes.push(c);
+            classes.push(color);
         } else {
             classes.push("back");
         }
         return classes;
     }
 
-    getContent() {
-        if (this.faceUp || this.peek) {
-            return this.getFace();
+    getContent(card, faceUp, peek) {
+        if (faceUp || peek) {
+            return this.getFace(card);
         } else {
             return this.constructor.charBack;
         }
     }
 
-    getFace () {
-        if (this.card.rank % 2) {   // Hearts (representing any red suit).
-            return this.constructor.charsHearts[this.card.rank - 1];
+    getFace (card) {
+        if (card.rank % 2) {   // Hearts (representing any red suit).
+            return this.constructor.charsHearts[card.rank - 1];
         } else {   // Clubs (representing any black suit).
-            return this.constructor.charsClubs[this.card.rank - 1];
+            return this.constructor.charsClubs[card.rank - 1];
         }
     }
 }
@@ -70,8 +62,8 @@ export class CompactCardRenderer extends CardRenderer {
     static deckClass = "compact";
     static charsRanks = "A23456789TJQKI".split("");
 
-    getFace() {
-        const rank = this.constructor.charsRanks[this.card.rank - 1];
+    getFace(card) {
+        const rank = this.constructor.charsRanks[card.rank - 1];
         return rank;
     }
 }
@@ -94,19 +86,19 @@ export class TextCardRenderer extends CardRenderer {
     static charClubsPeek = "\u2667";
     static charHeartsPeek = "\u2661";
 
-    getFace() {
-        const rank = this.constructor.charsRanks[this.card.rank - 1];
-        const suit = this.getSuit();
+    getFace(card) {
+        const rank = this.constructor.charsRanks[card.rank - 1];
+        const suit = this.getSuit(card);
         const text = rank + suit;
         return text.padStart(3);
     }
 
-    getSuit() {
+    getSuit(card, peek) {
         const cls = this.constructor;
-        if (this.card.suit % 2) {
-            return this.peek ? cls.charHeartsPeek : cls.charHearts;
+        if (card.suit % 2) {
+            return peek ? cls.charHeartsPeek : cls.charHearts;
         } else {
-            return this.peek ? cls.charClubsPeek : cls.charClubs;
+            return peek ? cls.charClubsPeek : cls.charClubs;
         }
     }
 }

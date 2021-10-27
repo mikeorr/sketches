@@ -15,9 +15,9 @@
   let content;
   let renderer;
 
-  $: renderer = new renderers.getRenderer(card, faceUp, peek, selected, deck);
-  $: classes = renderer.getClasses().join(" ");
-  $: content = renderer.getContent();
+  $: renderer = new renderers.getRenderer(deck);
+  $: classes = renderer.getClasses(card, faceUp, peek, selected).join(" ");
+  $: content = renderer.getContent(card, faceUp, peek);
 
 
   //svelte.onMount(() => {
