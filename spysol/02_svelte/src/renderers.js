@@ -100,19 +100,19 @@ export class UnicodeCardRenderer extends CardRenderer {
     static name = "Unicode";
     static deckClass = "unicode";
     static charsClubs = [
-        "\u{1F0D1}",  // PLAYING CARD ACE OF CLuBS.
-        "\u{1F0D2}",  // PLAYING CARD TWO OF CLuBS.
-        "\u{1F0D3}",  // PLAYING CARD THREE OF CLuBS.
-        "\u{1F0D4}",  // PLAYING CARD FOuR OF CLuBS.
-        "\u{1F0D5}",  // PLAYING CARD FIVE OF CLuBS.
-        "\u{1F0D6}",  // PLAYING CARD SIX OF CLuBS.
-        "\u{1F0D7}",  // PLAYING CARD SEVEN OF CLuBS.
-        "\u{1F0D8}",  // PLAYING CARD EIGHT OF CLuBS.
-        "\u{1F0D8}",  // PLAYING CARD NINE OF CLuBS.
-        "\u{1F0DA}",  // PLAYING CARD TEN OF CLuBS.
-        "\u{1F0DB}",  // PLAYING CARD JACK OF CLuBS.
-        "\u{1F0DD}",  // PLAYING CARD QuEEN OF CLuBS.
-        "\u{1F0DE}",  // PLAYING CARD KING OF CLuBS.
+        "\u{1F0D1}",  // PLAYING CARD ACE OF CLUBS.
+        "\u{1F0D2}",  // PLAYING CARD TWO OF CLUBS.
+        "\u{1F0D3}",  // PLAYING CARD THREE OF CLUBS.
+        "\u{1F0D4}",  // PLAYING CARD FOuR OF CLUBS.
+        "\u{1F0D5}",  // PLAYING CARD FIVE OF CLUBS.
+        "\u{1F0D6}",  // PLAYING CARD SIX OF CLUBS.
+        "\u{1F0D7}",  // PLAYING CARD SEVEN OF CLUBS.
+        "\u{1F0D8}",  // PLAYING CARD EIGHT OF CLUBS.
+        "\u{1F0D8}",  // PLAYING CARD NINE OF CLUBS.
+        "\u{1F0DA}",  // PLAYING CARD TEN OF CLUBS.
+        "\u{1F0DB}",  // PLAYING CARD JACK OF CLUBS.
+        "\u{1F0DD}",  // PLAYING CARD QuEEN OF CLUBS.
+        "\u{1F0DE}",  // PLAYING CARD KING OF CLUBS.
     ];
     static charsHearts = [
         "\u{1F0B1}",  // PLAYING CARD ACE OF HEARTS.
