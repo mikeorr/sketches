@@ -29,17 +29,17 @@
   function onClickCard(colnum, index) {
     console.debug("Clicked card:", ...arguments);
     if (selection.active) {
-        const success = game.move(selection.colnum, selection.index, colnum, true);
+        const success = game.tableau.move(selection.colnum, selection.index, colnum, true);
         if (success) {
             selection.clear();
-            game.columns[selection.colnum] = game.columns[selection.colnum];
-            game.columns[colnum] = game.columns[colnum];
+            game.tableau.columns[selection.colnum] = game.tableau.columns[selection.colnum];
+            game.tableau.columns[colnum] = game.tableau.columns[colnum];
         } else {
             console.debug("Move failed.");
         }
     } else {
         selection.set(colnum, index);
-        game.columns[colnum] = game.columns[colnum];
+        game.tableau.columns[colnum] = game.tableau.columns[colnum];
     }
   }
 
@@ -71,7 +71,7 @@
   <!-- BEGIN Tableau -->
   <table id="tableau" class="tableau">
   {#if horizontal}
-    {#each game.columns as c, colnum (c.id)}
+    {#each game.tableau.columns as c, colnum (c.id)}
       <tr>
         <td>
           {#each c.reserve as card, index (card.id)}
@@ -101,7 +101,7 @@
     {/each}
   {:else}
     <tr>
-      {#each game.columns as c, colnum (c.id)}
+      {#each game.tableau.columns as c, colnum (c.id)}
         <td>
           {#each c.reserve as card, index (card.id)}
           <div>

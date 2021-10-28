@@ -1,6 +1,8 @@
 import * as randomizers from "random-seedable";
 //import shuffleArray from "array-shuffle";
 
+const suitLength = 13;
+const maxCards = suitLength * 8;   // 104.
 
 export class Card {
     constructor (id) {
@@ -19,7 +21,6 @@ export function getCardDeck() {
     let deck = [];
     let id;
     let card;
-    const maxCards = 104;   // 13 * 8.
     for (id = 1; id <= maxCards; id++) {
         card = new Card(id);
         deck.push(card);
@@ -45,6 +46,23 @@ export function shuffle(arr, seed=undefined, algorithm=undefined) {
         random = new prng();
     }
     return random.shuffle(arr);
+}
+
+
+function countRuns(cardArr) {
+    let count = 0;
+    if (cardArr.length) {
+        let start = 0;
+        let i = 1;
+        let run = 0;
+        for (let i = 1; i < cardArr.length; i++) {
+            if (cardArr[i].rank !== cardArr[i-1].rank - 1) {
+                count += i - start;
+                start++;
+            }
+        }
+    }
+    return count;
 }
 
 
@@ -76,22 +94,7 @@ class Column {
 }
 
 
-export class SpysolGame {
-
-    // Constants.
-    maxfoundations = 8;
-    suitLength = 13;
-
-    // Board.
-    //columns: Defined in constructor.
-    foundations = [];
-
-    // UI helpers.
-    changed = false;
-    changedSelection = false;
-    won = false;
-    selection = {column: null, index: null};
-
+class Tableau {
     constructor() {
         this.columns = [
             new Column(0),
@@ -106,28 +109,15 @@ export class SpysolGame {
             new Column(9),
         ];
         this.clear();
+        //this.changed = true;
     }
 
     clear() {
         this.columns.forEach( x => x.clear() );
-        this.foundations.splice();
-        this.won = false;
-        this.changed = true;
+        //this.changed = true;
     }
 
-    deal() {
-      let c;
-      let cards = getCardDeck();
-      shuffle(cards);
-      for (let c of this.columns) {
-          c.reserve.push(...cards.splice(0, 4));
-          c.cards.push(cards.shift())
-          c.changed = true;
-      }
-      this.stock = cards;
-    }
-
-    move(col1, index, col2, force=false) {
+    move(col1, index, col2) {
         const src = this.columns[col1];
         const dst = this.columns[col2];
         const cards = src.cards.splice(index);
@@ -135,6 +125,7 @@ export class SpysolGame {
         if (!src.cards.length && src.reserve.length) {
             src.cards.push(src.reserve.pop());
         }
+        //this.changed = true;
         return true;
     }
 
@@ -159,8 +150,8 @@ export class SpysolGame {
         }
     }
 
-    canPromote(column) {
-        const cards = this.tableau[column];
+    canPromote(colnum) {
+        const cards = this.column[column].cards;
         if (cards.length !== 13) {
             return false;
         }
@@ -174,8 +165,89 @@ export class SpysolGame {
         return true;
     }
 
-    isWon() {
-        return this.foundations.length >= this.maxFoundations;
+}
+
+
+class Foundations {
+    maxCards = maxCards;       // Constant.
+    suitLength = suitLength;   // Constant.
+    suits = [];                // Array of Array of Card. (Full ordererd suits.)
+    count = 0;
+    percent = 0;
+    won = false;
+
+    clear() {
+        this.suits = [];
+        this.count = 0;
+        this.percent = 0;
+        this.won = false;
+    }
+
+    promote(suit) {
+        if (suit.length == this.suitLength) {
+            this.suits.push(suit);
+            this.recalculate();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    demote() {
+        if (this.suits.length) {
+            return this.suits.pop();
+            this.recalculate();
+        } else {
+            return null;
+        }
+    }
+
+    recalculate() {
+        const ccccount = this.suits.length = this.suitLength;
+        if (this.count !== count) {
+            this.count = count;
+            this.percent = this.count / this.maxCards * 100;
+            this.won == this.count >= this.maxCards;
+        }
+    }
+}
+
+
+export class SpysolGame {
+
+    // Constants.
+    maxfoundations = 8;
+    suitLength = 13;
+
+    // Board.
+    tableau = new Tableau();
+    foundations = new Foundations();
+
+    // UI helpers.
+    changed = false;
+    changedSelection = false;
+    selection = {column: null, index: null};
+
+    clear() {
+        this.tableau.clear();
+        this.foundations.clear();
+        this.changed = true;
+    }
+
+    deal() {
+      let c;
+      let cards = getCardDeck();
+      shuffle(cards);
+      for (let c of this.tableau.columns) {
+          c.reserve.push(...cards.splice(0, 4));
+          c.cards.push(cards.shift())
+          c.changed = true;
+      }
+      this.stock = cards;
+    }
+
+    get won() {
+        return this.foundations.won;
     }
 }
 
