@@ -168,43 +168,27 @@ class Tableau {
 }
 
 
-class Foundations {
-    count = 0;
-
-    clear() {
-        this.count = 0;
-    }
-
-    promote(suit) {
-        this.count += suitLength;
-        this.percent = this.count / this.maxCards * 100;
-        this.won = this.count == maxCards;
-    }
-
-    get percent() {
-        return this.count / this.maxCards * 100;
-    }
-
-    get won() {
-        return this.count === maxCards;
-    }
-}
-
-
 export class SpysolGame {
-    tableau = new Tableau();
-    foundations = new Foundations();
-    stock = [];
+    // Constants
+    maxCards = maxCards;
+    suitLength = suitLength;
 
-    // UI helpers.
+    // Board
+    tableau = new Tableau();
+    foundations = 0;
+    stock = [];
+    won = false;
+
+    // UI helpers
     changed = false;
     changedSelection = false;
     selection = {column: null, index: null};
 
     clear() {
         this.tableau.clear();
-        this.foundations.clear();
+        this.foundations = 0;
         this.stock = [];
+        this.won = false;
         this.changed = true;
     }
 
@@ -220,9 +204,11 @@ export class SpysolGame {
       this.stock = cards;
     }
 
-    get won() {
-        return this.foundations.won;
+    getFoundationsPercent() {
+        return this.foundations / maxCards * 100;
     }
+
+
 }
 
 
