@@ -42,3 +42,11 @@ table.tableau td {
     padding: 0.5em;
     border: solid 1px;
 }
+
+table.tableau .reserve {
+    vertical-align: bottom;
+}
+
+table.tableau .cards {
+    vertical-align: top;
+}

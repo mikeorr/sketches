@@ -102,7 +102,7 @@
   {:else}
     <tr>
       {#each game.tableau.columns as c, colnum (c.id)}
-        <td>
+        <td class="reserve">
           {#each c.reserve as card, index (card.id)}
           <div>
           <Card
@@ -116,9 +116,12 @@
           />
           </div>
           {/each}
-          {#if c.reserve.length}
-          <hr />
-          {/if}
+        </td>
+      {/each}
+    </tr>
+    <tr>
+      {#each game.tableau.columns as c, colnum (c.id)}
+        <td class="cards">
           {#each c.cards as card, index (card.id)}
           <div>
           <Card
