@@ -100,11 +100,6 @@ class Column {
         this.reserve = [];   // Array of Card.
         this.cards = [];   // Array of Card.
     }
-
-    clear() {
-        this.reserve.splice();
-        this.cards.splice();
-    }
 }
 
 
@@ -122,13 +117,6 @@ class Tableau {
             new Column(8),
             new Column(9),
         ];
-        this.clear();
-        //this.changed = true;
-    }
-
-    clear() {
-        this.columns.forEach( x => x.clear() );
-        //this.changed = true;
     }
 
     move(col1, index, col2) {
@@ -199,7 +187,10 @@ export class SpysolGame {
     selection = {column: null, index: null};
 
     clear() {
-        this.tableau.clear();
+        for (let c of this.tableau.columns) {
+            c.reserve.splice();
+            c.cards.splice();
+        }
         this.foundations = 0;
         this.stock = [];
         this.won = false;
@@ -222,6 +213,54 @@ export class SpysolGame {
         return this.foundations / maxCards * 100;
     }
 
+
+    move(col1, index, col2) {
+        const src = this.tableau.columns[col1];
+        const dst = this.tableau.columns[col2];
+        const cards = src.cards.splice(index);
+        dst.cards.push(...cards);
+        if (!src.cards.length && src.reserve.length) {
+            src.cards.push(src.reserve.pop());
+        }
+        //this.changed = true;
+        return true;
+    }
+
+    canMove(col1, index, col2) {
+        const c1 = this.tableau.columns[col1];
+        const c2 = this.tableau.columns[col2];
+        if (!c1.length) {
+            return false;
+        }
+        let rank = target.rank - 1;
+        for (card of cards) {
+            if (rank < 1 || card.rank !== rank) {
+                return false;
+            }
+            rank--;
+        }
+        // TODO: Rank is wrong.
+        if (c2.length) {
+            return c2[0].rank = rank + 1;
+        } else {
+            return true;
+        }
+    }
+
+    canPromote(colnum) {
+        const cards = this.tableau.columns[column].cards;
+        if (cards.length !== 13) {
+            return false;
+        }
+        const suit = cards[0].suit;
+        let rank = 13;
+        for (card of cards) {
+            if (card.suit !== suit || cards.rank !== rank--) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
 
