@@ -4,29 +4,43 @@ import * as randomizers from "random-seedable";
 const suitLength = 13;
 const maxCards = suitLength * 8;   // 104.
 
-export class Card {
-    constructor (id) {
-        if (!Number.isInteger(id) || id < 1) {
-            throw new Error("card ID must be integer >= 1");
-        }
-        this.id = id;
-        const rs = (id - 1) % 26;    // 0-12 = clubs A-K, 13-25 = hearts A-K.
-        this.rank = (rs % 13) +1;
-        this.suit = rs >= 13 ? 1 : 0;
-    }
 
-}
-
+/** getCardDeck() -- Create a Spider card deck.
+ *
+ * Return an array of card objects. Each card has properties:
+ *   id: integer incrementing from 1 to 104.
+ *   rank: integer between 1 and 13 (representing Ace to King).
+ *   suit: boolean:
+ *     'false' is Clubs and represents clubs/spades/black.
+ *     'true' is Hearts and represents hearts/diamonds/red.
+ * The first 13 cards are clubs 1-13, then hearts 1-13, then repeating
+ * these three times, for a total of 104 cards (13 * 8).
+ *
+ */
 export function getCardDeck() {
-    let deck = [];
-    let id;
+    const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    const suits = [false, true];
+    let cards = [];
+    let id = 0;
+    let rank;
+    let suit;
     let card;
-    for (id = 1; id <= maxCards; id++) {
-        card = new Card(id);
-        deck.push(card);
+    let iter;
+    for (iter = 1; iter <=4; iter++) {
+        for (suit of suits) {
+            for (rank of ranks) {
+                card = {
+                    id: ++id,
+                    rank: rank,
+                    suit: suit,
+                }
+                cards.push(card);
+            }
+        }
      }
-     return deck;
+     return cards;
 }
+
 
 // TODO: 'getRandomSeed()' function.
 
