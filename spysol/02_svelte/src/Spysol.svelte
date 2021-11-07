@@ -68,6 +68,12 @@
   <header class="Spysol-header">
   </header>
 
+  <p>
+    <button on:click={onChangeLayout}>Layout</button>
+    <button on:click={onChangePeek}>Peek</button>
+    <button on:click={onChangeDeck}>Deck</button>
+  </p>
+
   <!-- BEGIN Tableau -->
   <table id="tableau" class="tableau">
   {#if horizontal}
@@ -139,12 +145,6 @@
   {/if}
   </table>
   <!-- End Tableau -->
-
-  <p>
-    <button on:click={onChangeLayout}>Layout</button>
-    <button on:click={onChangePeek}>Peek</button>
-    <button on:click={onChangeDeck}>Deck</button>
-  </p>
 
   <!-- BEGIN Help -->
   <details>
