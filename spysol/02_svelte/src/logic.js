@@ -94,79 +94,23 @@ class Changes {
 }
 
 
-class Column {
-    constructor(id) {
-        this.id = id;
-        this.reserve = [];   // Array of Card.
-        this.cards = [];   // Array of Card.
-    }
-}
-
-
-class Tableau {
-    constructor() {
-        this.columns = [
-            new Column(0),
-            new Column(1),
-            new Column(2),
-            new Column(3),
-            new Column(4),
-            new Column(5),
-            new Column(6),
-            new Column(7),
-            new Column(8),
-            new Column(9),
-        ];
-    }
-
-    move(col1, index, col2) {
-        const src = this.columns[col1];
-        const dst = this.columns[col2];
-        const cards = src.cards.splice(index);
-        dst.cards.push(...cards);
-        if (!src.cards.length && src.reserve.length) {
-            src.cards.push(src.reserve.pop());
-        }
-        //this.changed = true;
-        return true;
-    }
-
-    canMove(col1, index, col2) {
-        const c1 = this.tableau[col1];
-        const c2 = this.tableau[col2];
-        if (!c1.length) {
-            return false;
-        }
-        let rank = target.rank - 1;
-        for (card of cards) {
-            if (rank < 1 || card.rank !== rank) {
-                return false;
-            }
-            rank--;
-        }
-        // TODO: Rank is wrong.
-        if (c2.length) {
-            return c2[0].rank = rank + 1;
-        } else {
-            return true;
-        }
-    }
-
-    canPromote(colnum) {
-        const cards = this.column[column].cards;
-        if (cards.length !== 13) {
-            return false;
-        }
-        const suit = cards[0].suit;
-        let rank = 13;
-        for (card of cards) {
-            if (card.suit !== suit || cards.rank !== rank--) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+function createSpysolState() {
+    return {
+        tableau: [
+            {reserve: [], cards: []},   // 0.
+            {reserve: [], cards: []},   // 1.
+            {reserve: [], cards: []},   // 2.
+            {reserve: [], cards: []},   // 3.
+            {reserve: [], cards: []},   // 4.
+            {reserve: [], cards: []},   // 5.
+            {reserve: [], cards: []},   // 0.
+            {reserve: [], cards: []},   // 0.
+            {reserve: [], cards: []},   // 8.
+            {reserve: [], cards: []},   // 9.
+        ],
+        foundations: 0,
+        stock: [],
+    };
 }
 
 
@@ -176,9 +120,7 @@ export class SpysolGame {
     suitLength = suitLength;
 
     // Board
-    tableau = new Tableau();
-    foundations = 0;
-    stock = [];
+    state = createSpysolState();
     won = false;
 
     // UI helpers
@@ -187,7 +129,7 @@ export class SpysolGame {
     selection = {column: null, index: null};
 
     clear() {
-        for (let c of this.tableau.columns) {
+        for (let c of this.state.tableau) {
             c.reserve.splice();
             c.cards.splice();
         }
@@ -201,12 +143,12 @@ export class SpysolGame {
       let c;
       let cards = getCardDeck();
       shuffle(cards);
-      for (let c of this.tableau.columns) {
+      for (let c of this.state.tableau) {
           c.reserve.push(...cards.splice(0, 4));
           c.cards.push(cards.shift())
           c.changed = true;
       }
-      this.stock = cards;
+      this.state.stock = cards;
     }
 
     getFoundationsPercent() {
@@ -214,9 +156,9 @@ export class SpysolGame {
     }
 
 
-    move(col1, index, col2) {
-        const src = this.tableau.columns[col1];
-        const dst = this.tableau.columns[col2];
+    move(col1, index, col2, force=false) {
+        const src = this.state.tableau[col1];
+        const dst = this.state.tableau[col2];
         const cards = src.cards.splice(index);
         dst.cards.push(...cards);
         if (!src.cards.length && src.reserve.length) {
@@ -227,8 +169,8 @@ export class SpysolGame {
     }
 
     canMove(col1, index, col2) {
-        const c1 = this.tableau.columns[col1];
-        const c2 = this.tableau.columns[col2];
+        const c1 = this.state.tableau[col1];
+        const c2 = this.state.tableau[col2];
         if (!c1.length) {
             return false;
         }
@@ -248,7 +190,7 @@ export class SpysolGame {
     }
 
     canPromote(colnum) {
-        const cards = this.tableau.columns[column].cards;
+        const cards = this.state.tableau[column].cards;
         if (cards.length !== 13) {
             return false;
         }

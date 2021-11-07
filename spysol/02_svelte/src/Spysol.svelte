@@ -26,20 +26,28 @@
 
   game.deal();
 
+  /*
+  const getID = card => card.id;
+  game.state.tableau.forEach( (c, i) => {
+    console.log("Tableau column", i, "reserve =", c.reserve.map(getID));
+    console.log("Tableau column", i, "cards =", c.cards.map(getID));
+  });
+  */
+
   function onClickCard(colnum, index) {
     console.debug("Clicked card:", ...arguments);
     if (selection.active) {
-        const success = game.tableau.move(selection.colnum, selection.index, colnum, true);
+        const success = game.move(selection.colnum, selection.index, colnum, true);
         if (success) {
             selection.clear();
-            game.tableau.columns[selection.colnum] = game.tableau.columns[selection.colnum];
-            game.tableau.columns[colnum] = game.tableau.columns[colnum];
+            game.state.tableau[selection.colnum] = game.state.tableau[selection.colnum];
+            game.state.tableau[colnum] = game.state.tableau[colnum];
         } else {
             console.debug("Move failed.");
         }
     } else {
         selection.set(colnum, index);
-        game.tableau.columns[colnum] = game.tableau.columns[colnum];
+        game.state.tableau[colnum] = game.state.tableau[colnum];
     }
   }
 
@@ -77,7 +85,7 @@
   <!-- BEGIN Tableau -->
   <table id="tableau" class="tableau">
   {#if horizontal}
-    {#each game.tableau.columns as c, colnum (c.id)}
+    {#each game.state.tableau as c, colnum}
       <tr>
         <td>
           {#each c.reserve as card, index (card.id)}
@@ -107,7 +115,7 @@
     {/each}
   {:else}
     <tr>
-      {#each game.tableau.columns as c, colnum (c.id)}
+      {#each game.state.tableau as c, colnum}
         <td class="reserve">
           {#each c.reserve as card, index (card.id)}
           <div>
@@ -126,7 +134,7 @@
       {/each}
     </tr>
     <tr>
-      {#each game.tableau.columns as c, colnum (c.id)}
+      {#each game.state.tableau as c, colnum}
         <td class="cards">
           {#each c.cards as card, index (card.id)}
           <div>
