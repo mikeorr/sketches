@@ -19,6 +19,7 @@
   // Reactive variables.
   let deck = 0;
   let game = new logic.SpysolGame();
+  let tableau = game.state.tableau.slice();
   let renderer;
   let selection = new logic.Selection();
 
@@ -28,7 +29,7 @@
 
   /*
   const getID = card => card.id;
-  game.state.tableau.forEach( (c, i) => {
+  tableau.forEach( (c, i) => {
     console.log("Tableau column", i, "reserve =", c.reserve.map(getID));
     console.log("Tableau column", i, "cards =", c.cards.map(getID));
   });
@@ -40,14 +41,14 @@
         const success = game.move(selection.colnum, selection.index, colnum, true);
         if (success) {
             selection.clear();
-            game.state.tableau[selection.colnum] = game.state.tableau[selection.colnum];
-            game.state.tableau[colnum] = game.state.tableau[colnum];
+            tableau[selection.colnum] = game.state.tableau[selection.colnum];
+            tableau[colnum] = game.state.tableau[colnum];
         } else {
             console.debug("Move failed.");
         }
     } else {
         selection.set(colnum, index);
-        game.state.tableau[colnum] = game.state.tableau[colnum];
+        tableau[colnum] = game.state.tableau[colnum];
     }
   }
 
@@ -85,7 +86,7 @@
   <!-- BEGIN Tableau -->
   <table id="tableau" class="tableau">
   {#if horizontal}
-    {#each game.state.tableau as c, colnum}
+    {#each tableau as c, colnum}
       <tr>
         <td>
           {#each c.reserve as card, index (card.id)}
@@ -115,7 +116,7 @@
     {/each}
   {:else}
     <tr>
-      {#each game.state.tableau as c, colnum}
+      {#each tableau as c, colnum}
         <td class="reserve">
           {#each c.reserve as card, index (card.id)}
           <div>
@@ -134,7 +135,7 @@
       {/each}
     </tr>
     <tr>
-      {#each game.state.tableau as c, colnum}
+      {#each tableau as c, colnum}
         <td class="cards">
           {#each c.cards as card, index (card.id)}
           <div>
