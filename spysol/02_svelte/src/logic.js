@@ -8,36 +8,34 @@ const maxCards = suitLength * 8;   // 104.
 /** getCardDeck() -- Create a Spider card deck.
  *
  * Return an array of card objects. Each card has properties:
- *   id: integer incrementing from 1 to 104.
- *   rank: integer between 1 and 13 (representing Ace to King).
- *   suit: boolean:
- *     'false' is Clubs and represents clubs/spades/black.
- *     'true' is Hearts and represents hearts/diamonds/red.
- * The first 13 cards are clubs 1-13, then hearts 1-13, then repeating
- * these three times, for a total of 104 cards (13 * 8).
+ *   id: integer between 1 and 104.
+ *   rank: integer between 1 and 13, representing Ace, 2, 3, 4, 5, 6,
+ *     7, 8, 9, 10, Jack, Queen, King.
+ *   red: boolean:
+ *     'false' is Black and represents Clubs/Spades.
+ *     'true' is Red and represents Hearts/Diamonds.
+ * The first 13 cards are 1-13 Black, then 1-13 Red, then repeating
+ * three more times, for a total of 104 cards (13 * 8).
  *
  */
 export function getCardDeck() {
     const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    const suits = [false, true];
+    const reds = [false, true, false, true, false, true, false, true];
     let cards = [];
     let id = 0;
     let rank;
-    let suit;
+    let red;
     let card;
-    let iter;
-    for (iter = 1; iter <=4; iter++) {
-        for (suit of suits) {
-            for (rank of ranks) {
-                card = {
-                    id: ++id,
-                    rank: rank,
-                    suit: suit,
-                }
-                cards.push(card);
+    for (red of reds) {
+        for (rank of ranks) {
+            card = {
+                id: ++id,
+                rank: rank,
+                red: red,
             }
+            cards.push(card);
         }
-     }
+    }
      return cards;
 }
 
@@ -194,10 +192,10 @@ export class SpysolGame {
         if (cards.length !== 13) {
             return false;
         }
-        const suit = cards[0].suit;
+        const red = cards[0].red;
         let rank = 13;
         for (card of cards) {
-            if (card.suit !== suit || cards.rank !== rank--) {
+            if (card.red !== red || cards.rank !== rank--) {
                 return false;
             }
         }

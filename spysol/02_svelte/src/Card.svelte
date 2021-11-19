@@ -1,6 +1,6 @@
 <script>
   // Properties.
-  export let card = {id: 0, rank: 1, suit: 0};
+  export let card = {id: 0, rank: 1, red: false};
   export let click = null;
   export let faceUp = true;
   export let peek = false;

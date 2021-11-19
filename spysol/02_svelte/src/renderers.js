@@ -26,7 +26,7 @@ class CardRenderer {
     getClasses(card, faceUp, peek, selected) {
         let classes = ["card", this.constructor.deckClass];
         if (faceUp || peek) {
-            let color = card.suit %2 ? "red" : "black";
+            let color = card.red ? "red" : "black";
             if (selected) {
                 color += "-selected";
             } else if (faceUp) {
@@ -49,9 +49,9 @@ class CardRenderer {
     }
 
     getFace (card) {
-        if (card.rank % 2) {   // Hearts (representing any red suit).
+        if (card.red) {
             return this.constructor.charsHearts[card.rank - 1];
-        } else {   // Clubs (representing any black suit).
+        } else {
             return this.constructor.charsClubs[card.rank - 1];
         }
     }
@@ -95,7 +95,7 @@ export class TextCardRenderer extends CardRenderer {
 
     getSuit(card, peek) {
         const cls = this.constructor;
-        if (card.suit % 2) {
+        if (card.red) {
             return peek ? cls.charHeartsPeek : cls.charHearts;
         } else {
             return peek ? cls.charClubsPeek : cls.charClubs;
