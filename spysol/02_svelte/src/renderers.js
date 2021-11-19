@@ -16,12 +16,10 @@ export function getRenderer(deck) {
 }
 
 
-// Unicode characters.
-
 class CardRenderer {
     static charBack = "\u{1F0A0}";
-    static charClubs = [];
-    static charHearts = [];
+    static facesBlack = [];
+    static facesRed = [];
 
     getClasses(card, faceUp, peek, selected) {
         let classes = ["card", this.constructor.deckClass];
@@ -50,9 +48,9 @@ class CardRenderer {
 
     getFace (card) {
         if (card.red) {
-            return this.constructor.charsHearts[card.rank - 1];
+            return this.constructor.facesRed[card.rank - 1];
         } else {
-            return this.constructor.charsClubs[card.rank - 1];
+            return this.constructor.facesBlack[card.rank - 1];
         }
     }
 }
@@ -107,7 +105,7 @@ export class TextCardRenderer extends CardRenderer {
 export class UnicodeCardRenderer extends CardRenderer {
     static name = "Unicode";
     static deckClass = "unicode";
-    static charsClubs = [
+    static facesBlack = [
         "\u{1F0D1}",  // PLAYING CARD ACE OF CLUBS.
         "\u{1F0D2}",  // PLAYING CARD TWO OF CLUBS.
         "\u{1F0D3}",  // PLAYING CARD THREE OF CLUBS.
@@ -122,7 +120,7 @@ export class UnicodeCardRenderer extends CardRenderer {
         "\u{1F0DD}",  // PLAYING CARD QuEEN OF CLUBS.
         "\u{1F0DE}",  // PLAYING CARD KING OF CLUBS.
     ];
-    static charsHearts = [
+    static facesRed = [
         "\u{1F0B1}",  // PLAYING CARD ACE OF HEARTS.
         "\u{1F0B2}",  // PLAYING CARD TWO OF HEARTS.
         "\u{1F0B3}",  // PLAYING CARD THREE OF HEARTS.
@@ -144,6 +142,6 @@ export class UnicodeCardRenderer extends CardRenderer {
 export class NeaveillCardRenderer extends CardRenderer {
     static name = "Neaveill";
     static deckClass = "neaveill";
-    static charsClubs = "nopqrstuvwxyz".split("");
-    static charsHearts = "NOPQRSTUVWXYZ".split("");
+    static facesBlack = "nopqrstuvwxyz".split("");
+    static facesRed = "NOPQRSTUVWXYZ".split("");
 }
