@@ -1,20 +1,13 @@
 <script>
   // Properties.
-  export let card = {id: 0, rank: 1, red: false};
-  export let click = null;
-  export let faceUp = true;
-  export let peek = false;
-  export let deck = 0;
-  export let selected = false;
-  export let renderer;
 
 
   // Other reactive variables.
   let classes;
   let content;
 
-  $: classes = renderer.getClasses(card, faceUp, peek, selected).join(" ");
-  $: content = renderer.getContent(card, faceUp, peek);
+  $: classes = "card compact black";
+  $: content = "?";
 
 
   //svelte.onMount(() => {
