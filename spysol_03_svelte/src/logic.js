@@ -1,5 +1,4 @@
 import * as randomizers from "random-seedable";
-//import shuffleArray from "array-shuffle";
 
 const suitLength = 13;
 const maxCards = suitLength * 8;   // 104.
