@@ -4,14 +4,13 @@
   "description": "A Spider card game.",
   "main": "main.js",
   "scripts": {
-    "start": "snowpack dev",
+    "start": "snowpack dev --open=none",
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.js\""
   },
   "author": "Mike Orr",
   "license": "MIT",
   "dependencies": {
-    "array-shuffle": "^2.0.0",
     "fill-range": "^7.0.1",
     "random-seedable": "^1.0.7",
     "svelte": "^3.24.0"

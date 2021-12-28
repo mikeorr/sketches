@@ -1,5 +1,4 @@
 import * as randomizers from "random-seedable";
-//import shuffleArray from "array-shuffle";
 
 const suitLength = 13;
 const maxCards = suitLength * 8;   // 104.
@@ -225,4 +224,14 @@ export class Selection {
     isCardSelected(colnum, index) {
         return this.active && colnum === this.colnum && index >= this.index;
     }
+}
+
+
+// Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
+// Learn more: https://www.snowpack.dev/concepts/hot-module-replacement
+if (import.meta.hot) {
+  import.meta.hot.accept();
+  import.meta.hot.dispose(() => {
+    spysol.$destroy();
+  });
 }

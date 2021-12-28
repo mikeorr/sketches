@@ -1,6 +1,5 @@
 <script>
   import * as svelte from 'svelte';
-  import shuffle from "array-shuffle";
   import * as logic from "./logic.js";
   import * as renderers from "./renderers.js";
   import Card from "./Card.svelte";

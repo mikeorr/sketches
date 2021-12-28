@@ -109,7 +109,7 @@ export class UnicodeCardRenderer extends CardRenderer {
         "\u{1F0D1}",  // PLAYING CARD ACE OF CLUBS.
         "\u{1F0D2}",  // PLAYING CARD TWO OF CLUBS.
         "\u{1F0D3}",  // PLAYING CARD THREE OF CLUBS.
-        "\u{1F0D4}",  // PLAYING CARD FOuR OF CLUBS.
+        "\u{1F0D4}",  // PLAYING CARD FOUR OF CLUBS.
         "\u{1F0D5}",  // PLAYING CARD FIVE OF CLUBS.
         "\u{1F0D6}",  // PLAYING CARD SIX OF CLUBS.
         "\u{1F0D7}",  // PLAYING CARD SEVEN OF CLUBS.
@@ -124,7 +124,7 @@ export class UnicodeCardRenderer extends CardRenderer {
         "\u{1F0B1}",  // PLAYING CARD ACE OF HEARTS.
         "\u{1F0B2}",  // PLAYING CARD TWO OF HEARTS.
         "\u{1F0B3}",  // PLAYING CARD THREE OF HEARTS.
-        "\u{1F0B4}",  // PLAYING CARD FOuR OF HEARTS.
+        "\u{1F0B4}",  // PLAYING CARD FOUR OF HEARTS.
         "\u{1F0B5}",  // PLAYING CARD FIVE OF HEARTS.
         "\u{1F0B6}",  // PLAYING CARD SIX OF HEARTS.
         "\u{1F0B7}",  // PLAYING CARD SEVEN OF HEARTS.
