@@ -4,7 +4,7 @@
   "description": "A Spider card game.",
   "main": "main.js",
   "scripts": {
-    "start": "snowpack dev",
+    "start": "snowpack dev --open=none",
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.js\""
   },
