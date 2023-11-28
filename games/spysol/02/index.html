@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Spider-like card game" />
+    <title>Spysol</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+    <header>
+      <span class="app-title">Spysol</span>
+        <button id="draw">Draw (<span id="stock">0</span>)</button>
+        Score =
+        <span id="foundation">0</span> / 104
+        (<span id="foundation-percent">0</span>%)
+        <progress id="foundation-progress" min="0" max="104" value="0"></progress>
+        <button id="new-game">New Game</button>
+    <noscript>
+        <p>This Spider-like card game requires Javascript.</p>
+    </noscript>
+    <details style="margin: 0.5em 1em">
+      <summary>Help</summary>
+
+      <div class="box">
+        <h1>How to play</h1>
+        <p>
+          You have four black suits and four red suits, each with ranks:
+          <strong>K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2, A</strong>.
+        </p>
+        <p>
+          <strong>The game starts</strong> with several cards dealt randomly
+          into four columns of 5 cards and six columns of 4 cards. This is the
+          tableau.  The remaining 60 cards form the stock for later play.
+        </p>
+        <p>
+          For each <strong>move</strong>, click a card to select it and all the
+          cards below it.  Then click a column to move them to.
+          If you decide not to move them after all, click the same column
+          to deselect them.
+        </p>
+        <p>
+          When you reach a <strong>complete suit</strong> of K to A in the same color, it will
+          automatically be removed from the tableau and you'll get 13 points
+          at the top. When you reach 105 points (all eight suits), you win.
+        </p>
+        <p>
+          When you run out of desired moves, press <strong>"Draw"</strong> to
+          deal a random row of cards from the stock to the columns.
+        </p>
+        <p>
+          In Spider the cards you move should be in descending order, one rank
+          lower than the bottom of the destination column. For instance, you
+          can move 4-3-2 to 5, or to an empty column. And you shouldn't have
+          any empty columns when pressing "Draw". The current implementation
+          doesn't enforce these restrictions. So you can undo a move by
+          doing the opposite move.
+        </p>
+        <p>
+          To start a new game, press "New Game" or reload the page.
+        </p>
+
+        <h1>About Spysol</h1>
+
+        <p>
+          Spysol was created by Mike Orr, who plays it most nights.
+          It's written in modern vanilla Javascript.
+          The only library is
+          <a href="https://www.npmjs.com/package/random-seedable"
+          target="_blank"><code>random-seedable</code></a>
+          by Chris Akroyd
+          to shuffle the cards.
+        </p>
+
+        <p>
+          The name "Spysol" is a portmanteau of Spider, Python, and Spy.
+          I was originally going to write it in Python, although this
+          version isn't.
+          The next version will probably be in
+          <a href="https://pyscript.net/" target="_blank">PyScript</a>,
+          a web version of Python.
+       </p>
+
+      </div>
+
+    </details>
+    </header>
+
+
+
+    <!-- BEGIN Tableau -->
+    <section id="ctr-tableau">
+    </section>
+    <!-- End Tableau -->
+
+    </div>
+  <template id="won-template">
+    <div class="won">
+      <p lang="en">You win!</p>
+      <p lang="eo">Vi gajnas!</p>
+    </div>
+  </template>
+  <script type="module" src="main.js"></script>
+  </body>
+</html>

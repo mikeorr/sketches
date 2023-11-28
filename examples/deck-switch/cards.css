@@ -1,0 +1,191 @@
+@font-face {
+    font-family: "neaveill";
+    src: url("neaveill-cards-and-dice.ttf");
+}
+
+/*
+    Colors:
+        black suit: black, bold
+        red suit: red, bold
+        black secondary: gray
+        red secondary: salmon
+        black selected: white on black background
+        red selected: red on black background. (Green?)
+
+    Width 2em for "10♣".
+/*
+
+
+/*** Default card style: Traditional deck, black suit, horizontal. ***/
+
+.spy-card {
+    color: black;
+    background-color: white;
+    border: solid 1px;
+    border-radius: 5px;
+    display: inline-block;  /* To enforce width. */
+    font-family: monospace;
+    font-size: 40px;
+    /* font-weight: bold; */
+    padding: 1px 2px;
+    text-align: center;
+    width: 1.25em;
+}
+
+.spy-card[data-red] {
+    color: red;
+    background-color: white;
+}
+
+.spy-card[data-rank="1" ]::after { content: "A" ; }
+.spy-card[data-rank="2" ]::after { content: "2" ; }
+.spy-card[data-rank="3" ]::after { content: "3" ; }
+.spy-card[data-rank="4" ]::after { content: "4" ; }
+.spy-card[data-rank="5" ]::after { content: "5" ; }
+.spy-card[data-rank="6" ]::after { content: "6" ; }
+.spy-card[data-rank="7" ]::after { content: "7" ; }
+.spy-card[data-rank="8" ]::after { content: "8" ; }
+.spy-card[data-rank="9" ]::after { content: "9" ; }
+.spy-card[data-rank="10"]::after { content: "10"; }
+.spy-card[data-rank="11"]::after { content: "J"; }
+.spy-card[data-rank="12"]::after { content: "Q"; }
+.spy-card[data-rank="13"]::after { content: "K"; }
+
+
+/*** Numeric deck ***/
+
+[data-deck="Numeric"] .spy-card {
+    display: inline-block;  /* To enforce width. */
+    text-align: center;
+    width: 1.25em;
+}
+
+[data-deck="Numeric"] .spy-card[data-rank="1" ]::after { content: "1" ; }
+[data-deck="Numeric"] .spy-card[data-rank="11"]::after { content: "11" ; }
+[data-deck="Numeric"] .spy-card[data-rank="12"]::after { content: "12" ; }
+[data-deck="Numeric"] .spy-card[data-rank="13"]::after { content: "13" ; }
+
+
+/*** Compact deck ***/
+
+[data-deck="Compact"] .spy-card {
+    border: solid 1px;
+    border-radius: 5px;
+    display: inline-block;   /* To enforce width. */
+    font-family: monospace;
+    font-size: 40px;
+    width: auto;
+}
+
+[data-deck="Compact"] .spy-card[data-rank="1" ]::after { content: "A"; }
+[data-deck="Compact"] .spy-card[data-rank="10"]::after { content: "T"; }
+[data-deck="Compact"] .spy-card[data-rank="11"]::after { content: "J"; }
+[data-deck="Compact"] .spy-card[data-rank="12"]::after { content: "Q"; }
+[data-deck="Compact"] .spy-card[data-rank="13"]::after { content: "K"; }
+
+
+/*** Unicode deck black suit ***/
+
+[data-deck="Unicode"] .spy-card {
+    font-family: monospace;
+    font-size: 40px;
+    border: none;
+    padding: 0;
+    width: auto;
+}
+
+[data-deck="Unicode"] .spy-card[data-rank="1" ]::after
+    { content: "\1F0D1"; } /* PLAYING CARD ACE OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="2" ]::after
+    { content: "\1F0D2"; }  /* PLAYING CARD TWO OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="3" ]::after
+    { content: "\1F0D3"; }  /* PLAYING CARD THREE OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="4" ]::after
+    { content: "\1F0D4"; }  /* PLAYING CARD FOUR OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="5" ]::after
+    { content: "\1F0D5"; }  /* PLAYING CARD FIVE OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="6" ]::after
+    { content: "\1F0D6"; }  /* PLAYING CARD SIX OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="7" ]::after
+    { content: "\1F0D7"; }  /* PLAYING CARD SEVEN OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="8" ]::after
+    { content: "\1F0D8"; }  /* PLAYING CARD EIGHT OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="9" ]::after
+    { content: "\1F0D8"; }  /* PLAYING CARD NINE OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="10"]::after
+    { content: "\1F0DA"; }  /* PLAYING CARD TEN OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="11"]::after
+    { content: "\1F0DB"; }  /* PLAYING CARD JACK OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="12"]::after
+    { content: "\1F0DD"; }  /* PLAYING CARD QUEEN OF CLUBS. */
+[data-deck="Unicode"] .spy-card[data-rank="13"]::after
+    { content: "\1F0DE"; }  /* PLAYING CARD KING OF CLUBS. */
+
+
+/*** Unicode deck red suit ***/
+
+.[data-deck="Unicode"] .spy-card[data-rank="1" ][data-red]::after
+    { content: "\1F0B1"; }  /* PLAYING CARD ACE OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="2" ][data-red]::after
+    { content: "\1F0B2"; }  /* PLAYING CARD TWO OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="3" ][data-red]::after
+    { content: "\1F0B3"; }  /* PLAYING CARD THREE OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="4" ][data-red]::after
+    { content: "\1F0B4"; }  /* PLAYING CARD FOUR OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="5" ][data-red]::after
+    { content: "\1F0B5"; }  /* PLAYING CARD FIVE OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="6" ][data-red]::after
+    { content: "\1F0B6"; }  /* PLAYING CARD SIX OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="7" ][data-red]::after
+    { content: "\1F0B7"; }  /* PLAYING CARD SEVEN OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="8" ][data-red]::after
+    { content: "\1F0B8"; }  /* PLAYING CARD EIGHT OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="9" ][data-red]::after
+    { content: "\1F0B8"; }  /* PLAYING CARD NINE OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="10"][data-red]::after
+    { content: "\1F0BA"; }  /* PLAYING CARD TEN OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="11"][data-red]::after
+    { content: "\1F0BB"; }  /* PLAYING CARD JACK OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="12"][data-red]::after
+    { content: "\1F0BD"; }  /* PLAYING CARD QUEEN OF HEARTS. */
+.[data-deck="Unicode"] .spy-card[data-rank="13"][data-red]::after
+    { content: "\1F0BE"; }  /* PLAYING CARD KING OF HEARTS. */
+
+
+/*** Neaveill deck ***/
+
+[data-deck="Neaveill"] .spy-card {
+    font-family: neaveill;
+    font-size: 60px;
+    border: none;
+    padding: 0;
+    width: auto;
+}
+
+[data-deck="Neaveill"] .spy-card[data-rank="1" ]::after { content: "n"; }
+[data-deck="Neaveill"] .spy-card[data-rank="2" ]::after { content: "o"; }
+[data-deck="Neaveill"] .spy-card[data-rank="3" ]::after { content: "p"; }
+[data-deck="Neaveill"] .spy-card[data-rank="4" ]::after { content: "q"; }
+[data-deck="Neaveill"] .spy-card[data-rank="5" ]::after { content: "r"; }
+[data-deck="Neaveill"] .spy-card[data-rank="6" ]::after { content: "s"; }
+[data-deck="Neaveill"] .spy-card[data-rank="7" ]::after { content: "t"; }
+[data-deck="Neaveill"] .spy-card[data-rank="8" ]::after { content: "u"; }
+[data-deck="Neaveill"] .spy-card[data-rank="9" ]::after { content: "v"; }
+[data-deck="Neaveill"] .spy-card[data-rank="10"]::after { content: "w"; }
+[data-deck="Neaveill"] .spy-card[data-rank="11"]::after { content: "x"; }
+[data-deck="Neaveill"] .spy-card[data-rank="12"]::after { content: "y"; }
+[data-deck="Neaveill"] .spy-card[data-rank="13"]::after { content: "z"; }
+
+[data-deck="Neaveill"] .spy-card[data-rank="1" ][data-red]::after { content: "N"; }
+[data-deck="Neaveill"] .spy-card[data-rank="2" ][data-red]::after { content: "O"; }
+[data-deck="Neaveill"] .spy-card[data-rank="3" ][data-red]::after { content: "P"; }
+[data-deck="Neaveill"] .spy-card[data-rank="4" ][data-red]::after { content: "Q"; }
+[data-deck="Neaveill"] .spy-card[data-rank="5" ][data-red]::after { content: "R"; }
+[data-deck="Neaveill"] .spy-card[data-rank="6" ][data-red]::after { content: "S"; }
+[data-deck="Neaveill"] .spy-card[data-rank="7" ][data-red]::after { content: "T"; }
+[data-deck="Neaveill"] .spy-card[data-rank="8" ][data-red]::after { content: "U"; }
+[data-deck="Neaveill"] .spy-card[data-rank="9" ][data-red]::after { content: "V"; }
+[data-deck="Neaveill"] .spy-card[data-rank="10"][data-red]::after { content: "W"; }
+[data-deck="Neaveill"] .spy-card[data-rank="11"][data-red]::after { content: "X"; }
+[data-deck="Neaveill"] .spy-card[data-rank="12"][data-red]::after { content: "Y"; }
+[data-deck="Neaveill"] .spy-card[data-rank="13"][data-red]::after { content: "Z"; }

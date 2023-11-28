@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+    Switchable Horizontal/vertical table
+    based on:
+    https://stackoverflow.com/questions/16918094/html-table-with-vertical-rows#16919439
+-->
+
+<html><body>
+
+<style>
+  table, td, tr {
+    border: solid 1px;
+    padding: 4px;
+  }
+
+  table.vertical tr {
+    display: block;
+    float: left;
+  }
+
+  table.vertical td {
+    display: block;
+  }
+</style>
+
+<h1>Vertical</h1>
+<table class="tableau vertical">
+  <tr>
+    <td>A</td>
+    <td>B</td>
+    <td>C</td>
+  </tr>
+  <tr>
+    <td>D</td>
+    <td>E</td>
+  </tr>
+</table>
+
+<h1>Horizontal</h1>
+<table class="tableau">
+  <tr>
+    <td>A</td>
+    <td>B</td>
+    <td>C</td>
+  </tr>
+  <tr>
+    <td>D</td>
+    <td>E</td>
+  </tr>
+</table>

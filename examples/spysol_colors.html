@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+
+body {
+    background-color: white;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+    border: solid 1px;
+    /* border-spacing: 0 0.5em; */
+    margin: 0.5em;
+}
+
+tr {
+    height: 44px;
+}
+
+th, td {
+    padding: 1em;
+    border: solid 1px;
+    vertical-align: middle;
+}
+
+/*
+th {
+    text-align: right;
+}
+*/
+
+
+.card {
+    color: black;
+    background-color: white;
+    border: solid 1px;
+    border-radius: 5px;
+    display: inline-block;  /* To enforce width. */
+    font-family: monospace;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 1px 2px;
+    text-align: center;
+    width: 1.25em;
+}
+
+.card.red {
+    color: red;
+}
+
+.card.reserve {
+    background-color: GhostWhite;
+    color: gray;
+    font-weight: normal;
+}
+
+.card.reserve.red {
+    color: salmon;
+}
+
+.card.selected {
+    color: white;
+    background-color: black;
+}
+
+.card.selected.red {
+    color: white;
+    background-color: red;
+}
+
+.card.promote {
+    background-color: lightGreen;
+}
+
+.card.empty-row {
+    color: gray;
+    border-radius: 20px;
+}
+
+.card.empty-row:hover {
+    background-color: lightGreen;
+    color: black;
+}
+
+    </style>
+  </head>
+  <body>
+      <h1>Spysol Card Colors Demo</h1>
+
+      <table>
+        <tr><th>Black</th><td class="card">A</td></tr>
+        <tr><th>Red</th><td class="card red">A</td></tr>
+        <tr><th>Reserve Black</th><td class="card reserve">A</td></tr>
+        <tr><th>Reserve Red</th><td class="card reserve red">A</td></tr>
+        <tr><th>Selected Black</th><td class="card selected">A</td></tr>
+        <tr><th>Selected Red</th><td class="card selected red">A</td></tr>
+        <tr><th>Promoting Black</th><td class="card promote">A</td></tr>
+        <tr><th>Promoting Red</th><td class="card promote red">A</td></tr>
+        <tr><th>Empty Row</th><td class="card empty-row">+</td></tr>
+      </table>
+
+      <p>Hover over the "+" to see the hovering effect.</p>
+
+  </body>
+</html>

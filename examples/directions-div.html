@@ -1,0 +1,70 @@
+<html><body>
+
+<style>
+  div {
+    border: solid 1px;
+    padding: 4px;
+  }
+  .tableau {
+    display: flex;
+    flex-direction: column;
+  }
+  :not(.vertical) {
+    flex-direction: row;
+  }
+  .vertical .card {
+    display: inline;
+  }
+  :not(.vertical) .column {
+    display: inline-block;
+  }
+</style>
+
+
+<h1>Vertical</h1>
+
+<div class="tableau vertical">
+  <div class="column">
+    Column 1
+    <div class="card">A</div>
+    <div class="card">B</div>
+    <div class="card">C</div>
+  </div>
+  <div class="column">
+    Column 2
+    <div class="card">D</div>
+    <div class="card">E</div>
+  </div>
+</div>
+
+
+<h1>Horizontal</h1>
+
+<div class="tableau horizontal">
+  <div class="column">
+    <div class="card">Column 1</div>
+    <div class="card">A</div>
+    <div class="card">B</div>
+    <div class="card">C</div>
+  </div>
+  <div class="column">
+    <div class="card">Column 2</div>
+    <div class="card">D</div>
+    <div class="card">E</div>
+  </div>
+</div>
+
+
+<h1>Discussion</h1>
+
+<p>Attempt at a pseudo-table &lt;div&gt; grid that rotates between
+horizontal and vertical. It works if you have both these flex styles
+and the specific 'inline' and 'inline-block' styles on certain div's.
+Those specific styles seem counterintuitive like you should specify
+them the opposite way or not at all, but this was the only way that
+rendered correctly. The alternate
+<a href="directions-table.html">table example</a>
+is simpler and does more of what I really wanted in the first place
+(a table that rotates between horizontal and vertical), so I'd
+recommend using that instead. If you don't want to use a table, you
+can take this example and maybe improve it.</p>

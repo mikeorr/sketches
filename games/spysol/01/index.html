@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Spider-like card game" />
+    <title>Spysol</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+    <header>
+      <h1 class="app-title">Spysol</h1>
+    </header>
+
+    <noscript>
+        <p>This Spider-like card game requires Javascript.</p>
+    </noscript>
+
+
+    <!-- BEGIN Tableau -->
+    <section id="ctr-tableau">
+    </section>
+    <!-- End Tableau -->
+
+    <section>
+        Foundation =
+        <span id="foundation">0</span> / 104
+        (<span id="foundation-percent">0</span>%)
+        <progress id="foundation-progress" min="0" max="104" value="0"></progress>
+    </section>
+
+    <section id="toolbar">
+        Stock = <span id="stock">0</span>
+        <button id="draw">Draw</button>
+        <button id="new-game">New Game</button>
+        <div><span id="stock-cards"></span></div>
+    </section>
+
+    <!--
+    <section id="ctr-messages">
+      <h1>Messages:</h1>
+      <div id="messages"></div>
+    </section>
+
+    <section>
+      <details id="details-help">
+        <summary>Help</summary>
+        <p>Help.</p>
+      </details>
+    </section>
+    -->
+
+  </div>
+  <template id="won-template">
+    <div class="won">
+        <p lang="en">You win!</p>
+        <!--
+        <p lang="eo">Vi gajnas!</p>
+        -->
+    </div>
+  </template>
+  <script type="module" src="main.js"></script>
+  </body>
+</html>

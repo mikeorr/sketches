@@ -1,0 +1,93 @@
+html {
+  background-color: #eeeeee;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 36px;
+  margin: 0 auto;
+  width: 1024px;
+}
+
+.fancy {
+  border-style: solid none;
+  border-width: 4px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+.font-sans {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.font-serif {
+  font-family: Times, "Times New Roman", Georgia, serif;
+}
+
+.numeric {
+    text-align: right;
+}
+
+.text {
+    text-align: left;
+}
+
+h1{
+  border: outset;
+  font-size: 72px;
+  font-style: italic;
+  letter-spacing: 0.4em;
+  text-align: center;
+  margin: 20px 0;
+}
+
+main {
+}
+
+progress {
+    width: 100%;
+}
+
+table.wari {
+    border: solid 2px;
+    border-spacing: 4px;
+    table-layout: fixed;
+    text-align: center;
+    width: 100%;
+}
+
+table.wari col {
+    border: solid 2px;
+}
+
+table.wari col.homes {
+    width: 200px;
+}
+
+table.wari col.houses {
+}
+
+table.wari th, table.wari td {
+    border: solid 1px;
+    margin: 4px;
+    padding: 4px;
+}
+
+table.wari tr.headers th {
+    font-style: italic;
+    font-weight: normal;
+    text-align: center;
+}
+
+table.wari tr.player th.name {
+    font-weight: bold;
+    text-align: left;
+}
+
+.messages {
+    border: double;
+    font-size: 50%;
+    height: 4em;
+    margin: 0.5em auto;
+    padding: 0.5em;
+}
