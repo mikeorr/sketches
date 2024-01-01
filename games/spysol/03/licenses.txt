@@ -1,0 +1,6 @@
+favicon.ico:
+    
+    Aerialway-15 favicon
+    From https://openclipart.org/detail/260636/aerialway-15
+    By Maki Icons from mapbox.com.
+    License CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/legalcode

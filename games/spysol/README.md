@@ -24,6 +24,13 @@ Put ranks in descnding order in the columns, so put 2 below 3.
 Deleted reserve code and "deal by column" code, which was disabled.
 
 
+### 03
+
+A PyScript implementation.
+
+Vertical columns, ranks A-K, descending order.
+
+
 ### svelte1
 
 A Svelte implementation.
