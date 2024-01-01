@@ -1,0 +1,182 @@
+/* Spysol stylesheet. */
+
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0 auto;
+    width: 1024px;
+}
+
+header, footer, section, nav {
+    background-color: white;
+    color: black;
+    vertical-align: top;
+}
+
+.app-title {
+    font-size: x-large;
+    font-weight: bold;
+    margin-right: 1em;
+    text-transform: uppercase;
+}
+
+noscript {
+    display: block;
+    margin: 1em auto;
+}
+
+main {
+}
+
+
+/* Generic style components. */
+
+section, header {
+    border: solid 1px;
+    margin: 1em auto;
+    padding: 0.5em;
+    overflow: auto;
+}
+
+.spaced {
+    margin: 1em auto;
+}
+
+.flex-columns {
+    display: flex;
+    flex-direction: column;
+}
+
+.box {
+    border: outset;
+    margin: 1em;
+    padding: 0.25em 1em;
+}
+
+details h1 {
+    background-color: lightGray;
+    border: solid 1px;
+    border-radius: 10px;
+    font-size: large;
+    padding: 0.5em;
+}
+
+/* Why? */
+.flex-columns .cell {
+    display: inline;
+}
+
+#ctr-tableau {
+}
+
+
+#messages {
+    min-height: 4em;
+}
+
+
+/* Tableau-related styles */
+
+section#ctr-tableau {
+    background-color: green;
+    min-height: 544px;
+}
+
+
+.tableau {
+    border-spacing: 0 0.5em;
+    display: flex;
+    flex-direction: row;
+    margin: 0.5em;
+    /* width: 100%; */
+}
+
+.tableau .column {
+    display: flex;
+    flex-direction: column;
+    margin: .75em;
+    /* height: 44px; */
+    width: 44px;
+}
+
+.tableau .cell {
+    padding: 0.1em;
+    border: solid 1px;
+    vertical-align: top;
+}
+
+
+/* Card-related styles */
+
+.card {
+    color: black;
+    background-color: white;
+    border: solid 1px;
+    border-radius: 5px;
+    display: inline-block;  /* To enforce width. */
+    font-family: monospace;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 1px 2px;
+    text-align: center;
+    width: 1.25em;
+}
+
+.card.red {
+    color: red;
+}
+
+.card.reserve {
+    background-color: GhostWhite;
+    color: gray;
+    font-weight: normal;
+}
+
+.card.reserve.red {
+    color: salmon;
+}
+
+.card.selected {
+    color: white;
+    background-color: black;
+}
+
+.card.selected.red {
+    color: white;
+    background-color: red;
+}
+
+.card.promoting {
+    background-color: lightGreen;
+}
+
+.card.empty-row {
+    color: gray;
+    border-radius: 20px;
+}
+
+.card.empty-row:hover {
+    background-color: lightGreen;
+    color: black;
+}
+
+
+/* Foundation/Stock/Toolbar styles */
+
+progress {
+    /* width: 40em; */
+}
+
+
+/* Winning styles */
+
+div.won {
+    font-size: xxx-large;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
