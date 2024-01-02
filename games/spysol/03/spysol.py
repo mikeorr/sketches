@@ -1,6 +1,7 @@
 import collections
 import random
 import time
+import types
 
 import pyscript
 
@@ -8,6 +9,14 @@ FACES = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
 MAX_CARDS = 104   # Number of cards in a full deck. Card IDs 1-104.
 
 Card = collections.namedtuple("Card", "rank red")
+
+DOM = types.SimpleNamespace()
+DOM.ctr_tableau  = pyscript.document.getElementById("ctr-tableau")
+DOM.stock        = pyscript.document.getElementById("stock")
+DOM.foundation   = pyscript.document.getElementById("foundation")
+DOM.progress     = pyscript.document.getElementById("progress")
+DOM.draw         = pyscript.document.getElementById("draw")
+DOM.won_template = pyscript.document.getElementById("won-template")
 
 def create(tag, *classes, html=None, text=None, **attrs):
     el = pyscript.document.createElement(tag)
@@ -22,14 +31,6 @@ def create(tag, *classes, html=None, text=None, **attrs):
     return el
 
 
-class DOM:
-    def __init__(self):
-        self.ctr_tableau        = pyscript.document.getElementById("ctr-tableau")
-        self.stock              = pyscript.document.getElementById("stock")
-        self.foundation         = pyscript.document.getElementById("foundation")
-        self.progress           = pyscript.document.getElementById("progress")
-        self.draw               = pyscript.document.getElementById("draw")
-        self.won_template       = pyscript.document.getElementById("won-template")
 
 
 class Selection:
@@ -87,7 +88,6 @@ class Model:
 
 
 # State globals.
-dom = DOM()
 model = Model()
 
 def render_tableau():
@@ -106,7 +106,7 @@ def render_tableau():
             ht_card = create("div", *classes, text=face)
             ht_column.append(ht_card)
         ht_tableau.append(ht_column)
-    dom.ctr_tableau.replaceChildren(ht_tableau)
+    DOM.ctr_tableau.replaceChildren(ht_tableau)
 
 
 def init():
