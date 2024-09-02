@@ -1,8 +1,10 @@
 import collections
+import functools
 import random
 import time
 import types
 
+import pyodide
 import pyscript
 
 FACES = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
@@ -90,10 +92,17 @@ class Model:
 # State globals.
 model = Model()
 
-def render_tableau():
+def render_tableau(listen_cards, listen_columns):
     ht_tableau = create("div", "tableau", "columns", id="tableau")
     for c, col in enumerate(model.tableau):
         ht_column = create("div", "column")
+        if listen_columns:
+            callback = functools.partial(on_click_column, c)
+            callback = pyodide.ffi.create_once_callable(callback)
+            ht_column.addEventListener("click", callback)
+            if len(col) == 0:
+                ht_dummy_card = create("div", "card", "empty-row")
+                ht_column.append(ht_dummy_card)
         for r, card in enumerate(col):
             face = FACES[card.rank - 1]
             classes = ["card"]
@@ -104,9 +113,26 @@ def render_tableau():
             if model.selection.contains(c, r):
                 classes.add("selected")
             ht_card = create("div", *classes, text=face)
+            if listen_cards:
+                callback = functools.partial(on_click_card, c, r)
+                callback = pyodide.ffi.create_once_callable(callback)
+                ht_card.addEventListener("click", callback)
             ht_column.append(ht_card)
         ht_tableau.append(ht_column)
     DOM.ctr_tableau.replaceChildren(ht_tableau)
+
+
+def on_click_card(c, r, event):
+    print("on_click_card:", c, r)
+
+def on_click_column(c, event):
+    print("on_click_row:", r)
+
+def on_click_draw(event):
+    print("on_click_column")
+
+def on_click_new_game(event):
+    print("on_click_new_game")
 
 
 def init():
@@ -114,6 +140,6 @@ def init():
     output.remove()
     model.set_random_seed()
     model.new_game()
-    render_tableau()
+    render_tableau(True, False)
 
 init()
