@@ -32,7 +32,13 @@ def create(tag, *classes, html=None, text=None, **attrs):
         el.innerText = text
     return el
 
-
+def listen_once(target, event_name, func, *args, **kw):
+    if args or kw:
+        callback = functools.partial(func, *args, **kw)
+    else:
+        callback = func
+    callback = pyodide.ffi.create_once_callable(callback)
+    return target.addEventListener(event_name, callback)
 
 
 class Selection:
