@@ -24,9 +24,13 @@ Put ranks in descnding order in the columns, so put 2 below 3.
 Deleted reserve code and "deal by column" code, which was disabled.
 
 
-### 03
+### pyscript1
 
 A PyScript implementation.
+
+ABANDONED: Pyscript is designed for permanent listeners, while the current
+algorithm creates short-term elements with listeners (the cards). I'm not
+willing to redesign the algorithm at this time.
 
 Vertical columns, ranks A-K, descending order.
 
@@ -36,3 +40,7 @@ Vertical columns, ranks A-K, descending order.
 A Svelte implementation.
 This shuffles and displays the cards and lets you click to move.
 It doesn't do any other validation or game logic yet.
+
+ABANDONED: It works, but this version of Svelte generates complicated HTML that
+does unnecessary lookups when I can specify the elements or or properties.
+The new version of Svelte has a different kind of compiler and might be better.
