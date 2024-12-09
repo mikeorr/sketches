@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!--   Drag & Drop demo  -->
+<html>
+<title>Drag &amp; Drop demo</title>
+
+<style>
+    html {
+        background-color: #090721;  /* A dark outer gutter. */
+    }
+    body {
+        background-color: white;
+        margin: 2em auto;
+        width: 300px;
+        padding: 2em;
+        text-align: center;
+    }
+    h1 {
+        border-top: solid 1px;
+        border-bottom: solid 1px;
+        vertical-align: middle;
+    }
+    p {
+        text-align: left;
+    }
+    .right {
+        float: right;
+    }
+    .clearfix {
+        clear: all;
+    }
+    .tableau {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        margin: 20px 0;
+    }
+    .column {
+    }
+    .card {
+        height: 30px;
+        width: 30px;
+        margin: 5px auto;
+        padding: 10px;
+    }
+</style>
+
+<script>
+    const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
+    const LEVELS = [85, 75, 65, 55, 45, 35];  // Lightest to darkest.
+
+    let initialized = false;  // Has 'initialized()' been called?
+    let lastID = 0;  // Last card ID number, used to generate unique ID strings.
+
+    function randomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    function getRandomHue(notThisHue) {
+        let hue, i, retries;
+        retries = 2;
+        do {
+            i = randomInt(HUES.length);
+            hue = HUES[i];
+        } while ( (hue === notThisHue) && retries--);
+        return hue;
+    }
+
+    function makeTag(name, cls) {
+        let el = document.createElement(name);
+        if (cls) {  el.classList.add(cls);  }
+        return el;
+    }
+
+    function onDragStart(ev) {
+        ev.dataTransfer.setData("text/plain", ev.target.id);
+    }
+
+    function onDragOver(ev) {
+        ev.preventDefault();
+    }
+
+    function onDrop(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move";
+        const id = ev.dataTransfer.getData("text/plain");
+        const cards = getCardsToDrop(id);
+        let dst = ev.target;
+        // If destination is a card, go up to the ancestor column.
+        while (dst && ! dst.classList.contains("column")) {
+            dst = dst.parentElement;
+        }
+        dst.append(...cards);
+    }
+
+    function getCardsToDrop(id) {
+        let card = document.getElementById(id);
+        let cards = [card];
+        while (card = card.nextSibling) {
+            cards.push(card);
+        }
+        return cards;
+    }
+
+    function makeColumn(hue) {
+        let card, col, color, level;
+        col = makeTag("div", "column");
+        col.addEventListener("dragover", onDragOver);
+        col.addEventListener("drop", onDrop);
+        for (level of LEVELS) {
+            color = `hsl(${hue}deg 100% ${level}%)`;
+            card = makeTag("div", "card");
+            card.id = `card-${++lastID}`;
+            card.style.backgroundColor = color;
+            card.draggable = true;
+            card.addEventListener("dragstart", onDragStart);
+            col.append(card);
+        }
+        return col;
+    }
+
+    function reset() {
+        const hue1 = getRandomHue();
+        const hue2 = getRandomHue(hue1);
+        const tableau = document.getElementById("tableau")
+        tableau.replaceChildren( makeColumn(hue1), makeColumn(hue2) );
+    }
+
+    function initialize() {
+        if (! initialized ) {
+            document.getElementById("reset").addEventListener("click", reset);
+            initialized = true;
+        }
+        reset();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialize, {once: true});
+    } else {
+        initialize();
+    }
+</script>
+
+<body>
+
+<h1>Drag &amp; Drop Demo</h1>
+
+<p>
+  <button id="reset" class="right">Reset</button>
+  Drag any colored box to the other column. All boxes below it will move too.
+</p>
+
+<div class="clearfix"></div>
+
+<div id="tableau" class="tableau">
+</div>
+
+</body>
+</html>
