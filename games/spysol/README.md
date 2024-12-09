@@ -20,7 +20,7 @@ It doesn't have a toolchain or framework.
 Derived from 01.
 It displays columns vertically, using flexbox div's.
 Ranks are playing-card ranks (A, 2-10, J, Q, K).
-Put ranks in descnding order in the columns, so put 2 below 3.
+Put ranks in descending order in the columns, so put 2 below 3.
 Deleted reserve code and "deal by column" code, which was disabled.
 
 
