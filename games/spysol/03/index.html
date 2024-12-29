@@ -9,19 +9,26 @@
     <link rel="stylesheet" href="styles.css" type="text/css" />
   </head>
   <body>
-    <div class="container">
-    <header>
-      <span class="app-title">Spysol</span>
-        <button id="draw">Draw (<span id="stock">0</span>)</button>
-        Score =
-        <span id="foundation">0</span> / 104
-        (<span id="foundation-percent">0</span>%)
-        <progress id="foundation-progress" min="0" max="104" value="0"></progress>
-        <button id="new-game">New Game</button>
+
     <noscript>
-        <p>This Spider-like card game requires Javascript.</p>
+      <p>This Spider-like card game requires Javascript.</p>
     </noscript>
-    <details style="margin: 0.5em 1em">
+
+    <header class="flex">
+      <div>
+        <span class="app-title">Spysol</span>
+      </div>
+      <div>
+        Score =
+        <span id="points">0</span> / 8
+        <progress id="progress" min="0" max="8" value="0"></progress>
+      </div>
+      <div>
+        <button id="draw">Draw (<span id="stock">0</span>)</button>
+      </div>
+    </header>
+
+    <details>
       <summary>Help</summary>
 
       <div class="box">
@@ -83,22 +90,54 @@
       </div>
 
     </details>
-    </header>
 
+    <details>
+      <summary>Options</summary>
+      <div class="flex">
+        <button id="change-colors">Change Colors</button>
+        <label>
+            <input type="checkbox" id="show-ranks">
+            Show ranks
+        </label>
+        <label>
+            Card size:
+            <input type="number" id="size"
+                min="20" max="60" step="10" value="30" />
+        </label>
+        <button id="new-game" class="right">New Game</button>
+        <div class="clearfix"></div>
+      </div>
+    </details>
 
+    <details>
+      <summary>Models</summary>
+      <div id="models">
+      </div>
+    </details>
 
-    <!-- BEGIN Tableau -->
-    <section id="ctr-tableau">
+    <section id="won" hidden>
+      <div class="flex won">
+        <span lang="en" title="English">You won!</span>
+        <span lang="eo" title="Esperanto">Vi gajnis!</span>
+        <span lang="es" title="Spanish">¡Cantaste!</span>
+        <span lang="de" title="German">Du hast gewonnen!</span>
+        <span lang="ru" title="Russian">Ты выграл(а)!</span>
+        <span lang="la" title="Latin">Vicisti!</span>
+        <span lang="es" title="French">Tu as gagné !</span>
+        <span lang="it" title="Italian">Hai vinto!</span>
+        <span lang="lfn" title="Linua Franca Nova">Tu ia gania!</span>
+        <span lang="pl" title="Polish">Wygrałeś!</span>
+        <span lang="ga" title="Irish">Bhuaigh tú!</span>
+        <span lang="tr" title="Turkish">kazandın!</span>
+
+      </div>
     </section>
-    <!-- End Tableau -->
 
-    </div>
-  <template id="won-template">
-    <div class="won">
-      <p lang="en">You win!</p>
-      <p lang="eo">Vi gajnas!</p>
-    </div>
-  </template>
+    <main>
+      <div id="tableau">
+      </div>
+    </main>
+
   <script type="module" src="main.js"></script>
   </body>
 </html>

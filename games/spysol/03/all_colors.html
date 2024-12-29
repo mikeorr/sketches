@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Spider-like card game" />
+    <title>All Colors Demo</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        ol {
+            list-style-type: none;
+            margin: 20px 0;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+            font-family: serif;
+            font-size: large;
+            width: 30px;
+            height: 30px;
+            margin: auto 1px;
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>All Colors Demo</h1>
+    <main id="content">
+    </main>
+  </body>
+  <script>
+    const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
+    const LEVELS = [85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25];  // Lightest to darkest.
+    const content = document.getElementById("content");
+    let color, hue, level, li, ol, rank;
+    for (hue of HUES) {
+        ol = document.createElement("ol");
+        for (rank=1; rank <= 13; rank++) {
+            level = LEVELS[rank - 1];
+            color = `hsl(${hue}deg 100% ${level}%)`;
+            li = document.createElement("li");
+            li.style.backgroundColor = color;
+            li.innerText = rank;
+            ol.append(li);
+        }
+        content.append(ol);
+    }
+  </script>
+</html>

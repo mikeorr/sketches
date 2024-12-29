@@ -1,17 +1,17 @@
 /* Spysol stylesheet. */
 
-body {
-    background-color: black;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0 auto;
-    width: 1024px;
+html {
+    background-color: #090721;  /* A dark outer gutter. */
 }
 
-header, footer, section, nav {
+body {
     background-color: white;
     color: black;
+    font-family: Arial, Helvetica, sans-serif;
     vertical-align: top;
+    margin: 0 auto;
+    padding: 10px;
+    width: 1024px;
 }
 
 .app-title {
@@ -26,32 +26,35 @@ noscript {
     margin: 1em auto;
 }
 
-main {
-}
-
 
 /* Generic style components. */
 
-section, header {
-    border: solid 1px;
-    margin: 1em auto;
-    padding: 0.5em;
-    overflow: auto;
-}
+.border   { border: 1px solid; }
+.clearfix { clear: all; }
+.right    { float: right; }
+.rounded  { border-radius: 15px; }
 
-.spaced {
-    margin: 1em auto;
-}
-
-.flex-columns {
+.flex {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+}
+
+.flex > * {
+    margin-right: 40px;
 }
 
 .box {
     border: outset;
-    margin: 1em;
+    margin: 20px;
     padding: 0.25em 1em;
+}
+
+details {
+    margin: 0 5px;
+}
+
+details > div {
+    margin: 10px 20px;
 }
 
 details h1 {
@@ -62,103 +65,53 @@ details h1 {
     padding: 0.5em;
 }
 
-/* Why? */
-.flex-columns .cell {
-    display: inline;
+input[type="number"] {
+    width: 50px;
 }
 
-#ctr-tableau {
-}
+/* Page sections */
 
-
-#messages {
-    min-height: 4em;
-}
-
-
-/* Tableau-related styles */
-
-section#ctr-tableau {
-    background-color: green;
-    min-height: 544px;
-}
-
-
-.tableau {
-    border-spacing: 0 0.5em;
-    display: flex;
-    flex-direction: row;
-    margin: 0.5em;
-    /* width: 100%; */
-}
-
-.tableau .column {
-    display: flex;
-    flex-direction: column;
-    margin: .75em;
-    /* height: 44px; */
-    width: 44px;
-}
-
-.tableau .cell {
-    padding: 0.1em;
+main {
     border: solid 1px;
-    vertical-align: top;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+div.won {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: x-large;
+    font-weight: bold;
+    padding-left: 50px;
 }
 
 
 /* Card-related styles */
 
-.card {
-    color: black;
-    background-color: white;
-    border: solid 1px;
-    border-radius: 5px;
-    display: inline-block;  /* To enforce width. */
-    font-family: monospace;
-    font-size: 30px;
-    font-weight: bold;
-    padding: 1px 2px;
+ol.row {
+    list-style-type: none;
+    margin: 10px 0;
+    padding: 0;
+    height: 50px;
+}
+
+li.card {
+    display: inline-block;
+    font-family: serif;
+    font-size: large;
+    width: 30px;
+    height: 30px;
+    margin: auto 1px;
+    padding: 10px;
     text-align: center;
-    width: 1.25em;
+    vertical-align: middle;
+    user-select: none;   // Disable accidentally selecting text.
 }
 
-.card.red {
-    color: red;
-}
-
-.card.reserve {
-    background-color: GhostWhite;
-    color: gray;
-    font-weight: normal;
-}
-
-.card.reserve.red {
-    color: salmon;
-}
-
-.card.selected {
-    color: white;
-    background-color: black;
-}
-
-.card.selected.red {
-    color: white;
-    background-color: red;
-}
-
-.card.promote {
-    background-color: lightGreen;
-}
-
-.card.empty-row {
-    color: gray;
-    border-radius: 20px;
-}
-
-.card.empty-row:hover {
-    background-color: lightGreen;
-    color: black;
+li.card.promoting {
+    font-size: x-large;
+    font-weight: bold;
 }
 
 
@@ -166,17 +119,4 @@ section#ctr-tableau {
 
 progress {
     /* width: 40em; */
-}
-
-
-/* Winning styles */
-
-div.won {
-    font-size: xxx-large;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
 }

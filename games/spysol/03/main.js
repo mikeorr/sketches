@@ -1,401 +1,274 @@
 import * as rs from "./random-seedable/index.js";
 
-function range(start, stop) {
-    let ret = [];
-    for (let i = start; i <= stop; i++) {
-        ret.push(i);
-    }
-    return ret;
-}
-
-function makeElement(name, ...classes) {
-    let el = document.createElement(name);
-    if (classes) {
-        el.classList.add(...classes);
-    }
-    return el;
-}
-
-const FACES = [
-    "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-
 // Animation frame throttles in milliseconds.
 const T1 = 50;    // Fastest.
 const T2 = 250;
 const T3 = 500;
 const T4 = 1000;   // Slowest.
 
-let deck = [];
+const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
+const LEVELS = [85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25];  // Lightest to darkest.
+const MAX_ID = 104;   // Card ID range 1 - 104.
+const MAX_POINTS = 8;  // How many points to win.
+
 let DOM = {};
-let initialized = false;
-let model = null;
-let playing = false;
-let ready = false;
+let hues = HUES.slice(0, 2);   // [suit 1 hue, suit 2 hue]
+let initialized = false;  // Has 'initialized()' been called?
+let isShowRank = true;
+let lastID = 0;  // Last card ID number, to generate card IDs for dragging.
+let points = 0;
+let stock = [];   // [card ID].
 
+function getCardColor(suit, rank) {
+    const hue = hues[suit - 1];
+    const level = LEVELS[rank - 1];
+    const color = `hsl(${hue}deg 100% ${level}%)`;
+    return color;
+}
 
-class Selection {
-    constructor() {
-        this.clear();
+function changeCardColor(card) {
+    card.style.backgroundColor = getCardColor(card.suit, card.rank);
+}
+
+function changeCardContent(card) {
+    card.innerText = isShowRank ? card.rank : "";
+}
+
+function createCard(id=1, series="", draggable=false) {
+    const sr = (id - 1) % 26;          // 0-12 = suit 1, 13-25 = suit 2.
+    const rank = (sr % 13) + 1;        // Rank 1-12.
+    const suit = (sr >= 13) ? 2 : 1;   // Suit 1 or 2.
+    let card;
+    card = document.createElement("li");
+    card.suit = suit;   // Non-DOM attribute.
+    card.rank = rank;   // Non-DOM attribute.
+    card.dataset.suit = suit;
+    card.dataset.rank = rank;
+    card.id = `card-${++lastID}`;
+    card.classList.add("card");
+    changeCardColor(card);
+    changeCardContent(card);
+    if (draggable) {
+        card.draggable = true;
+        card.addEventListener("dragstart", onDragStart);
     }
+    return card;
+}
 
-    clear() {
-        this.active = false;
-        this.row = null;
-        this.index = null;
+function createRow(ids, series, dragdrop) {
+    ids ||= [];
+    series ||= "";
+    dragdrop ||= false;
+    function cardForId(id) {
+        const id_str = `${series}${id}`;
+        return createCard(id, id_str, dragdrop);
     }
+    let row;
+    row = document.createElement("ol");
+    row.classList.add("row");
+    row.append( ...ids.map(cardForId) );
+    if (dragdrop) {
+        row.addEventListener("dragover", onDragOver);
+        row.addEventListener("drop", onDrop);
+    }
+    return row;
+}
 
-    set(r, i) {
-        this.row = r;
-        this.index = i;
-        this.active = true;
+function getCardsToDrop(id) {
+    let card = document.getElementById(id);
+    let cards = [card];
+    while (card = card.nextSibling) {
+        cards.push(card);
     }
+    return cards;
+}
 
-    contains(r, i) {
-        return this.active && this.row === r && this.index <= i;
-    }
+function changeColors() {
+    hues = rs.random.shuffle(HUES).slice(0, 2);
+    document.querySelectorAll("li.card").forEach(changeCardColor);
+}
+
+function updateDraw() {
+    DOM.stock.innerText = Math.round( stock.length / 10 );
+    DOM.draw.disabled = !stock.length;
 }
 
 
-class SpysolModel {
-    constructor() {
-        const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-        const reds = [false, true, false, true, false, true, false, true];
-        let card, face, rank, red;
-        this.deck = [];
-        for (red of reds) {
-            for (rank of ranks) {
-                card = {rank, red};
-                this.deck.push(card);
-            }
+/* Promotion and winning routines */
+
+// trypromote(cards)
+//   Try to promote the last cards in the row if they qualify.
+//   Arg row: HTMLOListElement.
+//   If the last 13 cards in the row contain a complete suit, chain to the
+//   first promotion step.
+function tryPromote(row) {
+    const cards = Array.from(row.children);
+    const count = cards.length;
+    if (cards.length >= 13) {
+        const hand = cards.slice(cards.length - 13, cards.length);
+        if (canPromote(hand)) {
+            hand.forEach( card => card.classList.add("promoting") );
+            setTimeout(promote1, T4, hand);
         }
-        this.selection = new Selection();
-        this.promotion = new Selection();
-        this.ascending = false;  // True if ranks ascend to promote, false if descend.
-        this.clear();
     }
 
-    clear() {
-        this.rows = [ [], [], [], [], [], [], [], [], [], [] ];
-        this.stock = [];
-        this.foundation = [];
-        this.won = false;
-        this.selection.clear();
+}
+
+// canPromote(cards) -> bool
+//   Is this array of cards a complete suit?
+function canPromote(cards) {
+    if (cards.length != 13) {
+        return false;
     }
-
-    newGame() {
-        let cards = rs.random.shuffle(this.deck.slice());
-        this.clear();
-        let i, r;
-        for (i = 0; i <= 3; i++) {
-            for (r = 0; r <= 9; r++) {
-                this.rows[r].push( cards.shift() );
-            }
-        }
-        for (r of [0, 1, 2, 3]) {
-            this.rows[r].push( cards.shift() );
-        }
-        this.stock = cards;
-
-    }
-
-    move(dst) {
-        if (!this.selection.active) {
-            console.error("Model .move() called with no selection active.");
+    const suit = cards[0].suit;
+    let rank = 0;
+    let card;
+    for (card of cards) {
+        if (card.rank != ++rank || card.suit != suit) {
             return false;
         }
-        const src = this.selection.row;
-        const i = this.selection.index;
-        let cards;
-        cards = this.rows[src].splice(i);
-        this.rows[dst].push(...cards);
-        this.selection.clear();
-        if (this.canPromote(dst)) {
-            this.promotion.set(dst, this.rows[dst].length - 13);
-        } else {
-            this.promotion.clear();
+    return true;
+    }
+}
+
+function promote1(hand) {
+    hand.forEach(card => card.remove() );
+    setTimeout(promote2, T4);
+}
+
+function promote2() {
+    points++;
+    DOM.points.innerText = points;
+    DOM.progress.value = points;
+    if (points == MAX_POINTS) {
+        setTimeout(won, T4);
+    }
+
+}
+
+function won() {
+    DOM.won.hidden = false;
+}
+
+
+
+/* Drag and drop listeners */
+
+function onDragStart(ev) {
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+}
+
+function onDragOver(ev) {
+    ev.preventDefault();
+}
+
+function onDrop(ev) {
+    ev.preventDefault();
+    ev.dataTransfer.dropEffect = "move";
+    const id = ev.dataTransfer.getData("text/plain");
+    const cards = getCardsToDrop(id);
+    let dst = ev.target;
+    // If destination is a card, go up to the ancestor row.
+    while (dst && ! dst.classList.contains("row")) {
+        dst = dst.parentElement;
+    }
+    dst.append(...cards);
+    tryPromote(dst);
+    // TODO: Try promote source row too.
+}
+
+
+/* Other listeners */
+
+function onDraw(ev) {
+    const rows = DOM.tableau.querySelectorAll("ol.row");
+    let card, id, row;
+    for (row of rows) {
+        id = stock.pop();
+        if (!id) {
+            break;
         }
-        return true;
+        card = createCard(id, "card-", true);
+        row.append(card);
     }
-
-    canPromote(r) {
-        const row = this.rows[r];
-        const start = row.length - 13;
-        if (start < 0) {
-            return false;
-        }
-        const hand = row.slice(start);
-        const red = hand[0].red;
-        let card, i, rank;
-        if (this.ascend) {
-            // Ranks must ascend 1-13 to promote.
-            for (rank = 1; rank < 13; rank++) {
-                card = hand[rank - 1];
-                if (card.rank !== rank || card.red !== red) {
-                    return false;
-                }
-            }
-        } else {
-            // Ranks must descend 13-1 to promote.
-            for (i = 0; i <= 12; i++) {
-                rank = 13 - i;
-                card = hand[i];
-                if (card.rank !== rank || card.red !== red) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    promote() {
-        const prom = this.promotion;
-        let cards;
-        if (prom.active) {
-            cards = this.rows[prom.row].splice(prom.index);
-            this.foundation.push(...cards);
-            this.promotion.clear();
-            if (this.foundation.length >= 104) {
-                this.won = true;
-            }
-         } else {
-            log.error("SpysolModel.promote() called with no promotion active.");
-         }
-    }
-
-    draw() {
-        let card, row;
-        for (row of this.rows) {
-            card = this.stock.shift();
-            if (!card) {
-                break;
-            }
-            row.push(card);
-        }
-    }
-
-    checkDealtCards() {
-        let card, control, equal, tallies, row;
-        control   = Array(26).fill(4, 0);
-        tallies   = Array(26).fill(0, 0);
-        function checkCard(card) {
-            let index;
-            if (card.red) {
-                tallies[card.rank + 13 - 1]++;
-            } else {
-                tallies[card.rank - 1]++;
-            }
-        }
-        for (row of this.rows) {
-            row.forEach(checkCard);
-        }
-        this.stock.forEach(checkCard);
-        this.foundation.forEach(checkCard);
-        //console.log("Control =", control);
-        //console.log("Tallies =", tallies);
-        equal = tallies.every( (value, index) => value === control[index] );
-        console.assert(equal, "Not all cards found in dealt cards, result:", tallies);
-    }
-
-    testPromotion() {
-        const fill = (r, red) => {
-            for (let rank = 1; rank <= 12; rank++) {
-                this.rows[r].push({rank, red});
-            }
-            this.rows[r+1].push({rank:13, red: red});
-        }
-        fill(0, false);
-        fill(2, true);
-    }
+    updateDraw();
 }
 
-function onClickCard(r, i, event) {
-    event.stopImmediatePropagation();
-    model.selection.set(r, i);
-    renderTableau(false, true);
+function onShowRanks() {
+    isShowRank = !isShowRank;
+    document.querySelectorAll("li.card").forEach(changeCardContent);
 }
 
-function onClickRow(r, event) {
-    let moved, promoted;
-    event.stopImmediatePropagation();
-    if (!model.selection.active) {
-        console.error("onClickRow called with no selection active.");
-    } else if (r === model.selection.row) {
-        model.selection.clear();
-        renderTableau(true, false);
-    } else {
-        moved = model.move(r);
-        renderTableau(true, false);
-        //setTimeout(updateSelected, T2, r, i, false);
-    }
-}
 
-function onClickDraw(event) {
-    model.draw();
-    if (model.stock.length < 1) {
-        DOM.draw.disabled = true;
-    }
-    render(true, false);
-}
-
-function onClickNewGame(event) {
-    const prompt = "Abandon current game?";
-    if (window.confirm(prompt)) {
-        setTimeout(newGame, T2);
-    }
-}
-
-function render(listenCards, listenRows) {
-    renderTableau(listenCards, listenRows);
-    renderFoundation();
-    renderStock();
-}
-
-function renderTableau(listenCards, listenRows) {
-    // Model variables.
-    let card;       // Card model.
-    let r;          // Card row in tableau.
-    let i;          // Card index in tableau row.
-
-    // User interface variables.
-    let callback;   // Listener callback.
-    let classes;    // Array of CSS classes.
-    let face;       // Card face.
-    let rows;       // Array of HTML row elements.
-    let tableau;    // HTML tableau element (<table>).
-    let td;         // HTML card element (<td>).
-    let tr;         // HTML row element (<tr>).
-    let column;     // HTML tableau column.
-    let cell;       // HTML tableau cell.
-
-    //tableau = document.createElement("div");
-    tableau = makeElement("div", "tableau", "columns");
-    tableau.id = "tableau";
-    //tableau.classList.add("tableau", "flex-columns");
-
-    rows = [];
-    for (r = 0; r < model.rows.length; r++) {
-        column = makeElement("div", "column");
-        tr = column;   // Backward compatibility.
-        //tr = document.createElement("div")
-        //tr.classList.add("column")
-        tr.id = `row-${i}`;
-        if (listenRows) {
-            callback = onClickRow.bind(null, r);
-            tr.addEventListener("click", callback);
-            if (!model.rows[r].length) {
-                cell = makeElement("div", "cell", "card", "empty-row");
-                td = cell;
-                //td = document.createElement("div");
-                // td.classList.add("cell")
-                td.innerText = "+";
-                //td.classList.add("card", "empty-row");
-                tr.append(td);
-            }
-        }
-        for (i = 0; i < model.rows[r].length; i++) {
-            card = model.rows[r][i];
-            //face = card.rank.toString();
-            face = FACES[card.rank - 1] || "?";
-            classes = ["card"];
-            if (card.red) {
-                classes.push("red");
-            }
-            if (model.promotion.contains(r, i)) {
-                classes.push("promote");
-            }
-            if (model.selection.contains(r, i)) {
-                classes.push("selected");
-            }
-            cell = makeElement("div", "cell", ...classes);
-            td = cell;   // Backward compatibility.
-            //td = document.createElement("div");
-            //td.classList.add("cell")
-            td.innerText = face;
-            //td.classList.add(...classes);
-            if (listenCards) {
-                callback = onClickCard.bind(null, r, i);
-                td.addEventListener("click", callback);
-            }
-            tr.append(td);
-        }
-        tableau.append(tr);
-    }
-    DOM.ctr_tableau.replaceChildren(tableau);
-    if (model.promotion.active) {
-        setTimeout(promote, T4);
-    }
-}
-
-function promote() {
-    console.log("Promote row", model.promotion);
-    model.promote();
-    renderTableau(true, false);
-    setTimeout(renderFoundation, T4);
-}
-
-function renderStock() {
-    const size = model.stock.length;
-    DOM.stock.innerText = size;
-}
-
-function renderFoundation() {
-    const size = model.foundation.length;
-    const goal = model.deck.length;
-    const percent = Math.round(size / goal * 100);
-    DOM.foundation.innerText = size;
-    DOM.foundation_percent.innerText = percent;
-    DOM.foundation_progress.value = size;
-    if (model.won) {
-        setTimeout(renderWon, T4);
-    }
-}
-
-function renderWon() {
-    let won;
-    won = DOM.won_template.content.cloneNode(true);
-    DOM.ctr_tableau.replaceChildren(won);
-}
+/* Start a new game */
 
 function newGame() {
-    model.newGame();
-    DOM.draw.disabled = false;
-    render(true, false);
-    model.checkDealtCards();
-    function compactCard(c) {  return (c.red) ? -c.rank : c.rank; }
-    for (let row of model.rows) {
-        console.log( ...row.map(compactCard) );
+    let cards, i;
+    changeColors();
+    stock = [];
+    for (i=1; i <= MAX_ID; i++) {
+        stock.push(i);
     }
+    rs.random.shuffle(stock, true);
+
+    DOM.won.hidden = true;
+
+    // Append tableau rows one at a time to ensure splices don't overlap.
+    DOM.tableau.replaceChildren();
+    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
+    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
+
+    updateDraw();
 }
+
+
+/* Initialize Spysol */
 
 function init() {
     if (!initialized) {
-        model = new SpysolModel();
+        const model1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+        const model2 = [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26];
 
-        DOM.ctr_tableau = document.getElementById("ctr-tableau");
+        DOM.models = document.getElementById("models");
+        DOM.tableau = document.getElementById("tableau");
+        DOM.change_colors = document.getElementById("change-colors");
+        DOM.show_ranks = document.getElementById("show-ranks");
+        DOM.points = document.getElementById("points");
+        DOM.progress = document.getElementById("progress");
         DOM.stock = document.getElementById("stock");
-        DOM.foundation = document.getElementById("foundation");
-        DOM.foundation_percent = document.getElementById("foundation-percent");
-        DOM.foundation_progress = document.getElementById("foundation-progress");
+        DOM.toggle_numbers = document.getElementById("toggle-numbers");
         DOM.draw = document.getElementById("draw");
         DOM.new_game = document.getElementById("new-game");
-        DOM.test_promotion = document.getElementById("test-promotion");
-        DOM.test_won = document.getElementById("test-won");
-        DOM.won_template = document.getElementById("won-template");
+        DOM.won = document.getElementById("won");
 
+        DOM.show_ranks.checked = isShowRank;   // Before adding toggle listener.
 
-        DOM.draw.addEventListener("click", onClickDraw);
-        DOM.new_game.addEventListener("click", onClickNewGame);
+        DOM.change_colors.addEventListener("click", changeColors);
+        DOM.show_ranks.addEventListener("change", onShowRanks);
+        DOM.draw.addEventListener("click", onDraw);
+        DOM.new_game.addEventListener("click", newGame);
+
+        DOM.models.replaceChildren(
+            createRow(model1, "model-", false),
+            createRow(model2, "model-", false),
+        );
 
         newGame();
 
         initialized = true;
-        playing = true;
-        ready = true;
     }
 }
 
 if (document.readyState === "complete") {
     init();
 } else {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", init, {once: true});
 }
