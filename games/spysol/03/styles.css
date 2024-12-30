@@ -1,5 +1,22 @@
 /* Spysol stylesheet. */
 
+@property --hue1 {
+    syntax: "<integer>",
+    inerits: false,
+    initial-value: 0;
+}
+
+@property --hue2 {
+    syntax: "<integer>",
+    inerits: false,
+    initial-value: 120;
+}
+
+:root {
+    --hue1: 0;     /* red   */
+    --hue2: 120;   /* green */
+}
+
 html {
     background-color: #090721;  /* A dark outer gutter. */
 }
@@ -106,8 +123,37 @@ li.card {
     padding: 10px;
     text-align: center;
     vertical-align: middle;
-    user-select: none;   // Disable accidentally selecting text.
+    user-select: none;   /* Disable accidentally selecting text. */
 }
+
+li.card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
+li.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 80%); }
+li.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 75%); }
+li.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 70%); }
+li.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 65%); }
+li.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 60%); }
+li.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 55%); }
+li.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 50%); }
+li.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 45%); }
+li.card.suit1.rank10 { background-color: hsl(var(--hue1) 100% 40%); }
+li.card.suit1.rank11 { background-color: hsl(var(--hue1) 100% 35%); }
+li.card.suit1.rank12 { background-color: hsl(var(--hue1) 100% 30%); }
+li.card.suit1.rank13 { background-color: hsl(var(--hue1) 100% 25%); }
+
+li.card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
+li.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 80%); }
+li.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 75%); }
+li.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 70%); }
+li.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 65%); }
+li.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 60%); }
+li.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 55%); }
+li.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 50%); }
+li.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 45%); }
+li.card.suit2.rank10 { background-color: hsl(var(--hue2) 100% 40%); }
+li.card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 35%); }
+li.card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 30%); }
+li.card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 25%); }
+
 
 li.card.promoting {
     font-size: x-large;

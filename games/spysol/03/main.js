@@ -4,7 +4,6 @@ import * as rs from "./random-seedable/index.js";
 const T = [50, 250, 500, 1000];
 
 const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
-const LEVELS = [85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25];  // Lightest to darkest.
 const MAX_ID = 104;   // Card ID range 1 - 104.
 const MAX_POINTS = 8;  // How many points to win.
 
@@ -15,35 +14,6 @@ let isShowRank = true;
 let lastID = 0;  // Last card ID number, to generate card IDs for dragging.
 let points = 0;
 let stock = [];   // [card ID].
-
-class ColorManager {
-    HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
-    LEVELS = [85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25];  // Lightest to darkest.
-
-    constructor() {
-        this.change();
-    }
-
-    change() {
-        this.hues = rs.random.shuffle(HUES).slice(0, 2);
-        document.querySelectorAll("li.card").forEach(this.changeCard.bind(this));
-    }
-
-    changeCard(card) {
-        card.style.backgroundColor = this.getCardColor(card);
-    }
-
-    getCardColor(card) {
-        const hue = this.hues[card.suit - 1];
-        const level = this.LEVELS[card.rank - 1];
-        const color = `hsl(${hue}deg 100% ${level}%)`;
-        return color;
-    }
-
-}
-
-const colors = new ColorManager();
-
 
 function createCard(id=1, series="", draggable=false) {
     const sr = (id - 1) % 26;          // 0-12 = suit 1, 13-25 = suit 2.
@@ -56,9 +26,8 @@ function createCard(id=1, series="", draggable=false) {
     card.dataset.suit = suit;
     card.dataset.rank = rank;
     card.id = `card-${++lastID}`;
-    card.classList.add("card");
+    card.classList.add("card", `rank${rank}`, `suit${suit}`);
     card.innerText = rank;
-    colors.changeCard(card);
     if (draggable) {
         card.draggable = true;
         card.addEventListener("dragstart", onDragStart);
@@ -205,12 +174,18 @@ function onShowRanks() {
     document.querySelectorAll("li.card").forEach(changeCardContent);
 }
 
+function changeColors() {
+    const hues = rs.random.shuffle(HUES).slice(0, 2);
+    document.documentElement.style.setProperty("--hue1", hues[0]);
+    document.documentElement.style.setProperty("--hue2", hues[1]);
+}
+
 
 /* Start a new game */
 
 function newGame() {
     let cards, i;
-    colors.change();
+
     stock = [];
     for (i=1; i <= MAX_ID; i++) {
         stock.push(i);
@@ -218,6 +193,8 @@ function newGame() {
     rs.random.shuffle(stock, true);
 
     DOM.won.hidden = true;
+
+    changeColors();
 
     // Append tableau rows one at a time to ensure splices don't overlap.
     DOM.tableau.replaceChildren();
@@ -257,7 +234,7 @@ function init() {
 
         DOM.show_ranks.checked = isShowRank;   // Before adding toggle listener.
 
-        DOM.change_colors.addEventListener("click", colors.change.bind(colors));
+        DOM.change_colors.addEventListener("click", changeColors);
         DOM.show_ranks.addEventListener("change", onShowRanks);
         DOM.draw.addEventListener("click", onDraw);
         DOM.new_game.addEventListener("click", newGame);
