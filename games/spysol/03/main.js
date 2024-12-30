@@ -10,7 +10,6 @@ const MAX_POINTS = 8;  // How many points to win.
 let DOM = {};
 let hues = HUES.slice(0, 2);   // [suit 1 hue, suit 2 hue]
 let initialized = false;  // Has 'initialized()' been called?
-let isShowRank = true;
 let lastID = 0;  // Last card ID number, to generate card IDs for dragging.
 let points = 0;
 let stock = [];   // [card ID].
@@ -169,11 +168,6 @@ function onDraw(ev) {
     updateDraw();
 }
 
-function onShowRanks() {
-    isShowRank = !isShowRank;
-    document.querySelectorAll("li.card").forEach(changeCardContent);
-}
-
 function changeColors() {
     const hues = rs.random.shuffle(HUES).slice(0, 2);
     document.documentElement.style.setProperty("--hue1", hues[0]);
@@ -223,7 +217,6 @@ function init() {
         DOM.models = document.getElementById("models");
         DOM.tableau = document.getElementById("tableau");
         DOM.change_colors = document.getElementById("change-colors");
-        DOM.show_ranks = document.getElementById("show-ranks");
         DOM.points = document.getElementById("points");
         DOM.progress = document.getElementById("progress");
         DOM.stock = document.getElementById("stock");
@@ -232,10 +225,7 @@ function init() {
         DOM.new_game = document.getElementById("new-game");
         DOM.won = document.getElementById("won");
 
-        DOM.show_ranks.checked = isShowRank;   // Before adding toggle listener.
-
         DOM.change_colors.addEventListener("click", changeColors);
-        DOM.show_ranks.addEventListener("change", onShowRanks);
         DOM.draw.addEventListener("click", onDraw);
         DOM.new_game.addEventListener("click", newGame);
 
