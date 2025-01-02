@@ -10,21 +10,15 @@ const MAX_POINTS = 8;  // How many points to win.
 let DOM = {};
 let hues = HUES.slice(0, 2);   // [suit 1 hue, suit 2 hue]
 let initialized = false;  // Has 'initialized()' been called?
-let lastID = 0;  // Last card ID number, to generate card IDs for dragging.
 let points = 0;
 let stock = [];   // [card ID].
 
-function createCard(id=1, series="", draggable=false) {
-    const sr = (id - 1) % 26;          // 0-12 = suit 1, 13-25 = suit 2.
-    const rank = (sr % 13) + 1;        // Rank 1-12.
-    const suit = (sr >= 13) ? 2 : 1;   // Suit 1 or 2.
+function createCard(prefix, suit, rank, serial, draggable) {
     let card;
     card = document.createElement("li");
     card.suit = suit;   // Non-DOM attribute.
     card.rank = rank;   // Non-DOM attribute.
-    card.dataset.suit = suit;
-    card.dataset.rank = rank;
-    card.id = `card-${++lastID}`;
+    card.id = `${prefix}-${suit}-${rank}-${serial}`;
     card.classList.add("card", `rank${rank}`, `suit${suit}`);
     card.innerText = rank;
     if (draggable) {
@@ -35,17 +29,18 @@ function createCard(id=1, series="", draggable=false) {
 }
 
 function createRow(ids, series, dragdrop) {
-    ids ||= [];
-    series ||= "";
-    dragdrop ||= false;
-    function cardForId(id) {
-        const id_str = `${series}${id}`;
-        return createCard(id, id_str, dragdrop);
-    }
-    let row;
+    let card, id, sr, suit, rank, row;
     row = document.createElement("ol");
     row.classList.add("row");
-    row.append( ...ids.map(cardForId) );
+    for (id of ids) {
+        // Backward compatibility: extract rank and suit from deck item ID.
+        sr = (id - 1) % 26;          // 0-12 = suit 1, 13-25 = suit 2.
+        suit = (sr >= 13) ? 2 : 1;   // Suit 1 or 2.
+        rank = (sr % 13) + 1;        // Rank 1-12.
+        card = createCard(series, suit, rank, id, dragdrop);
+        row.append(card);
+    }
+    //row.append( ...ids.map(cardForId) );
     if (dragdrop) {
         row.addEventListener("dragover", onDragOver);
         row.addEventListener("drop", onDrop);
