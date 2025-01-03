@@ -13,41 +13,8 @@ let initialized = false;  // Has 'initialized()' been called?
 let points = 0;
 let stock = [];   // `[card]`.
 
-class DeckManager {
-    static ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    deck = [];
-
-    constructor() {
-        const suits = [1, 2];
-        const serials = [1, 2, 3, 4];
-        let card, suit, rank, serial;
-        for (suit of suits) {
-            for (rank of this.constructor.ranks) {
-                for (serial of serials) {
-                    card = this.createCard("card", suit, rank, serial, true);
-                    this.deck.push(card);
-                }
-            }
-        }
-    }
-
-    newGame() {
-        const rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
-        let cards, count, i, row, rows;
-        this.deck.forEach(this.resetCard) // Reset all cards' mutable attributes.
-        cards = rs.random.shuffle(this.deck.slice());
-        rows = [];
-        for (count of rowCardCounts) {
-            row = this.createRow();
-            row.append( ...cards.splice(0, count) );
-            row.addEventListener("dragover", onDragOver);
-            row.addEventListener("drop", onDrop);
-            rows.push(row);
-        }
-        return {rows: rows, stock: cards};
-    }
-
-    // Create a card (an HTML <li> element).
+class CardManager {
+    // createCard: Create a card (an HTML <li> element).
     createCard(prefix, suit, rank, serial, draggable) {
         let card;
         card = document.createElement("li");
@@ -63,9 +30,45 @@ class DeckManager {
         return card;
     }
 
-    // Reset the card's mutable attributes to their initial state.
+    // resetCard: Reset the card's mutable attributes to their initial state.
     resetCard(card) {
         card.classList.remove("promoting");
+    }
+
+}
+
+class DeckManager {
+    static ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    deck = [];
+
+    constructor() {
+        const suits = [1, 2];
+        const serials = [1, 2, 3, 4];
+        let card, suit, rank, serial;
+        for (suit of suits) {
+            for (rank of this.constructor.ranks) {
+                for (serial of serials) {
+                    card = cm.createCard("card", suit, rank, serial, true);
+                    this.deck.push(card);
+                }
+            }
+        }
+    }
+
+    newGame() {
+        const rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
+        let cards, count, i, row, rows;
+        this.deck.forEach(cm.resetCard);
+        cards = rs.random.shuffle(this.deck.slice());
+        rows = [];
+        for (count of rowCardCounts) {
+            row = this.createRow();
+            row.append( ...cards.splice(0, count) );
+            row.addEventListener("dragover", onDragOver);
+            row.addEventListener("drop", onDrop);
+            rows.push(row);
+        }
+        return {rows: rows, stock: cards};
     }
 
     // Create an empty row (an HTML <ol> element).
@@ -80,7 +83,7 @@ class DeckManager {
         let card, rank, row;
         row = this.createRow();
         for (rank of this.constructor.ranks) {
-            card = this.createCard("model", suit, rank, 1, false);
+            card = cm.createCard("model", suit, rank, 1, false);
             row.append(card);
         }
         return row;
@@ -88,6 +91,7 @@ class DeckManager {
 }
 
 
+const cm = new CardManager();
 const dm = new DeckManager();
 
 
