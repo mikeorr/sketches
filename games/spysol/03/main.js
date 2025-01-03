@@ -4,49 +4,92 @@ import * as rs from "./random-seedable/index.js";
 const T = [50, 250, 500, 1000];
 
 const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
-const MAX_ID = 104;   // Card ID range 1 - 104.
 const MAX_POINTS = 8;  // How many points to win.
 
 let DOM = {};
 let hues = HUES.slice(0, 2);   // [suit 1 hue, suit 2 hue]
+let foundation = [];  // `[card]`.
 let initialized = false;  // Has 'initialized()' been called?
 let points = 0;
-let stock = [];   // [card ID].
+let stock = [];   // `[card]`.
 
-function createCard(prefix, suit, rank, serial, draggable) {
-    let card;
-    card = document.createElement("li");
-    card.suit = suit;   // Non-DOM attribute.
-    card.rank = rank;   // Non-DOM attribute.
-    card.id = `${prefix}-${suit}-${rank}-${serial}`;
-    card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = rank;
-    if (draggable) {
-        card.draggable = true;
-        card.addEventListener("dragstart", onDragStart);
+class DeckManager {
+    static ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    deck = [];
+
+    constructor() {
+        const suits = [1, 2];
+        const serials = [1, 2, 3, 4];
+        let card, suit, rank, serial;
+        for (suit of suits) {
+            for (rank of this.constructor.ranks) {
+                for (serial of serials) {
+                    card = this.createCard("card", suit, rank, serial, true);
+                    this.deck.push(card);
+                }
+            }
+        }
     }
-    return card;
+
+    newGame() {
+        const rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
+        let cards, count, i, row, rows;
+        this.deck.forEach(this.resetCard) // Reset all cards' mutable attributes.
+        cards = rs.random.shuffle(this.deck.slice());
+        rows = [];
+        for (count of rowCardCounts) {
+            row = this.createRow();
+            row.append( ...cards.splice(0, count) );
+            row.addEventListener("dragover", onDragOver);
+            row.addEventListener("drop", onDrop);
+            rows.push(row);
+        }
+        return {rows: rows, stock: cards};
+    }
+
+    // Create a card (an HTML <li> element).
+    createCard(prefix, suit, rank, serial, draggable) {
+        let card;
+        card = document.createElement("li");
+        card.suit = suit;   // Non-DOM attribute.
+        card.rank = rank;   // Non-DOM attribute.
+        card.id = `${prefix}-${suit}-${rank}-${serial}`;
+        card.classList.add("card", `rank${rank}`, `suit${suit}`);
+        card.innerText = rank;
+        if (draggable) {
+            card.draggable = true;
+            card.addEventListener("dragstart", onDragStart);
+        }
+        return card;
+    }
+
+    // Reset the card's mutable attributes to their initial state.
+    resetCard(card) {
+        card.classList.remove("promoting");
+    }
+
+    // Create an empty row (an HTML <ol> element).
+    createRow() {
+        let row;
+        row = document.createElement("ol");
+        row.classList.add("row");
+        return row;
+    }
+
+    createModelRow(suit) {
+        let card, rank, row;
+        row = this.createRow();
+        for (rank of this.constructor.ranks) {
+            card = this.createCard("model", suit, rank, 1, false);
+            row.append(card);
+        }
+        return row;
+    }
 }
 
-function createRow(ids, series, dragdrop) {
-    let card, id, sr, suit, rank, row;
-    row = document.createElement("ol");
-    row.classList.add("row");
-    for (id of ids) {
-        // Backward compatibility: extract rank and suit from deck item ID.
-        sr = (id - 1) % 26;          // 0-12 = suit 1, 13-25 = suit 2.
-        suit = (sr >= 13) ? 2 : 1;   // Suit 1 or 2.
-        rank = (sr % 13) + 1;        // Rank 1-12.
-        card = createCard(series, suit, rank, id, dragdrop);
-        row.append(card);
-    }
-    //row.append( ...ids.map(cardForId) );
-    if (dragdrop) {
-        row.addEventListener("dragover", onDragOver);
-        row.addEventListener("drop", onDrop);
-    }
-    return row;
-}
+
+const dm = new DeckManager();
+
 
 function getCardsToDrop(id) {
     let card = document.getElementById(id);
@@ -60,6 +103,11 @@ function getCardsToDrop(id) {
 function updateDraw() {
     DOM.stock.innerText = Math.round( stock.length / 10 );
     DOM.draw.disabled = !stock.length;
+}
+
+function updateScore() {
+    DOM.points.innerText = points;
+    DOM.progress.value = points;
 }
 
 
@@ -107,8 +155,7 @@ function promote1(hand) {
 
 function promote2() {
     points++;
-    DOM.points.innerText = points;
-    DOM.progress.value = points;
+    updateScore();
     if (points == MAX_POINTS) {
         setTimeout(won, T[3]);
     }
@@ -153,11 +200,10 @@ function onDraw(ev) {
     const rows = DOM.tableau.querySelectorAll("ol.row");
     let card, id, row;
     for (row of rows) {
-        id = stock.pop();
-        if (!id) {
+        card = stock.pop();
+        if (!card) {
             break;
         }
-        card = createCard(id, "card-", true);
         row.append(card);
     }
     updateDraw();
@@ -173,31 +219,19 @@ function changeColors() {
 /* Start a new game */
 
 function newGame() {
-    let cards, i;
-
-    stock = [];
-    for (i=1; i <= MAX_ID; i++) {
-        stock.push(i);
-    }
-    rs.random.shuffle(stock, true);
-
+    // Reset game to initial state.
     DOM.won.hidden = true;
-
-    changeColors();
-
-    // Append tableau rows one at a time to ensure splices don't overlap.
+    stock = [];
+    foundation = [];
+    points = 0;
+    updateScore();
+    updateDraw();
     DOM.tableau.replaceChildren();
-    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 5), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
-    DOM.tableau.append( createRow( stock.splice(0, 4), "card-", true) );
 
+    // Deal the tableau rows and set the stock and UI for a new game.
+    const data = dm.newGame();
+    stock = data.stock;
+    DOM.tableau.replaceChildren(...data.rows);
     updateDraw();
 }
 
@@ -224,10 +258,7 @@ function init() {
         DOM.draw.addEventListener("click", onDraw);
         DOM.new_game.addEventListener("click", newGame);
 
-        DOM.models.replaceChildren(
-            createRow(model1, "model-", false),
-            createRow(model2, "model-", false),
-        );
+        DOM.models.append( dm.createModelRow(1), dm.createModelRow(2) );
 
         newGame();
 
