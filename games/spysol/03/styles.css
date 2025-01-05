@@ -126,6 +126,10 @@ li.card {
     user-select: none;   /* Disable accidentally selecting text. */
 }
 
+li.card.suit2 {
+    text-decoration: underline double;
+}
+
 li.card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
 li.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 80%); }
 li.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 75%); }
