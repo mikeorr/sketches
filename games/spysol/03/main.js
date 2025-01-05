@@ -6,64 +6,44 @@ const T = [50, 250, 500, 1000];
 const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
 const MAX_POINTS = 8;  // How many points to win.
 
-let hues = HUES.slice(0, 2);   // [suit 1 hue, suit 2 hue]
 let foundation = [];  // `[card]`.
 let initialized = false;  // Has 'initialized()' been called?
+let spy = null;   // `Spysol`.
 let points = 0;
 let stock = [];   // `[card]`.
 
-function createCard(prefix, suit, rank, serial, draggable) {
-    let card;
-    card = document.createElement("li");
-    card.suit = suit;   // Non-DOM attribute.
-    card.rank = rank;   // Non-DOM attribute.
-    card.id = `${prefix}-${suit}-${rank}-${serial}`;
-    card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = rank;
-    if (draggable) {
-        card.draggable = true;
-        card.addEventListener("dragstart", onDragStart);
-    }
-    return card;
-}
-
-function resetCard(card) {
-    card.classList.remove("promoting");
-}
-
-class DeckManager {
-    static ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+class Spysol {
     deck = [];
+    foundation = [];
+    points = [];
+    ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
+    stock = [];
 
     constructor() {
-        const suits = [1, 2];
-        const serials = [1, 2, 3, 4];
-        let card, suit, rank, serial;
-        for (suit of suits) {
-            for (rank of this.constructor.ranks) {
-                for (serial of serials) {
-                    card = createCard("card", suit, rank, serial, true);
-                    this.deck.push(card);
-                }
-            }
-        }
+        this.deck = this.makeDeck();
     }
 
     newGame() {
-        const rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
-        let cards, count, i, row, rows;
-        this.deck.forEach(resetCard);
-        cards = rs.random.shuffle(this.deck.slice());
-        rows = [];
-        for (count of rowCardCounts) {
+        const rowCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
+        this.deal(rowCounts);
+    }
+
+    deal(rowCounts) {
+        const tableau = document.getElementById("tableau");
+        let count, row;
+        tableau.replaceChildren();
+        this.stock = rs.random.shuffle(this.deck.slice());
+        for (count of rowCounts) {
             row = this.createRow();
-            row.append( ...cards.splice(0, count) );
+            row.append( ...this.stock.splice(0, count) );
             row.addEventListener("dragover", onDragOver);
             row.addEventListener("drop", onDrop);
-            rows.push(row);
+            tableau.append(row);
+            //rows.push(row);
         }
-        return {rows: rows, stock: cards};
     }
+
 
     // Create an empty row (an HTML <ol> element).
     createRow() {
@@ -73,34 +53,81 @@ class DeckManager {
         return row;
     }
 
-}
+    // Private logic methods.
+
+    makeDeck() {
+        const suits = [1, 2];
+        const serials = [1, 2, 3, 4];
+        let card, deck, suit, rank, serial;
+        deck = [];
+        for (suit of suits) {
+            for (rank of this.ranks) {
+                for (serial of serials) {
+                    card = this.createCard("card", suit, rank, serial, true);
+                    deck.push(card);
+                }
+            }
+        }
+        return deck;
+    }
 
 
-class ui {
-    static changeColors() {
+    // Private HTMLElement methods.
+
+    createCard(prefix, suit, rank, serial, draggable) {
+        let card;
+        card = document.createElement("li");
+        card.suit = suit;   // non-dom attribute.
+        card.rank = rank;   // non-dom attribute.
+        card.id = `${prefix}-${suit}-${rank}-${serial}`;
+        card.classList.add("card", `rank${rank}`, `suit${suit}`);
+        card.innerText = rank;
+        if (draggable) {
+            card.draggable = true;
+            card.addEventListener("dragstart", onDragStart);
+        }
+        return card;
+    }
+
+
+    // UI DOM methods.
+
+    changeColors() {
         const hues = rs.random.shuffle(HUES).slice(0, 2);
         document.documentElement.style.setProperty("--hue1", hues[0]);
         document.documentElement.style.setProperty("--hue2", hues[1]);
     }
 
-    static showWon(value) {
+    clear() {
+        document.getElementById("won").hidden = true;
+        document.getElementById("stock").innerText = 0;
+        document.getElementById("btn-draw").disabled = true;
+        document.getElementById("points").innerText = 0;
+        document.getElementById("progress").value = 0;
+    }
+
+    renderAll() {
+        this.showWon(false);
+        this.renderDraw();
+        this.renderScore();
+    }
+
+    renderDraw() {
+        document.getElementById("stock").innerText = Math.round( spy.stock.length / 10 );
+        document.getElementById("btn-draw").disabled = !spy.stock.length;
+    }
+
+    renderScore() {
+        document.getElementById("points").innerText = spy.points;
+        document.getElementById("progress").value = spy.points;
+    }
+
+    showWon(value) {
         document.getElementById("won").hidden = !value;
     }
 
-    static updateDraw() {
-        document.getElementById("stock").innerText = Math.round( stock.length / 10 );
-        document.getElementById("btn-draw").disabled = !stock.length;
-    }
-
-    static updateScore() {
-        document.getElementById("points").innerText = points;
-        document.getElementById("progress").value = points;
-    }
 
 }
-
-
-const dm = new DeckManager();
 
 
 function getCardsToDrop(id) {
@@ -156,16 +183,16 @@ function promote1(hand) {
 }
 
 function promote2() {
-    points++;
-    ui.updateScore();
-    if (points == MAX_POINTS) {
+    spy.points++;
+    spy.renderScore();
+    if (spy.points == MAX_POINTS) {
         setTimeout(won, T[3]);
     }
 
 }
 
 function won() {
-    ui.showWon(true);
+    document.getElementById("won").hidden = false;
 }
 
 
@@ -201,33 +228,26 @@ function onDraw(ev) {
     const rows = document.getElementById("tableau").querySelectorAll("ol.row");
     let card, id, row;
     for (row of rows) {
-        card = stock.pop();
+        card = spy.stock.pop();
         if (!card) {
             break;
         }
         row.append(card);
     }
-    ui.updateDraw();
+    spy.renderDraw();
 }
 
 
 /* Start a new game */
 
 function newGame() {
-    // Reset game to initial state.
-    ui.showWon(false);
-    stock = [];
-    foundation = [];
-    points = 0;
-    ui.updateScore();
-    ui.updateDraw();
-    document.getElementById("tableau").replaceChildren();
+    spy = new Spysol();
+    spy.clear();
+    spy.changeColors();
 
     // Deal the tableau rows and set the stock and UI for a new game.
-    const data = dm.newGame();
-    stock = data.stock;
-    document.getElementById("tableau").replaceChildren(...data.rows);
-    ui.updateDraw();
+    const rows = spy.newGame();
+    spy.renderDraw();
 }
 
 
@@ -235,13 +255,13 @@ function newGame() {
 
 function init() {
     if (!initialized) {
+        newGame();
         document.getElementById("btn-colors")
-            .addEventListener("click", ui.changeColors.bind(ui));
+            .addEventListener("click", spy.changeColors.bind(spy));
         document.getElementById("btn-draw")
             .addEventListener("click", onDraw);
         document.getElementById("btn-new")
             .addEventListener("click", newGame);
-        newGame();
         initialized = true;
     }
 }
