@@ -13,28 +13,23 @@ let initialized = false;  // Has 'initialized()' been called?
 let points = 0;
 let stock = [];   // `[card]`.
 
-class CardManager {
-    // createCard: Create a card (an HTML <li> element).
-    createCard(prefix, suit, rank, serial, draggable) {
-        let card;
-        card = document.createElement("li");
-        card.suit = suit;   // Non-DOM attribute.
-        card.rank = rank;   // Non-DOM attribute.
-        card.id = `${prefix}-${suit}-${rank}-${serial}`;
-        card.classList.add("card", `rank${rank}`, `suit${suit}`);
-        card.innerText = rank;
-        if (draggable) {
-            card.draggable = true;
-            card.addEventListener("dragstart", onDragStart);
-        }
-        return card;
+function createCard(prefix, suit, rank, serial, draggable) {
+    let card;
+    card = document.createElement("li");
+    card.suit = suit;   // Non-DOM attribute.
+    card.rank = rank;   // Non-DOM attribute.
+    card.id = `${prefix}-${suit}-${rank}-${serial}`;
+    card.classList.add("card", `rank${rank}`, `suit${suit}`);
+    card.innerText = rank;
+    if (draggable) {
+        card.draggable = true;
+        card.addEventListener("dragstart", onDragStart);
     }
+    return card;
+}
 
-    // resetCard: Reset the card's mutable attributes to their initial state.
-    resetCard(card) {
-        card.classList.remove("promoting");
-    }
-
+function resetCard(card) {
+    card.classList.remove("promoting");
 }
 
 class DeckManager {
@@ -48,7 +43,7 @@ class DeckManager {
         for (suit of suits) {
             for (rank of this.constructor.ranks) {
                 for (serial of serials) {
-                    card = cm.createCard("card", suit, rank, serial, true);
+                    card = createCard("card", suit, rank, serial, true);
                     this.deck.push(card);
                 }
             }
@@ -58,7 +53,7 @@ class DeckManager {
     newGame() {
         const rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
         let cards, count, i, row, rows;
-        this.deck.forEach(cm.resetCard);
+        this.deck.forEach(resetCard);
         cards = rs.random.shuffle(this.deck.slice());
         rows = [];
         for (count of rowCardCounts) {
@@ -83,7 +78,7 @@ class DeckManager {
         let card, rank, row;
         row = this.createRow();
         for (rank of this.constructor.ranks) {
-            card = cm.createCard("model", suit, rank, 1, false);
+            card = createCard("model", suit, rank, 1, false);
             row.append(card);
         }
         return row;
@@ -129,7 +124,6 @@ class UI {
 }
 
 
-const cm = new CardManager();
 const dm = new DeckManager();
 const ui = new UI();
 
