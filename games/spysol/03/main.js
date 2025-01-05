@@ -74,15 +74,6 @@ class DeckManager {
         return row;
     }
 
-    createModelRow(suit) {
-        let card, rank, row;
-        row = this.createRow();
-        for (rank of this.constructor.ranks) {
-            card = createCard("model", suit, rank, 1, false);
-            row.append(card);
-        }
-        return row;
-    }
 }
 
 
@@ -92,7 +83,6 @@ class UI {
             btn_colors: document.getElementById("btn-colors"),
             btn_draw:   document.getElementById("btn-draw"),
             btn_new:    document.getElementById("btn-new"),
-            models:     document.getElementById("models"),
             tableau:    document.getElementById("tableau"),
             points:     document.getElementById("points"),
             progress:   document.getElementById("progress"),
@@ -261,7 +251,6 @@ function newGame() {
 function init() {
     if (!initialized) {
         ui.initialize();
-        ui.DOM.models.append( dm.createModelRow(1), dm.createModelRow(2) );
         ui.DOM.btn_colors.addEventListener("click", ui.changeColors.bind(ui));
         ui.DOM.btn_draw.addEventListener("click", onDraw);
         ui.DOM.btn_new.addEventListener("click", newGame);
