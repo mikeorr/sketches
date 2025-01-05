@@ -76,23 +76,23 @@ class DeckManager {
 }
 
 
-class UI {
-    changeColors() {
+class ui {
+    static changeColors() {
         const hues = rs.random.shuffle(HUES).slice(0, 2);
         document.documentElement.style.setProperty("--hue1", hues[0]);
         document.documentElement.style.setProperty("--hue2", hues[1]);
     }
 
-    showWon(value) {
+    static showWon(value) {
         document.getElementById("won").hidden = !value;
     }
 
-    updateDraw() {
+    static updateDraw() {
         document.getElementById("stock").innerText = Math.round( stock.length / 10 );
         document.getElementById("btn-draw").disabled = !stock.length;
     }
 
-    updateScore() {
+    static updateScore() {
         document.getElementById("points").innerText = points;
         document.getElementById("progress").value = points;
     }
@@ -101,7 +101,6 @@ class UI {
 
 
 const dm = new DeckManager();
-const ui = new UI();
 
 
 function getCardsToDrop(id) {
