@@ -91,8 +91,47 @@ class DeckManager {
 }
 
 
+class UI {
+    initialize() {
+        this.DOM = {
+            btn_colors: document.getElementById("btn-colors"),
+            btn_draw:   document.getElementById("btn-draw"),
+            btn_new:    document.getElementById("btn-new"),
+            models:     document.getElementById("models"),
+            tableau:    document.getElementById("tableau"),
+            points:     document.getElementById("points"),
+            progress:   document.getElementById("progress"),
+            stock:      document.getElementById("stock"),
+            won:        document.getElementById("won"),
+        }
+    }
+
+    changeColors() {
+        const hues = rs.random.shuffle(HUES).slice(0, 2);
+        document.documentElement.style.setProperty("--hue1", hues[0]);
+        document.documentElement.style.setProperty("--hue2", hues[1]);
+    }
+
+    showWon(value) {
+        this.DOM.won.hidden = !value;
+    }
+
+    updateDraw() {
+        this.DOM.stock.innerText = Math.round( stock.length / 10 );
+        this.DOM.btn_draw.disabled = !stock.length;
+    }
+
+    updateScore() {
+        this.DOM.points.innerText = points;
+        this.DOM.progress.value = points;
+    }
+
+}
+
+
 const cm = new CardManager();
 const dm = new DeckManager();
+const ui = new UI();
 
 
 function getCardsToDrop(id) {
@@ -102,16 +141,6 @@ function getCardsToDrop(id) {
         cards.push(card);
     }
     return cards;
-}
-
-function updateDraw() {
-    DOM.stock.innerText = Math.round( stock.length / 10 );
-    DOM.btn_draw.disabled = !stock.length;
-}
-
-function updateScore() {
-    DOM.points.innerText = points;
-    DOM.progress.value = points;
 }
 
 
@@ -159,7 +188,7 @@ function promote1(hand) {
 
 function promote2() {
     points++;
-    updateScore();
+    ui.updateScore();
     if (points == MAX_POINTS) {
         setTimeout(won, T[3]);
     }
@@ -167,9 +196,8 @@ function promote2() {
 }
 
 function won() {
-    DOM.won.hidden = false;
+    ui.showWon(true);
 }
-
 
 
 /* Drag and drop listeners */
@@ -201,7 +229,7 @@ function onDrop(ev) {
 /* Other listeners */
 
 function onDraw(ev) {
-    const rows = DOM.tableau.querySelectorAll("ol.row");
+    const rows = ui.DOM.tableau.querySelectorAll("ol.row");
     let card, id, row;
     for (row of rows) {
         card = stock.pop();
@@ -210,13 +238,7 @@ function onDraw(ev) {
         }
         row.append(card);
     }
-    updateDraw();
-}
-
-function changeColors() {
-    const hues = rs.random.shuffle(HUES).slice(0, 2);
-    document.documentElement.style.setProperty("--hue1", hues[0]);
-    document.documentElement.style.setProperty("--hue2", hues[1]);
+    ui.updateDraw();
 }
 
 
@@ -224,19 +246,19 @@ function changeColors() {
 
 function newGame() {
     // Reset game to initial state.
-    DOM.won.hidden = true;
+    ui.showWon(false);
     stock = [];
     foundation = [];
     points = 0;
-    updateScore();
-    updateDraw();
-    DOM.tableau.replaceChildren();
+    ui.updateScore();
+    ui.updateDraw();
+    ui.DOM.tableau.replaceChildren();
 
     // Deal the tableau rows and set the stock and UI for a new game.
     const data = dm.newGame();
     stock = data.stock;
-    DOM.tableau.replaceChildren(...data.rows);
-    updateDraw();
+    ui.DOM.tableau.replaceChildren(...data.rows);
+    ui.updateDraw();
 }
 
 
@@ -244,26 +266,12 @@ function newGame() {
 
 function init() {
     if (!initialized) {
-
-        DOM.models = document.getElementById("models");
-        DOM.tableau = document.getElementById("tableau");
-        DOM.btn_colors = document.getElementById("btn-colors");
-        DOM.btn_draw = document.getElementById("btn-draw");
-        DOM.btn_new = document.getElementById("btn-new");
-        DOM.points = document.getElementById("points");
-        DOM.progress = document.getElementById("progress");
-        DOM.stock = document.getElementById("stock");
-        DOM.toggle_numbers = document.getElementById("toggle-numbers");
-        DOM.won = document.getElementById("won");
-
-        DOM.btn_colors.addEventListener("click", changeColors);
-        DOM.btn_draw.addEventListener("click", onDraw);
-        DOM.btn_new.addEventListener("click", newGame);
-
-        DOM.models.append( dm.createModelRow(1), dm.createModelRow(2) );
-
+        ui.initialize();
+        ui.DOM.models.append( dm.createModelRow(1), dm.createModelRow(2) );
+        ui.DOM.btn_colors.addEventListener("click", ui.changeColors.bind(ui));
+        ui.DOM.btn_draw.addEventListener("click", onDraw);
+        ui.DOM.btn_new.addEventListener("click", newGame);
         newGame();
-
         initialized = true;
     }
 }
