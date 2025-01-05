@@ -106,7 +106,7 @@ function getCardsToDrop(id) {
 
 function updateDraw() {
     DOM.stock.innerText = Math.round( stock.length / 10 );
-    DOM.draw.disabled = !stock.length;
+    DOM.btn_draw.disabled = !stock.length;
 }
 
 function updateScore() {
@@ -249,18 +249,18 @@ function init() {
 
         DOM.models = document.getElementById("models");
         DOM.tableau = document.getElementById("tableau");
-        DOM.change_colors = document.getElementById("change-colors");
+        DOM.btn_colors = document.getElementById("btn-colors");
+        DOM.btn_draw = document.getElementById("btn-draw");
+        DOM.btn_new = document.getElementById("btn-new");
         DOM.points = document.getElementById("points");
         DOM.progress = document.getElementById("progress");
         DOM.stock = document.getElementById("stock");
         DOM.toggle_numbers = document.getElementById("toggle-numbers");
-        DOM.draw = document.getElementById("draw");
-        DOM.new_game = document.getElementById("new-game");
         DOM.won = document.getElementById("won");
 
-        DOM.change_colors.addEventListener("click", changeColors);
-        DOM.draw.addEventListener("click", onDraw);
-        DOM.new_game.addEventListener("click", newGame);
+        DOM.btn_colors.addEventListener("click", changeColors);
+        DOM.btn_draw.addEventListener("click", onDraw);
+        DOM.btn_new.addEventListener("click", newGame);
 
         DOM.models.append( dm.createModelRow(1), dm.createModelRow(2) );
 
