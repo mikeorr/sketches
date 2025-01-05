@@ -6,7 +6,6 @@ const T = [50, 250, 500, 1000];
 const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
 const MAX_POINTS = 8;  // How many points to win.
 
-let DOM = {};
 let hues = HUES.slice(0, 2);   // [suit 1 hue, suit 2 hue]
 let foundation = [];  // `[card]`.
 let initialized = false;  // Has 'initialized()' been called?
@@ -78,19 +77,6 @@ class DeckManager {
 
 
 class UI {
-    initialize() {
-        this.DOM = {
-            btn_colors: document.getElementById("btn-colors"),
-            btn_draw:   document.getElementById("btn-draw"),
-            btn_new:    document.getElementById("btn-new"),
-            tableau:    document.getElementById("tableau"),
-            points:     document.getElementById("points"),
-            progress:   document.getElementById("progress"),
-            stock:      document.getElementById("stock"),
-            won:        document.getElementById("won"),
-        }
-    }
-
     changeColors() {
         const hues = rs.random.shuffle(HUES).slice(0, 2);
         document.documentElement.style.setProperty("--hue1", hues[0]);
@@ -98,17 +84,17 @@ class UI {
     }
 
     showWon(value) {
-        this.DOM.won.hidden = !value;
+        document.getElementById("won").hidden = !value;
     }
 
     updateDraw() {
-        this.DOM.stock.innerText = Math.round( stock.length / 10 );
-        this.DOM.btn_draw.disabled = !stock.length;
+        document.getElementById("stock").innerText = Math.round( stock.length / 10 );
+        document.getElementById("btn-draw").disabled = !stock.length;
     }
 
     updateScore() {
-        this.DOM.points.innerText = points;
-        this.DOM.progress.value = points;
+        document.getElementById("points").innerText = points;
+        document.getElementById("progress").value = points;
     }
 
 }
@@ -213,7 +199,7 @@ function onDrop(ev) {
 /* Other listeners */
 
 function onDraw(ev) {
-    const rows = ui.DOM.tableau.querySelectorAll("ol.row");
+    const rows = document.getElementById("tableau").querySelectorAll("ol.row");
     let card, id, row;
     for (row of rows) {
         card = stock.pop();
@@ -236,12 +222,12 @@ function newGame() {
     points = 0;
     ui.updateScore();
     ui.updateDraw();
-    ui.DOM.tableau.replaceChildren();
+    document.getElementById("tableau").replaceChildren();
 
     // Deal the tableau rows and set the stock and UI for a new game.
     const data = dm.newGame();
     stock = data.stock;
-    ui.DOM.tableau.replaceChildren(...data.rows);
+    document.getElementById("tableau").replaceChildren(...data.rows);
     ui.updateDraw();
 }
 
@@ -250,10 +236,12 @@ function newGame() {
 
 function init() {
     if (!initialized) {
-        ui.initialize();
-        ui.DOM.btn_colors.addEventListener("click", ui.changeColors.bind(ui));
-        ui.DOM.btn_draw.addEventListener("click", onDraw);
-        ui.DOM.btn_new.addEventListener("click", newGame);
+        document.getElementById("btn-colors")
+            .addEventListener("click", ui.changeColors.bind(ui));
+        document.getElementById("btn-draw")
+            .addEventListener("click", onDraw);
+        document.getElementById("btn-new")
+            .addEventListener("click", newGame);
         newGame();
         initialized = true;
     }
