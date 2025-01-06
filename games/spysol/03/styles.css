@@ -29,6 +29,7 @@ body {
     margin: 0 auto;
     padding: 10px;
     width: 1024px;
+    min-height: 600px;
 }
 
 .app-title {
@@ -43,6 +44,12 @@ noscript {
     margin: 1em auto;
 }
 
+h1 {
+    font-size: large;
+    margin: 10px;
+    text-align: center;
+}
+
 
 /* Generic style components. */
 
@@ -54,6 +61,7 @@ noscript {
 .flex {
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
 }
 
 .flex > * {
@@ -64,6 +72,13 @@ noscript {
     border: outset;
     margin: 20px;
     padding: 0.25em 1em;
+}
+
+.box2 {
+    border: solid 1px;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 0 10px;
 }
 
 details {
@@ -89,6 +104,8 @@ input[type="number"] {
 /* Page sections */
 
 main {
+    display: flex;
+    flex-direction: row;
     border: solid 1px;
     border-radius: 10px;
     margin: 10px 0;
@@ -106,20 +123,28 @@ div.won {
 
 /* Card-related styles */
 
-ol.row {
+.tableau {
+    height: 100%;
+}
+
+.row-ctr {
+    width: 50px;
+    height: 100%;
+}
+
+.row {
     list-style-type: none;
-    margin: 10px 0;
+    margin: 5px;
     padding: 0;
-    height: 50px;
+    vertical-align: top;
 }
 
 li.card {
-    display: inline-block;
     font-family: serif;
     font-size: large;
     width: 30px;
     height: 30px;
-    margin: auto 1px;
+    margin: 1px auto;
     padding: 10px;
     text-align: center;
     vertical-align: middle;

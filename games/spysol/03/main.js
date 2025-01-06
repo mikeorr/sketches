@@ -40,16 +40,18 @@ class Spysol {
             row.addEventListener("dragover", onDragOver);
             row.addEventListener("drop", onDrop);
             tableau.append(row);
-            //rows.push(row);
         }
     }
 
 
     // Create an empty row (an HTML <ol> element).
     createRow() {
-        let row;
+        let ctr, row;
         row = document.createElement("ol");
         row.classList.add("row");
+        ctr = document.createElement("div");
+        ctr.classList.add("row-ctr");
+        ctr.append(row);
         return row;
     }
 
@@ -225,7 +227,7 @@ function onDrop(ev) {
 /* Other listeners */
 
 function onDraw(ev) {
-    const rows = document.getElementById("tableau").querySelectorAll("ol.row");
+    const rows = document.getElementById("tableau").querySelectorAll(".row");
     let card, id, row;
     for (row of rows) {
         card = spy.stock.pop();
