@@ -40,57 +40,70 @@
       <div class="box">
         <h1>How to play</h1>
         <p>
-          You have four black suits and four red suits, each with ranks:
-          <strong>K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2, A</strong>.
+          <strong>Spysol</strong> is the Spider card game but instead of playing cards it has
+          colored squares.
+        </p>
+        </P>
+          The <strong>two suits</strong> are shown in the "Models" section on the left.
+          Each suit has a different color range, with ranks from 13 to 1 in
+          descending order:
+          <strong>13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1</strong>.
+          You have four of each suit, or 104 cards total.
         </p>
         <p>
-          <strong>The game starts</strong> with several cards dealt randomly
-          into four columns of 5 cards and six columns of 4 cards. This is the
-          tableau.  The remaining 60 cards form the stock for later play.
+          <strong>The tableau starts</strong> with several cards dealt randomly
+          into four columns of 5 cards and six columns of 4 cards.
+          The remaining 60 cards form the stock for later play.
         </p>
         <p>
-          For each <strong>move</strong>, click a card to select it and all the
-          cards below it.  Then click a column to move them to.
-          If you decide not to move them after all, click the same column
-          to deselect them.
-        </p>
-        <p>
-          When you reach a <strong>complete suit</strong> of K to A in the same color, it will
-          automatically be removed from the tableau and you'll get 13 points
-          at the top. When you reach 105 points (all eight suits), you win.
+          To <strong>move</strong>, drag a card to another column. All the
+          cards below it will move too. When you assemble a <strong>complete
+          suit</strong> like one of the models, it will automatically be
+          removed from the tableau and you'll get a point at the top. When you
+          remove all suits (8 points), you win the game.
         </p>
         <p>
           When you run out of desired moves, press <strong>"Draw"</strong> to
-          deal a random row of cards from the stock to the columns.
+          deal a random row of cards from the stock to the columns. You can do
+          this six times.
         </p>
         <p>
-          In Spider the cards you move should be in descending order, one rank
-          lower than the bottom of the destination column. For instance, you
-          can move 4-3-2 to 5, or to an empty column. And you shouldn't have
-          any empty columns when pressing "Draw". The current implementation
-          doesn't enforce these restrictions. So you can undo a move by
-          doing the opposite move.
+          In real Spider you can only move a descending sequence, and you
+          must move it to a column whose bottom card is the next-higher rank or
+          an empty column. For instance, you can move 4-3-2 to a column ending
+          in 5. Rules differ on whether all these cards must be the same suit.
+          And you can't have an empty column when pressing "Draw".
+          Spysol doesn't enforce these restrictions, so you can move any card
+          to any column. So you can undo a move by doing the opposite move.
         </p>
         <p>
+          You can change the suit colors anytime by pressing "Change Colors": the suits
+          will switch to two new random color ranges.
           To start a new game, press "New Game" or reload the page.
         </p>
 
         <h1>About Spysol</h1>
 
         <p>
-          Spysol was created by Mike Orr, who plays it most nights.
-          It's written in modern vanilla Javascript.
+          Spysol was created by Mike Orr.
+          This is version 3.
+          The name "Spysol" is a portmanteau of Spider, Python, and Spy.
+        </p>
+        <p>
+          Version 3 is written in modern vanilla Javascript and CSS.
           The only library is
           <a href="https://www.npmjs.com/package/random-seedable"
           target="_blank"><code>random-seedable</code></a>
           by Chris Akroyd
-          to shuffle the cards.
+          to shuffle the cards and choose the suit colors.
         </p>
 
         <p>
-          The name "Spysol" is a portmanteau of Spider, Python, and Spy.
-          I was originally going to write it in Python, although this
-          version isn't.
+          The suit colors are managed by CSS.
+          The cards are HTML
+          <code>&lt;div&gt;</code>'s with classes for the suit and rank.
+          Two CSS variables set the base hue for the two suits. These feed
+          into HSL color values for the suit-rank shades.
        </p>
 
       </div>
