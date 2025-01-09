@@ -169,10 +169,10 @@ function canPromote(cards) {
         return false;
     }
     const suit = cards[0].suit;
-    let rank = 0;
+    let rank = 13;
     let card;
     for (card of cards) {
-        if (card.rank != ++rank || card.suit != suit) {
+        if (card.rank != rank-- || card.suit != suit) {
             return false;
         }
     return true;
