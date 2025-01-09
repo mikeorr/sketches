@@ -47,7 +47,7 @@ class Spysol {
     // Create an empty row (an HTML <ol> element).
     createRow() {
         let ctr, row;
-        row = document.createElement("ol");
+        row = document.createElement("div");
         row.classList.add("row");
         ctr = document.createElement("div");
         ctr.classList.add("row-ctr");
@@ -78,7 +78,7 @@ class Spysol {
 
     createCard(prefix, suit, rank, serial, draggable) {
         let card;
-        card = document.createElement("li");
+        card = document.createElement("div");
         card.suit = suit;   // non-dom attribute.
         card.rank = rank;   // non-dom attribute.
         card.id = `${prefix}-${suit}-${rank}-${serial}`;

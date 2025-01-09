@@ -139,7 +139,7 @@ div.won {
     vertical-align: top;
 }
 
-li.card {
+.card {
     font-family: serif;
     font-size: large;
     width: 30px;
@@ -151,43 +151,46 @@ li.card {
     user-select: none;   /* Disable accidentally selecting text. */
 }
 
-li.card.suit2 {
+
+.card.suit2 {
     text-decoration: underline double;
 }
 
-li.card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
-li.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 80%); }
-li.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 75%); }
-li.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 70%); }
-li.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 65%); }
-li.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 60%); }
-li.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 55%); }
-li.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 50%); }
-li.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 45%); }
-li.card.suit1.rank10 { background-color: hsl(var(--hue1) 100% 40%); }
-li.card.suit1.rank11 { background-color: hsl(var(--hue1) 100% 35%); }
-li.card.suit1.rank12 { background-color: hsl(var(--hue1) 100% 30%); }
-li.card.suit1.rank13 { background-color: hsl(var(--hue1) 100% 25%); }
 
-li.card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
-li.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 80%); }
-li.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 75%); }
-li.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 70%); }
-li.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 65%); }
-li.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 60%); }
-li.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 55%); }
-li.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 50%); }
-li.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 45%); }
-li.card.suit2.rank10 { background-color: hsl(var(--hue2) 100% 40%); }
-li.card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 35%); }
-li.card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 30%); }
-li.card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 25%); }
+.card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
+.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 80%); }
+.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 75%); }
+.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 70%); }
+.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 65%); }
+.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 60%); }
+.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 55%); }
+.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 50%); }
+.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 45%); }
+.card.suit1.rank10 { background-color: hsl(var(--hue1) 100% 40%); }
+.card.suit1.rank11 { background-color: hsl(var(--hue1) 100% 35%); }
+.card.suit1.rank12 { background-color: hsl(var(--hue1) 100% 30%); }
+.card.suit1.rank13 { background-color: hsl(var(--hue1) 100% 25%); }
+
+.card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
+.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 80%); }
+.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 75%); }
+.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 70%); }
+.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 65%); }
+.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 60%); }
+.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 55%); }
+.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 50%); }
+.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 45%); }
+.card.suit2.rank10 { background-color: hsl(var(--hue2) 100% 40%); }
+.card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 35%); }
+.card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 30%); }
+.card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 25%); }
 
 
-li.card.promoting {
+.card.promoting {
     font-size: x-large;
     font-weight: bold;
 }
+
 
 
 /* Foundation/Stock/Toolbar styles */
