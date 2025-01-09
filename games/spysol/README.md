@@ -23,6 +23,14 @@ Ranks are playing-card ranks (A, 2-10, J, Q, K).
 Put ranks in descending order in the columns, so put 2 below 3.
 Deleted reserve code and "deal by column" code, which was disabled.
 
+### 02
+
+Derived from 01.
+The columns are still vertical with descending ranks (13-1).
+The cards are colored squares instead of playing cards.
+The two suits are different random color ranges.
+Two model suits at the left show the correct sequence and colors for a full
+suit.
 
 ### pyscript1
 
