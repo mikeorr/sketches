@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Spider-like card game" />
+    <title>Spysol</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+  </head>
+  <body>
+
+    <noscript>
+      <p>This Spider-like card game requires Javascript.</p>
+    </noscript>
+
+    <header class="flex">
+      <div>
+        <span class="app-title">Spysol</span>
+      </div>
+      <div>
+        Score =
+        <span id="points">0</span> / 8
+        <progress id="progress" min="0" max="8" value="0"></progress>
+      </div>
+      <div>
+        <button id="btn-draw">Draw (<span id="stock">0</span>)</button>
+      </div>
+      <div>
+        <button id="btn-colors">Change Colors</button>
+      </div>
+      <div>
+        <button id="btn-new" class="right">New Game</button>
+      </div>
+    </header>
+
+    <details>
+      <summary>Help</summary>
+
+      <div class="box">
+        <h1>How to play</h1>
+        <p>
+          <strong>Spysol</strong> is the Spider card game but instead of playing cards it has
+          colored squares.
+        </p>
+        </P>
+          The <strong>two suits</strong> are shown in the "Models" section on the left.
+          Each suit has a different color range, with ranks from 13 to 1 in
+          descending order:
+          <strong>13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1</strong>.
+          You have four of each suit, or 104 cards total.
+        </p>
+        <p>
+          <strong>The tableau starts</strong> with several cards dealt randomly
+          into four columns of 5 cards and six columns of 4 cards.
+          The remaining 60 cards form the stock for later play.
+        </p>
+        <p>
+          To <strong>move</strong>, drag a card to another column. All the
+          cards below it will move too. When you assemble a <strong>complete
+          suit</strong> like one of the models, it will automatically be
+          removed from the tableau and you'll get a point at the top. When you
+          remove all suits (8 points), you win the game.
+        </p>
+        <p>
+          When you run out of desired moves, press <strong>"Draw"</strong> to
+          deal a random row of cards from the stock to the columns. You can do
+          this six times.
+        </p>
+        <p>
+          In real Spider you can only move a descending sequence, and you
+          must move it to a column whose bottom card is the next-higher rank or
+          an empty column. For instance, you can move 4-3-2 to a column ending
+          in 5. Rules differ on whether all these cards must be the same suit.
+          And you can't have an empty column when pressing "Draw".
+          Spysol doesn't enforce these restrictions, so you can move any card
+          to any column. So you can undo a move by doing the opposite move.
+        </p>
+        <p>
+          You can change the suit colors anytime by pressing "Change Colors": the suits
+          will switch to two new random color ranges.
+          To start a new game, press "New Game" or reload the page.
+        </p>
+
+        <h1>About Spysol</h1>
+
+        <p>
+          Spysol was created by Mike Orr.
+          This is version 3.
+          The name "Spysol" is a portmanteau of Spider, Python, and Spy.
+        </p>
+        <p>
+          Version 3 is written in modern vanilla Javascript and CSS.
+          The only library is
+          <a href="https://www.npmjs.com/package/random-seedable"
+          target="_blank"><code>random-seedable</code></a>
+          by Chris Akroyd
+          to shuffle the cards and choose the suit colors.
+        </p>
+
+        <p>
+          The suit colors are managed by CSS.
+          The cards are HTML
+          <code>&lt;div&gt;</code>'s with classes for the suit and rank.
+          Two CSS variables set the base hue for the two suits. These feed
+          into HSL color values for the suit-rank shades.
+       </p>
+
+      </div>
+
+    </details>
+
+    <section id="won" hidden>
+      <div class="flex won">
+        <span lang="en" title="English">You won!</span>
+        <span lang="eo" title="Esperanto">Vi gajnis!</span>
+        <span lang="es" title="Spanish">¡Cantaste!</span>
+        <span lang="de" title="German">Du hast gewonnen!</span>
+        <span lang="ru" title="Russian">Ты выграл(а)!</span>
+        <span lang="la" title="Latin">Vicisti!</span>
+        <span lang="es" title="French">Tu as gagné !</span>
+        <span lang="it" title="Italian">Hai vinto!</span>
+        <span lang="lfn" title="Linua Franca Nova">Tu ia gania!</span>
+        <span lang="pl" title="Polish">Wygrałeś!</span>
+        <span lang="ga" title="Irish">Bhuaigh tú!</span>
+        <span lang="tr" title="Turkish">kazandın!</span>
+
+      </div>
+    </section>
+
+    <section class="flex box2">
+
+      <div>
+        <h1>Models</h1>
+        <div class="flex">
+          <div class="row">
+            <div class="card suit1 rank13">13</div>
+            <div class="card suit1 rank12">12</div>
+            <div class="card suit1 rank11">11</div>
+            <div class="card suit1 rank10">10</div>
+            <div class="card suit1 rank9">9</div>
+            <div class="card suit1 rank8">8</div>
+            <div class="card suit1 rank7">7</div>
+            <div class="card suit1 rank6">6</div>
+            <div class="card suit1 rank5">5</div>
+            <div class="card suit1 rank4">4</div>
+            <div class="card suit1 rank3">3</div>
+            <div class="card suit1 rank2">2</div>
+            <div class="card suit1 rank1">1</div>
+          </div>
+          <div class="row">
+            <div class="card suit2 rank13">13</div>
+            <div class="card suit2 rank12">12</div>
+            <div class="card suit2 rank11">11</div>
+            <div class="card suit2 rank10">10</div>
+            <div class="card suit2 rank9">9</div>
+            <div class="card suit2 rank8">8</div>
+            <div class="card suit2 rank7">7</div>
+            <div class="card suit2 rank6">6</div>
+            <div class="card suit2 rank5">5</div>
+            <div class="card suit2 rank4">4</div>
+            <div class="card suit2 rank3">3</div>
+            <div class="card suit2 rank2">2</div>
+            <div class="card suit2 rank1">1</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h1>Tableau</h1>
+        <div id="tableau" class="tableau flex">
+        </div>
+      </div>
+
+    <section>
+
+  <script type="module" src="main.js"></script>
+  </body>
+</html>
