@@ -143,13 +143,14 @@ div.won {
 .card {
     font-family: serif;
     font-size: large;
-    width: 30px;
-    height: 30px;
     margin: 1px auto;
     padding: 10px;
     text-align: center;
     vertical-align: middle;
     user-select: none;   /* Disable accidentally selecting text. */
+    width: 30px;
+    height: 30px;
+    transition: height 0.5s linear;  /* For .reserve. */
 }
 
 
@@ -192,6 +193,16 @@ div.won {
     font-weight: bold;
 }
 
+.card.reserve {
+    background-color: gray !important;
+    color: gray !important;
+    border: inset 2px black !important;
+    margin-bottom: 4px !important;
+    overflow-y: clip !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: 10px !important;
+}
 
 
 /* Foundation/Stock/Toolbar styles */

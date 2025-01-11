@@ -15,6 +15,7 @@ let stock = [];   // `[card]`.
 class Spysol {
     deck = [];
     foundation = [];
+    peek = false;
     points = [];
     ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
@@ -31,12 +32,14 @@ class Spysol {
 
     deal(rowCounts) {
         const tableau = document.getElementById("tableau");
-        let count, row;
+        let cards, count, row;
         tableau.replaceChildren();
         this.stock = rs.random.shuffle(this.deck.slice());
         for (count of rowCounts) {
+            cards = this.stock.splice(0, count);
+            this.unreserve(cards[cards.length - 1]);
             row = this.createRow();
-            row.append( ...this.stock.splice(0, count) );
+            row.append(...cards);
             row.addEventListener("dragover", onDragOver);
             row.addEventListener("drop", onDrop);
             tableau.append(row);
@@ -55,6 +58,17 @@ class Spysol {
         return row;
     }
 
+    togglePeek() {
+        this.peek = !this.peek;
+        if (this.peek) {
+            document.querySelectorAll(".tableau .card.reserve")
+                .forEach( card => card.classList.replace("reserve", "peek") );
+        } else {
+            document.querySelectorAll(".tableau .card.peek")
+                .forEach( card => card.classList.replace("peek", "reserve") );
+        }
+    }
+
     // Private logic methods.
 
     makeDeck() {
@@ -65,7 +79,8 @@ class Spysol {
         for (suit of suits) {
             for (rank of this.ranks) {
                 for (serial of serials) {
-                    card = this.createCard("card", suit, rank, serial, true);
+                    card = this.createCard(
+                        "card", suit, rank, serial, false, true);
                     deck.push(card);
                 }
             }
@@ -76,7 +91,7 @@ class Spysol {
 
     // Private HTMLElement methods.
 
-    createCard(prefix, suit, rank, serial, draggable) {
+    createCard(prefix, suit, rank, serial, draggable, reserve) {
         let card;
         card = document.createElement("div");
         card.suit = suit;   // non-dom attribute.
@@ -88,7 +103,16 @@ class Spysol {
             card.draggable = true;
             card.addEventListener("dragstart", onDragStart);
         }
+        if (reserve) {
+            card.classList.add("reserve");
+        }
         return card;
+    }
+
+    unreserve(card) {
+        card.classList.remove("reserve", "peek");
+        card.draggable = true;
+        card.addEventListener("dragstart", onDragStart);
     }
 
 
@@ -212,7 +236,6 @@ function onDrop(ev) {
     ev.preventDefault();
     ev.dataTransfer.dropEffect = "move";
     const id = ev.dataTransfer.getData("text/plain");
-    const cards = getCardsToDrop(id);
     let dst = ev.target;
     // If destination is a card, go up to the ancestor row.
     while (dst && ! dst.classList.contains("row")) {
@@ -264,6 +287,8 @@ function init() {
             .addEventListener("click", onDraw);
         document.getElementById("btn-new")
             .addEventListener("click", newGame);
+        document.getElementById("btn-peek")
+            .addEventListener("click", spy.togglePeek.bind(spy));
         initialized = true;
     }
 }
