@@ -18,18 +18,29 @@
 }
 
 html {
-    background-color: #090721;  /* A dark outer gutter. */
+    background-color: #4a0404;  /* Oxblood */
+    color: white;
 }
 
 body {
-    background-color: white;
+    background-color: #4a0404;  /* Oxblood */
     color: black;
     font-family: Arial, Helvetica, sans-serif;
-    vertical-align: top;
     margin: 0 auto;
-    padding: 10px;
+    padding: 5px;
     width: 1024px;
-    min-height: 600px;
+}
+
+header {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+main {
+    background-color: white;
+    color: black;
 }
 
 .app-title {

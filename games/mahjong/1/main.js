@@ -102,8 +102,6 @@ class Spysol {
 
     clear() {
         document.getElementById("won").hidden = true;
-        document.getElementById("stock").innerText = 0;
-        document.getElementById("btn-draw").disabled = true;
         document.getElementById("points").innerText = 0;
         document.getElementById("progress").value = 0;
     }
@@ -116,7 +114,6 @@ class Spysol {
 
     renderDraw() {
         document.getElementById("stock").innerText = Math.round( spy.stock.length / 10 );
-        document.getElementById("btn-draw").disabled = !spy.stock.length;
     }
 
     renderScore() {
@@ -198,7 +195,7 @@ function won() {
 }
 
 
-/* Drag and drop listeners */
+/* Listeners */
 
 function onDragStart(ev) {
     ev.dataTransfer.setData("text/plain", ev.target.id);
@@ -224,21 +221,6 @@ function onDrop(ev) {
 }
 
 
-/* Other listeners */
-
-function onDraw(ev) {
-    const rows = document.getElementById("tableau").querySelectorAll(".row");
-    let card, id, row;
-    for (row of rows) {
-        card = spy.stock.pop();
-        if (!card) {
-            break;
-        }
-        row.append(card);
-    }
-    spy.renderDraw();
-}
-
 
 /* Start a new game */
 
@@ -260,8 +242,6 @@ function init() {
         newGame();
         document.getElementById("btn-colors")
             .addEventListener("click", spy.changeColors.bind(spy));
-        document.getElementById("btn-draw")
-            .addEventListener("click", onDraw);
         document.getElementById("btn-new")
             .addEventListener("click", newGame);
         initialized = true;
