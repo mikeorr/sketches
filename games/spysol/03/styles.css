@@ -159,32 +159,32 @@ div.won {
 
 
 .card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
-.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 80%); }
-.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 75%); }
-.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 70%); }
-.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 65%); }
-.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 60%); }
-.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 55%); }
-.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 50%); }
-.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 45%); }
-.card.suit1.rank10 { background-color: hsl(var(--hue1) 100% 40%); }
-.card.suit1.rank11 { background-color: hsl(var(--hue1) 100% 35%); }
-.card.suit1.rank12 { background-color: hsl(var(--hue1) 100% 30%); }
-.card.suit1.rank13 { background-color: hsl(var(--hue1) 100% 25%); }
+.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 82%); }
+.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 79%); }
+.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 76%); }
+.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 73%); }
+.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 70%); }
+.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 67%); }
+.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 64%); }
+.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 61%); }
+.card.suit1.rank10 { background-color: hsl(var(--hue1) 100% 58%); }
+.card.suit1.rank11 { background-color: hsl(var(--hue1) 100% 55%); }
+.card.suit1.rank12 { background-color: hsl(var(--hue1) 100% 52%); }
+.card.suit1.rank13 { background-color: hsl(var(--hue1) 100% 49%); }
 
 .card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
-.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 80%); }
-.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 75%); }
-.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 70%); }
-.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 65%); }
-.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 60%); }
-.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 55%); }
-.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 50%); }
-.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 45%); }
-.card.suit2.rank10 { background-color: hsl(var(--hue2) 100% 40%); }
-.card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 35%); }
-.card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 30%); }
-.card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 25%); }
+.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 82%); }
+.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 79%); }
+.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 76%); }
+.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 73%); }
+.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 70%); }
+.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 67%); }
+.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 64%); }
+.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 61%); }
+.card.suit2.rank10 { background-color: hsl(var(--hue2) 100% 58%); }
+.card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 55%); }
+.card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 52%); }
+.card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 49%); }
 
 
 .card.promoting {
