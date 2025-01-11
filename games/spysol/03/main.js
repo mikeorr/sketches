@@ -60,13 +60,10 @@ class Spysol {
 
     togglePeek() {
         this.peek = !this.peek;
-        if (this.peek) {
-            document.querySelectorAll(".tableau .card.reserve")
-                .forEach( card => card.classList.replace("reserve", "peek") );
-        } else {
-            document.querySelectorAll(".tableau .card.peek")
-                .forEach( card => card.classList.replace("peek", "reserve") );
-        }
+        const oldClass = peek ? "reserve" : "peek";
+        const newClass = peek ? "peek" : "resereve";
+        document.querySelectorAll(".tableau .card")
+            .forEach( card => card.classList.replace(oldClass, newClass) );
     }
 
     // Private logic methods.
@@ -109,10 +106,14 @@ class Spysol {
         return card;
     }
 
-    unreserve(card) {
-        card.classList.remove("reserve", "peek");
-        card.draggable = true;
-        card.addEventListener("dragstart", onDragStart);
+    unreserve(row) {
+        const cards = row.children;
+        if (cards.length) {
+            let card = cards[cards.length - 1];
+            card.classList.remove("reserve", "peek");
+            card.draggable = true;
+            card.addEventListener("dragstart", onDragStart);
+        }
     }
 
 
@@ -130,6 +131,22 @@ class Spysol {
         document.getElementById("btn-draw").disabled = true;
         document.getElementById("points").innerText = 0;
         document.getElementById("progress").value = 0;
+    }
+
+    getCardsToDrop(card) {
+        let cards = [card];
+        while (card = card.nextSibling) {
+            cards.push(card);
+        }
+        return cards;
+    }
+
+    getRow(cardOrRow) {
+        let row = cardOrRow;
+        while (row && ! row.classList.contains("row")) {
+            row = roe.parentElement;
+        }
+        return row;
     }
 
     renderAll() {
@@ -153,16 +170,6 @@ class Spysol {
     }
 
 
-}
-
-
-function getCardsToDrop(id) {
-    let card = document.getElementById(id);
-    let cards = [card];
-    while (card = card.nextSibling) {
-        cards.push(card);
-    }
-    return cards;
 }
 
 
@@ -204,7 +211,9 @@ function canPromote(cards) {
 }
 
 function promote1(hand) {
+    const row = spy.getRow(hand[0]);
     hand.forEach(card => card.remove() );
+    spy.unreserve(row);
     setTimeout(promote2, T[3]);
 }
 
@@ -236,12 +245,12 @@ function onDrop(ev) {
     ev.preventDefault();
     ev.dataTransfer.dropEffect = "move";
     const id = ev.dataTransfer.getData("text/plain");
-    let dst = ev.target;
-    // If destination is a card, go up to the ancestor row.
-    while (dst && ! dst.classList.contains("row")) {
-        dst = dst.parentElement;
-    }
-    dst.append(...cards);
+    const srcCard = document.getElementById(id);
+    const srcRow = spy.getRow(card);
+    const cardsToDrop = spy.getCardsToDrop(srcCard);
+    const dst = spy.getRow(ev.target);
+    dst.append(...cardsToDrop);
+    spy.unreserve(dst);
     tryPromote(dst);
     // TODO: Try promote source row too.
 }
