@@ -165,14 +165,13 @@ function tryPromote(row) {
 // canPromote(cards) -> bool
 //   Is this array of cards a complete suit?
 function canPromote(cards) {
-    if (cards.length != 13) {
+    if (cards.length !== 13) {
         return false;
     }
     const suit = cards[0].suit;
-    let rank = 13;
-    let card;
-    for (card of cards) {
-        if (card.rank != rank-- || card.suit != suit) {
+    let rank = 13 + 1;
+    for (let card of cards) {
+        if ( (card.rank !== --rank) || (card.suit !== suit) ) {
             return false;
         }
     return true;
