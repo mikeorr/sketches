@@ -9,6 +9,7 @@ const FACES = [
 // Animation frame throttles in milliseconds, fastest to slowest.
 const T = [50, 250, 500, 1000];
 
+let cell1 = null;   // First cell of pair selected.
 let initialized = false;  // Has 'initialized()' been called?
 let points = 0;
 
