@@ -9,13 +9,19 @@ const FACES = [
 // Animation frame throttles in milliseconds, fastest to slowest.
 const T = [50, 250, 500, 1000];
 
-let cell1 = null;   // First cell of pair selected.
+let cell1 = null;   // First selected cell of potential pair.
+let cell2 = null;   // Second selected cell of potential pair.
 let initialized = false;  // Has 'initialized()' been called?
+let peek = false;   // Is peek mode?
 let points = 0;
 
 function newGame() {
     const main = document.querySelector("main");
-    let cell, cell2, face, lastID;
+    let cell, face, lastID;
+    cell1 = null;
+    cell2 = null;
+    peek = false;
+    points = 0;
     document.getElementById("won").hidden = true;
     document.getElementById("points").innerText = 0;
     document.getElementById("progress").value = 0;
