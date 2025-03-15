@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Concentration Solitaire card game" />
+    <title>Concentration</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+  </head>
+  <body>
+
+    <noscript>
+      <p>This Concentration Solitaire card game requires Javascript.</p>
+    </noscript>
+
+    <h1>CONCENTRATION</H1>
+
+    <details>
+      <summary>Help</summary>
+
+      <div class="box">
+        <h1>How to play</h1>
+        <p>
+          <strong>Concentration</strong> ....
+        </p>
+
+        <h1>About Concentration</h1>
+
+        <p>
+          Concentration was created by Mike Orr.
+        </p>
+        <p>
+          Version 3 is written in modern vanilla Javascript and CSS.
+          The only library is
+          <a href="https://www.npmjs.com/package/random-seedable"
+          target="_blank"><code>random-seedable</code></a>
+          by Chris Akroyd
+          to shuffle the cards.
+        </p>
+
+      </div>
+    </details>
+
+    <section id="won" hidden>
+      <div class="flex won">
+        <span lang="en" title="English">You won!</span>
+        <span lang="eo" title="Esperanto">Vi gajnis!</span>
+        <span lang="lfn" title="Linua Franca Nova">Tu ia gania!</span>
+      </div>
+    </section>
+
+    <main>
+    </main>
+
+    <nav>
+      <button id="btn-new" class="right">New Game</button>
+      Score =
+      <span id="points">0</span> / 30
+      <progress id="progress" min="0" max="8" value="0"></progress>
+      <div class="clearfix"></div>
+    </nav>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
