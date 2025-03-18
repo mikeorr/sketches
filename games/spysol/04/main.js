@@ -16,8 +16,8 @@ class Spysol {
     deck = [];
     foundation = [];
     points = [];
-    ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    rowCardCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
+    ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    rowCardCounts = [5, 5, 5, 4, 4, 4, 3];
     stock = [];
 
     constructor() {
@@ -25,7 +25,7 @@ class Spysol {
     }
 
     newGame() {
-        const rowCounts = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
+        const rowCounts = [5, 5, 5, 4, 4, 4, 3];
         this.deal(rowCounts);
     }
 
@@ -115,7 +115,7 @@ class Spysol {
     }
 
     renderDraw() {
-        document.getElementById("stock").innerText = Math.round( spy.stock.length / 10 );
+        document.getElementById("stock").innerText = Math.round( spy.stock.length / 7 );
         document.getElementById("btn-draw").disabled = !spy.stock.length;
     }
 
@@ -152,8 +152,8 @@ function getCardsToDrop(id) {
 function tryPromote(row) {
     const cards = Array.from(row.children);
     const count = cards.length;
-    if (cards.length >= 13) {
-        const hand = cards.slice(cards.length - 13, cards.length);
+    if (cards.length >= 9) {
+        const hand = cards.slice(cards.length - 9, cards.length);
         if (canPromote(hand)) {
             hand.forEach( card => card.classList.add("promoting") );
             setTimeout(promote1, T[3], hand);
@@ -165,17 +165,23 @@ function tryPromote(row) {
 // canPromote(cards) -> bool
 //   Is this array of cards a complete suit?
 function canPromote(cards) {
-    if (cards.length !== 13) {
+    if (cards.length !== 9) {
         return false;
     }
     const suit = cards[0].suit;
-    let rank = 13 + 1;
-    for (let card of cards) {
-        if ( (card.rank !== --rank) || (card.suit !== suit) ) {
-            return false;
-        }
-    return true;
+    if (! ( cards.every( x => x.suit === suit ) ) ) {
+        return false;
     }
+    return (
+        (cards[0].rank === 9) &&
+        (cards[1].rank === 8) &&
+        (cards[2].rank === 7) &&
+        (cards[3].rank === 6) &&
+        (cards[4].rank === 5) &&
+        (cards[5].rank === 4) &&
+        (cards[6].rank === 3) &&
+        (cards[7].rank === 2) &&
+        (cards[8].rank === 1) );
 }
 
 function promote1(hand) {
