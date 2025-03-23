@@ -1,0 +1,16 @@
+Peek:
+U+F1F4F7,CAMERA
+U+1F50D,LEFT-POINTING MAGNIFYING GLASS
+,magnifying glass            
+
+Draw:
+U+F14CB,CLIPBOARD
+
+Change colors:
+,palette
+
+New game:
+U+2680,WARNING SIGN
+U+1F5D9,CANCELLATION X
+,exit
+,caution
