@@ -8,29 +8,69 @@ const MAX_POINTS = 8;  // How many points to win.
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const ROW_CARD_COUNTS = [5, 5, 5, 4, 4, 4, 3];
 
-let foundation = [];  // `[card]`.
+let DOM = null;   // Certain DOM elements, initialized by 'init()'.
 let initialized = false;  // Has 'initialized()' been called?
-let spy = null;   // `Spysol`.
+
+// Game state. Reset by 'newGame()',
 let points = 0;
 let stock = [];   // `[card]`.
 
 
-function deal(rowCounts) {
-    const tableau = document.getElementById("tableau");
-    let count, row;
-    tableau.replaceChildren();
-    this.stock = rs.random.shuffle(this.deck.slice());
-    for (count of rowCounts) {
-        row = this.createRow();
-        row.append( ...this.stock.splice(0, count) );
-        row.addEventListener("dragover", onDragOver);
-        row.addEventListener("drop", onDrop);
-        tableau.append(row);
+// Initialize Spysol.
+function init() {
+    if (!initialized) {
+        DOM = {
+            btn_colors: document.getElementById("btn-colors"),
+            btn_draw:   document.getElementById("btn-draw"),
+            btn_new:    document.getElementById("btn-new"),
+            model1:     document.getElementById("model1"),
+            model2:     document.getElementById("model2"),
+            points:     document.getElementById("points"),
+            progress:   document.getElementById("progress"),
+            stock:      document.getElementById("stock"),
+            tableau:    document.getElementById("tableau"),
+            won:        document.getElementById("won"),
+            rows:       Array.from(document.querySelectorAll(".tableau .row")),
+        };
+        console.assert(DOM.rows.length === 7,
+            "Tableau has %d rows (expected 7).", DOM.rows.length);
+        DOM.model1.replaceChildren( ...createModelSuit(1) );
+        DOM.model2.replaceChildren( ...createModelSuit(2) );
+        newGame();
+        function makeRowDroppable(row) {
+            row.addEventListener("dragover", onDragOver);
+            row.addEventListener("drop", onDrop);
+        }
+        DOM.btn_colors.addEventListener("click", changeColors);
+        DOM.btn_draw.addEventListener("click", onDraw);
+        DOM.btn_new.addEventListener("click", newGame);
+        DOM.rows.forEach(makeRowDroppable);
+        initialized = true;
     }
 }
 
+// Start a new game.
+function newGame() {
+    DOM.rows.forEach( row => row.replaceChildren() );
+    points = 0;
+    stock = createDeck();
+    rs.random.shuffle(stock);
+    DOM.rows[0].replaceChildren( ...stock.splice(0, 2) );
+    DOM.rows[1].replaceChildren( ...stock.splice(0, 2) );
+    DOM.rows[2].replaceChildren( ...stock.splice(0, 2) );
+    DOM.rows[3].replaceChildren( ...stock.splice(0, 2) );
+    DOM.rows[4].replaceChildren( ...stock.splice(0, 2) );
+    DOM.rows[5].replaceChildren( ...stock.splice(0, 2) );
+    DOM.rows[6].replaceChildren( ...stock.splice(0, 2) );
 
-// Create an empty row (an HTML <ol> element).
+    changeColors();
+    renderAll();
+
+}
+
+
+// Create DOM elements.
+
 function createRow() {
     let ctr, row;
     row = document.createElement("div");
@@ -41,40 +81,40 @@ function createRow() {
     return row;
 }
 
-// Private logic methods.
+function createCard(suit, rank) {
+    let card;
+    card = document.createElement("data");
+    card.suit = suit;   // non-dom attribute.
+    card.rank = rank;   // non-dom attribute.
+    card.classList.add("card", `rank${rank}`, `suit${suit}`);
+    card.innerText = rank;
+    return card;
+}
 
-function makeDeck() {
-    const suits = [1, 2];
-    const serials = [1, 2, 3, 4];
-    let card, deck, suit, rank, serial;
+function createDraggableCard(suit, rank, id) {
+    let card = createCard(suit, rank);
+    card.id = `card-${id}`;
+    card.draggable = true;
+    card.addEventListener("dragstart", onDragStart);
+    return card;
+}
+
+function createModelSuit(suit) {
+    return RANKS.map( rank => createCard(suit, rank) );
+}
+
+function createDeck() {
+    const suits = [1, 2, 1, 2, 1, 2, 1, 2];
+    let card, deck, lastID, rank, suit;
     deck = [];
+    lastID = 0;
     for (suit of suits) {
-        for (rank of this.ranks) {
-            for (serial of serials) {
-                card = this.createCard("card", suit, rank, serial, true);
-                deck.push(card);
-            }
+        for (rank of RANKS) {
+            card = createDraggableCard(suit, rank, ++lastID);
+            deck.push(card);
         }
     }
     return deck;
-}
-
-
-// Private HTMLElement methods.
-
-function createCard(prefix, suit, rank, serial, draggable) {
-    let card;
-    card = document.createElement("div");
-    card.suit = suit;   // non-dom attribute.
-    card.rank = rank;   // non-dom attribute.
-    card.id = `${prefix}-${suit}-${rank}-${serial}`;
-    card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = rank;
-    if (draggable) {
-        card.draggable = true;
-        card.addEventListener("dragstart", onDragStart);
-    }
-    return card;
 }
 
 
@@ -95,26 +135,25 @@ function clear() {
 }
 
 function renderAll() {
-    this.showWon(false);
-    this.renderDraw();
-    this.renderScore();
+    showWon(false);
+    renderDraw();
+    renderScore();
 }
 
 function renderDraw() {
-    document.getElementById("stock").innerText = Math.round( spy.stock.length / 7 );
-    document.getElementById("btn-draw").disabled = !spy.stock.length;
+    //DOM.stock.innerText = Math.round( stock.length / 7 );
+    DOM.stock.innerText = stock.length;
+    DOM.btn_draw.disabled = !stock.length;
 }
 
 function renderScore() {
-    document.getElementById("points").innerText = spy.points;
-    document.getElementById("progress").value = spy.points;
+    DOM.points.innerText = points;
+    DOM.progress.value = points;
 }
 
 function showWon(value) {
-    document.getElementById("won").hidden = !value;
+    DOM.won.hidden = !value;
 }
-
-
 
 function getCardsToDrop(id) {
     let card = document.getElementById(id);
@@ -157,15 +196,15 @@ function canPromote(cards) {
         return false;
     }
     return (
-        (cards[0].rank === 9) &&
-        (cards[1].rank === 8) &&
-        (cards[2].rank === 7) &&
-        (cards[3].rank === 6) &&
+        (cards[0].rank === 1) &&
+        (cards[1].rank === 2) &&
+        (cards[2].rank === 3) &&
+        (cards[3].rank === 4) &&
         (cards[4].rank === 5) &&
-        (cards[5].rank === 4) &&
-        (cards[6].rank === 3) &&
-        (cards[7].rank === 2) &&
-        (cards[8].rank === 1) );
+        (cards[5].rank === 6) &&
+        (cards[6].rank === 7) &&
+        (cards[7].rank === 8) &&
+        (cards[8].rank === 9) );
 }
 
 function promote1(hand) {
@@ -174,16 +213,12 @@ function promote1(hand) {
 }
 
 function promote2() {
-    spy.points++;
-    spy.renderScore();
-    if (spy.points == MAX_POINTS) {
-        setTimeout(won, T[3]);
+    points++;
+    renderScore();
+    if (points == MAX_POINTS) {
+        setTimeout(showWon, T[3], true);
     }
 
-}
-
-function won() {
-    document.getElementById("won").hidden = false;
 }
 
 
@@ -216,46 +251,17 @@ function onDrop(ev) {
 /* Other listeners */
 
 function onDraw(ev) {
-    const rows = document.getElementById("tableau").querySelectorAll(".row");
     let card, id, row;
-    for (row of rows) {
-        card = spy.stock.pop();
-        if (!card) {
-            break;
+    for (row of DOM.rows) {
+        card = stock.shift();
+        if (card) {
+            row.append(card);
         }
-        row.append(card);
     }
-    spy.renderDraw();
+    renderDraw();
 }
 
 
-/* Start a new game */
-
-function newGame() {
-    spy = new Spysol();
-    spy.clear();
-    spy.changeColors();
-
-    // Deal the tableau rows and set the stock and UI for a new game.
-    const rows = spy.newGame();
-    spy.renderDraw();
-}
-
-
-/* Initialize Spysol */
-
-function init() {
-    if (!initialized) {
-        newGame();
-        document.getElementById("btn-colors")
-            .addEventListener("click", spy.changeColors.bind(spy));
-        document.getElementById("btn-draw")
-            .addEventListener("click", onDraw);
-        document.getElementById("btn-new")
-            .addEventListener("click", newGame);
-        initialized = true;
-    }
-}
 
 if (document.readyState === "complete") {
     init();

@@ -17,6 +17,37 @@
     --hue2: 120;   /* green */
 }
 
+/* Generic style components. */
+
+.border   { border: 1px solid; }
+.box      { border: 1px solid; }
+.clearfix { clear: all; }
+.right    { float: right; }
+.round1  { border-radius: 10px; padding: 10px; }
+.round2  { border-radius: 15px; padding: 15px;}
+
+.middle   {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.flex {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.flex > * {
+    margin-right: 40px;
+}
+
+h1 {
+    margin: 1em 0;
+    text-align: left;
+}
+
+
+/* Page styles */
+
 html {
     background-color: #090721;  /* A dark outer gutter. */
 }
@@ -28,8 +59,8 @@ body {
     vertical-align: top;
     margin: 0 auto;
     padding: 10px;
-    width: 1024px;
-    min-height: 600px;
+    /* width: 1024px; */
+    /* min-height: 600px; */
 }
 
 .app-title {
@@ -51,35 +82,7 @@ h1 {
 }
 
 
-/* Generic style components. */
-
-.border   { border: 1px solid; }
-.clearfix { clear: all; }
-.right    { float: right; }
-.rounded  { border-radius: 15px; }
-
-.flex {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-}
-
-.flex > * {
-    margin-right: 40px;
-}
-
-.box {
-    border: outset;
-    margin: 20px;
-    padding: 0.25em 1em;
-}
-
-.box2 {
-    border: solid 1px;
-    border-radius: 10px;
-    margin: 10px 0;
-    padding: 0 10px;
-}
+/* Help section */
 
 details {
     margin: 0 5px;
@@ -97,19 +100,19 @@ details h1 {
     padding: 0.5em;
 }
 
-input[type="number"] {
-    width: 50px;
+.help-box {
+    border: outset;
+    margin: 20px;
+    padding: 0.25em 1em;
 }
 
-/* Page sections */
+progress {
+    /* width: 40em; */
+}
 
-main {
+.toolbar {
     display: flex;
-    flex-direction: row;
-    border: solid 1px;
-    border-radius: 10px;
-    margin: 10px 0;
-    padding: 0 10px;
+    justify-content: space-between;
 }
 
 div.won {
@@ -124,29 +127,34 @@ div.won {
 /* Card-related styles */
 
 .tableau {
-    height: 100%;
 }
 
-.row-ctr {
-    width: 50px;
-    height: 100%;
+.models {
+    margin: 10px 0;
+    padding: 5px;
+}
+
+.model {
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    vertical-align: middle;
+    height: 45px;
 }
 
 .row {
-    list-style-type: none;
-    margin: 5px;
-    padding: 0;
-    vertical-align: top;
-    width: 50px;
+    margin: 15px 0;
+    min-height: 40px;
 }
 
 .card {
+    display: inline-block;
     font-family: serif;
     font-size: large;
     width: 30px;
     height: 30px;
-    margin: 1px auto;
-    padding: 10px;
+    margin-right: 5px;
+    padding: 5px;
     text-align: center;
     vertical-align: middle;
     user-select: none;   /* Disable accidentally selecting text. */
@@ -166,7 +174,7 @@ div.won {
 .card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 60%); }
 .card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 55%); }
 .card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 50%); }
-.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 45%); }
+.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 48%); }
 
 .card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
 .card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 80%); }
@@ -176,18 +184,10 @@ div.won {
 .card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 60%); }
 .card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 55%); }
 .card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 50%); }
-.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 45%); }
+.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 48%); }
 
 
 .card.promoting {
     font-size: x-large;
     font-weight: bold;
-}
-
-
-
-/* Foundation/Stock/Toolbar styles */
-
-progress {
-    /* width: 40em; */
 }
