@@ -156,8 +156,8 @@ div.won {
     font-size: large;
     width: 30px;
     height: 30px;
-    margin-right: 5px;
-    padding: 10px;
+    margin-right: 1px;
+    padding: 5px;
     text-align: center;
     vertical-align: middle;
     user-select: none;   /* Disable accidentally selecting text. */
