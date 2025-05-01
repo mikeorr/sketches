@@ -55,13 +55,13 @@ function newGame() {
     points = 0;
     stock = createDeck();
     rs.random.shuffle(stock);
-    DOM.rows[0].replaceChildren( ...stock.splice(0, 2) );
-    DOM.rows[1].replaceChildren( ...stock.splice(0, 2) );
-    DOM.rows[2].replaceChildren( ...stock.splice(0, 2) );
-    DOM.rows[3].replaceChildren( ...stock.splice(0, 2) );
-    DOM.rows[4].replaceChildren( ...stock.splice(0, 2) );
-    DOM.rows[5].replaceChildren( ...stock.splice(0, 2) );
-    DOM.rows[6].replaceChildren( ...stock.splice(0, 2) );
+    DOM.rows[0].replaceChildren( ...stock.splice(0, 4) );
+    DOM.rows[1].replaceChildren( ...stock.splice(0, 4) );
+    DOM.rows[2].replaceChildren( ...stock.splice(0, 4) );
+    DOM.rows[3].replaceChildren( ...stock.splice(0, 3) );
+    DOM.rows[4].replaceChildren( ...stock.splice(0, 3) );
+    DOM.rows[5].replaceChildren( ...stock.splice(0, 3) );
+    DOM.rows[6].replaceChildren( ...stock.splice(0, 3) );
 
     changeColors();
     renderAll();
