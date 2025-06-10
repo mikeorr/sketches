@@ -1,4 +1,4 @@
-import * as rs from "./random-seedable/index.js";
+import * as rs from "./random.js";
 
 // Animation frame throttles in milliseconds, fastest to slowest.
 const T = [50, 250, 500, 1000];

@@ -1,4 +1,4 @@
-import * as rs from "./random-seedable/index.js";
+import * as rs from "./random.js";
 
 function range(start, stop) {
     let ret = [];
