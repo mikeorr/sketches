@@ -1,5 +1,18 @@
-Copied from 'random-seedable' 1.0.8.
+/* random.js
+
+Adapted from Chris Akroyd's 'random-seedable' 1.0.8 by Mike Orr.
 https://www.npmjs.com/package/random-seedable
+
+Changes:
+
+1. Concatenated files into one:
+   LICENCE.TXT constants.js PRNG.JS PRNG64.js xorshift64.js index.js .
+2. Made the default export an XORSHIFT64 instance.
+3. Deleted all other algorithm alternatives.
+4. Adjusted redundancies and reordered code as necessary.
+
+The upstream licence follows:
+
 
 MIT License
 
@@ -22,19 +35,18 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-/** @type {number} */
-export const MAX32 = 2 ** 32;
-/** @type {number} */
-export const MAX53 = 2 ** 53;
-/** @type {bigint} */
-export const MAX64 = 2n ** 64n;
 
-/** @enum {number | bigint} */
-export default {
-  MAX32,
-  MAX53,
-  MAX64,
-};
+*/
+
+
+const MAX32 = 2 ** 32;
+const MAX53 = 2 ** 53;
+const MAX64 = 2n ** 64n;
+
+
+// ======= Class PRNG ======
+
+
 /**
  * Superclass for all implemented generators.
  */
@@ -468,8 +480,9 @@ class PRNG {
   }
 }
 
-export default PRNG;
-import PRNG from './PRNG.js';
+
+// ======= Class PRNG64 ======
+
 
 /**
  * 64 bit modification of PRNG class.
@@ -541,9 +554,9 @@ class PRNG64 extends PRNG {
   }
 }
 
-export default PRNG64;
-import PRNG64 from './PRNG64.js';
-import { MAX53 } from './constants.js';
+
+// ======= Class XORShift64 ======
+
 
 /**
  * XorShift generators are fast, efficient generators with good randomness quality.
@@ -627,17 +640,12 @@ class XORShift64 extends PRNG64 {
   }
 }
 
-export default XORShift64;
-import XORShift64 from './xorshift64.js';
+//export default new XORShift64(Date.now());
 
-export { default as LCG } from './lcg.js';
-export { default as PCG } from './pcg.js';
-export { default as MersenneTwister } from './mersenneTwister.js';
-export { default as XORShift } from './xorshift.js';
-export { default as XORShift64 } from './xorshift64.js';
-export { default as XORShift128 } from './xorshift128.js';
-export { default as XORShift128Plus } from './xorshift128Plus.js';
-export { default as XORWow } from './xorwow.js';
 
-export const random = new XORShift64(Date.now());
-export default new XORShift64(Date.now());
+// ======= Exports ======
+
+const random = new XORShift64(Date.now());
+
+export {MAX32, MAX53, MAX64, XORShift64, random};
+export default random;
