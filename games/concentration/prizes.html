@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Concentration Prizes</title>
+    <style>
+      div {
+        border: 1px solid;
+        font-size: 70px;
+        text-align: center;
+        width: 96px;
+        height: 96px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>Concentration Prizes</H1>
+
+    <main>
+    </main>
+
+  </body>
+  <script>
+    const FACES = [
+            "☀", "☂", "☃", "⛟", "☎", "☜", "☝","☞", "☟", "☠",
+            "☯", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅", "☑", "☒", "☘",
+            "☢", "♂", "♀", "⚓", "⚖", "⛲", "⛵", "✈", "🪀", "🪁",
+            ];
+    let face, main, span;
+    main = document.querySelector("main");
+    for (face of FACES) {
+        div = document.createElement("div");
+        div.innerHTML = face;
+        main.append(div);
+    }
+  </script>
+</html>
