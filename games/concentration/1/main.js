@@ -1,49 +1,116 @@
 import random from "./random.js";
 
-const FACES = [
+const PRIZES = [
         "☀", "☂", "☃", "⛟", "☎", "☜", "☝","☞", "☟", "☠",
         "☯", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅", "☑", "☒", "☘",
         "☢", "♂", "♀", "⚓", "⚖", "⛲", "⛵", "✈", "🪀", "🪁",
 ];
+const GOAL = 30;   // How many points to win. (Number of rooms / 2.)
 
-// Animation frame throttles in milliseconds, fastest to slowest.
-const T = [50, 250, 500, 1000];
+// Debugging flags, normally false.
+const DEBUG_OPEN = false;        // Start with all doors open?
+const DEBUG_NO_SHUFFLE = false;  // Don't shuffle prizes to random rooms?
 
-let cell1 = null;   // First selected cell of potential pair.
-let cell2 = null;   // Second selected cell of potential pair.
+let rooms = null;   // Array of all rooms. Initialized by `createRooms`.
+let room1 = null;   // First selected room of potential pair.
+let room2 = null;   // Second selected room of potential pair.
 let initialized = false;  // Has 'initialized()' been called?
-let peek = false;   // Is peek mode?
 let points = 0;
 
+function create(name, ...classes) {
+    let el;
+    el = document.createElement(name);
+    el.classList.add(...classes);
+    return el;
+}
+
+function assertGoalLength(arr, what) {
+    const expected = GOAL * 2;
+    console.assert(arr.length === expected,
+        "Found", arr.length, what, ", expected", expected);
+}
+
+function getPrizes(shuffle) {
+    let prize, prizes;
+    prizes = [];
+    for (prize of PRIZES) {
+        prizes.push(prize, prize);
+    }
+    if (shuffle) {
+        random.shuffle(prizes);
+    }
+    return prizes;
+}
+
 function newGame() {
-    const main = document.querySelector("main");
-    let cell, face, lastID;
-    cell1 = null;
-    cell2 = null;
-    peek = false;
+    let room, prizes;
+    prizes = getPrizes(!DEBUG_NO_SHUFFLE);
+    assertGoalLength(prizes, "prizes");
+    for (room of rooms) {
+        room.dataset.prize = prizes.shift();
+        room.dataset.state = DEBUG_OPEN ? "open" : "closed";
+    }
+    room1 = null;
+    room2 = null;
     points = 0;
-    document.getElementById("won").hidden = true;
-    document.getElementById("points").innerText = 0;
-    document.getElementById("progress").value = 0;
-    lastID = 0;
-    for (let face of FACES) {
-        for (let it = 1; it <= 2; it++) {
-            cell = document.createElement("span");
-            cell.id = ++lastID;
-            cell.classList.add("Cell", "face");
-            cell.dataset.value = face;
-            cell.innerHTML = face;
-            main.append(cell);
+    renderScore();
+}
+
+function checkRoomPair() {
+    const prize1 = room1.dataset.prize;
+    const prize2 = room2.dataset.prize;
+    const captured = prize1 && prize2 && prize1 === prize2;
+    if (captured) {
+        room1.dataset.state = "";
+        room2.dataset.state = "";
+        points++;
+        renderScore();
+        if (points >= GOAL) {
+            rooms.forEach( room => room.dataset.state = "won" );
         }
+    } else {
+        room1.dataset.state = "closed";
+        room2.dataset.state = "closed";
+    }
+    room1 = null;
+    room2 = null;
+}
+
+function renderScore() {
+    const progress = document.getElementById("progress");
+    const score = document.getElementById("score");
+    const text = `Score = ${points} / ${GOAL}`;
+    score.innerText = text;
+    progress.min = 0;
+    progress.max = GOAL;
+    progress.value = points;
+}
+
+function onClickRoom(event) {
+    const room = event.target;
+    room.dataset.state = "open";
+    if (!room1) {
+        room1 = room;
+
+    } else {
+        room2 = room;
+        setTimeout(checkRoomPair, 1000);
     }
 }
 
 function init() {
     if (!initialized) {
-        newGame();
+        let room;
+        rooms = document.querySelectorAll(".room");
+        assertGoalLength(rooms, "rooms");
+        for (room of rooms) {
+            room.addEventListener("click", onClickRoom);
+            room.dataset.state = "closed";
+        }
         document.getElementById("btn-new")
             .addEventListener("click", newGame);
         initialized = true;
+        newGame();
     }
 }
 

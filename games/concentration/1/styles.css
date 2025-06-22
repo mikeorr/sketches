@@ -12,23 +12,15 @@ body {
 }
 
 h1 {
-    font-family: serif;
+    font-family: fantasy;
     font-size: xx-large;
-    margin: 10px;
+    margin: 0;
     text-align: center;
 }
 
 noscript {
     display: block;
     margin: 1em auto;
-}
-
-div.won {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: x-large;
-    font-weight: bold;
-    padding-left: 50px;
 }
 
 main {
@@ -38,43 +30,38 @@ main {
     grid-auto-rows: 100px;
     border-top: solid 3px;
     border-bottom: solid 3px;
-    margin: 20px 0;
     padding: 10px;
 }
 
-.cell {
-    color: black;
-    background-color: white;
-    border: outset 1px;
-    border-radius: 10px;
-    font-size: xxx-large;
-    user-select: none;   /* Disable accidentally selecting text. */
-    height: 80%;
-    width: 80%;
+.room {
+    display: block;
+    font-size: 70px;
+    margin: 3px;
+    text-align: center;
+    vertical-align: middle;
+    width: 96px;
+    height: 96px;
 }
 
-.empty {
-    visibility: hidden;
-}
-
-.back {
-    color: black;
+.room[data-state=closed] {
     background-color: gray;
 }
 
-.face {
+.room[data-state=open] {
     color: black;
     background-color: white;
-    /* font-size: xxx-large; */
-    font-size: 70px;
-    text-align: center;
-    vertical-align: middle;
 }
 
+.room[data-state=open]::after {
+    content: attr(data-prize);
+}
 
-.promoting {
-    font-size: x-large;
-    font-weight: bold;
+.room[data-state=won]::after {
+    content: attr(data-won);
+}
+
+nav {
+    margin: 10px 0;
 }
 
 progress {
@@ -89,14 +76,13 @@ details {
     margin: 0 5px;
 }
 
-details > div {
+div.help {
+    border: outset;
     margin: 10px 20px;
+    padding: 0.25em 1em;
 }
 
-details h1 {
-    background-color: lightGray;
-    border: solid 1px;
-    border-radius: 10px;
+div.help h1 {
     font-size: large;
     padding: 0.5em;
 }
@@ -104,30 +90,5 @@ details h1 {
 
 /* Generic style components. */
 
-.border   { border: 1px solid; }
 .clearfix { clear: all; }
 .right    { float: right; }
-.rounded  { border-radius: 15px; }
-
-.flex {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-}
-
-.flex > * {
-    margin-right: 40px;
-}
-
-.box {
-    border: outset;
-    margin: 20px;
-    padding: 0.25em 1em;
-}
-
-.box2 {
-    border: solid 1px;
-    border-radius: 10px;
-    margin: 10px 0;
-    padding: 0 10px;
-}
