@@ -1,4 +1,4 @@
-import * as rs from "./random-seedable/index.js";
+import random from "./random.js";
 
 const FACES = [
         "☀", "☂", "☃", "⛟", "☎", "☜", "☝","☞", "☟", "☠",
