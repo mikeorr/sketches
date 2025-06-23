@@ -15,6 +15,7 @@ let rooms = null;   // Array of all rooms. Initialized by `createRooms`.
 let room1 = null;   // First selected room of potential pair.
 let room2 = null;   // Second selected room of potential pair.
 let initialized = false;  // Has 'initialized()' been called?
+let peek = false;   // Make prizes visible through closed doors.
 let points = 0;
 
 function create(name, ...classes) {
@@ -98,17 +99,25 @@ function onClickRoom(event) {
     }
 }
 
+function onClickPeek(event) {
+    peek = event.target.checked;
+    document.querySelector("main").classList.toggle("peek", peek);
+}
+
 function init() {
     if (!initialized) {
         let room;
+        const elNew = document.getElementById("btn-new")
+        const elPeek = document.getElementById("ck-peek")
         rooms = document.querySelectorAll(".room");
         assertGoalLength(rooms, "rooms");
         for (room of rooms) {
             room.addEventListener("click", onClickRoom);
             room.dataset.state = "closed";
         }
-        document.getElementById("btn-new")
-            .addEventListener("click", newGame);
+        elNew.addEventListener("click", newGame);
+        elPeek.addEventListener("click", onClickPeek);
+        elPeek.checked = peek;
         initialized = true;
         newGame();
     }

@@ -44,8 +44,10 @@ main {
 }
 
 .room[data-state=closed] {
+    color: black;
     background-color: gray;
 }
+
 
 .room[data-state=open] {
     color: black;
@@ -60,13 +62,23 @@ main {
     content: attr(data-won);
 }
 
+.peek .room[data-state=closed]::after {
+    content: attr(data-prize);
+}
+
+
 nav {
     margin: 10px 0;
 }
 
 progress {
     margin: 0 10px;
-    width: 800px;
+    /* width: 800px; */
+    width: 50%;
+}
+
+label {
+    margin: 0 20px;
 }
 
 
@@ -76,13 +88,13 @@ details {
     margin: 0 5px;
 }
 
-div.help {
+div.details {
     border: outset;
     margin: 10px 20px;
     padding: 0.25em 1em;
 }
 
-div.help h1 {
+div.details h1 {
     font-size: large;
     padding: 0.5em;
 }
