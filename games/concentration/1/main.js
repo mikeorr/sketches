@@ -7,12 +7,13 @@ const PRIZES = [
 ];
 const LAYOUTS = [
     Array(PRIZES.length).fill(2),
+    Array(20).fill(2),
 ];
 
 const params = new URLSearchParams(document.location.search);  // Query params.
 
 let goal = 0;       // How many points to win.
-let layout = 0;     // Which layout to use. Subscript/key of 'LAYOUTS'.
+let layout = 1;     // Which layout to use. Subscript/key of 'LAYOUTS'.
 let rooms = null;   // Array of all rooms. Initialized by `createRooms`.
 let room1 = null;   // First selected room of potential pair.
 let room2 = null;   // Second selected room of potential pair.
