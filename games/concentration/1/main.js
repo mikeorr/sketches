@@ -7,9 +7,7 @@ const PRIZES = [
 ];
 const GOAL = 30;   // How many points to win. (Number of rooms / 2.)
 
-// Debugging flags, normally false.
-const DEBUG_OPEN = false;        // Start with all doors open?
-const DEBUG_NO_SHUFFLE = false;  // Don't shuffle prizes to random rooms?
+const params = new URLSearchParams(document.location.search);  // Query params.
 
 let rooms = null;   // Array of all rooms. Initialized by `createRooms`.
 let room1 = null;   // First selected room of potential pair.
@@ -17,6 +15,11 @@ let room2 = null;   // Second selected room of potential pair.
 let initialized = false;  // Has 'initialized()' been called?
 let peek = false;   // Make prizes visible through closed doors.
 let points = 0;
+
+// Debugging options.
+//
+// Query param 'n=1' (no shuffle) to keep prize pairs sorted in adjacent rooms.
+let shuffle = ! params.get("n");
 
 function create(name, ...classes) {
     let el;
@@ -31,25 +34,25 @@ function assertGoalLength(arr, what) {
         "Found", arr.length, what, ", expected", expected);
 }
 
-function getPrizes(shuffle) {
+function getPrizes() {
     let prize, prizes;
     prizes = [];
     for (prize of PRIZES) {
         prizes.push(prize, prize);
-    }
-    if (shuffle) {
-        random.shuffle(prizes);
     }
     return prizes;
 }
 
 function newGame() {
     let room, prizes;
-    prizes = getPrizes(!DEBUG_NO_SHUFFLE);
+    prizes = getPrizes();
+    if (shuffle) {
+        random.shuffle(prizes);
+    }
     assertGoalLength(prizes, "prizes");
     for (room of rooms) {
         room.dataset.prize = prizes.shift();
-        room.dataset.state = DEBUG_OPEN ? "open" : "closed";
+        room.dataset.state = "closed";
     }
     room1 = null;
     room2 = null;
