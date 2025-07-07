@@ -58,6 +58,7 @@ function newGame() {
     room2 = null;
     points = 0;
     renderScore();
+    renderWon(false);
 }
 
 function checkRoomPair() {
@@ -70,7 +71,7 @@ function checkRoomPair() {
         points++;
         renderScore();
         if (points >= GOAL) {
-            rooms.forEach( room => room.dataset.state = "won" );
+            renderWon(true);
         }
     } else {
         room1.dataset.state = "closed";
@@ -88,6 +89,10 @@ function renderScore() {
     progress.min = 0;
     progress.max = GOAL;
     progress.value = points;
+}
+
+function renderWon(won) {
+    document.getElementById("won").hidden = !won;
 }
 
 function onClickRoom(event) {

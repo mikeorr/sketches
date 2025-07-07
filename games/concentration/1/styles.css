@@ -58,10 +58,6 @@ main {
     content: attr(data-prize);
 }
 
-.room[data-state=won]::after {
-    content: attr(data-won);
-}
-
 .peek .room[data-state=closed]::after {
     content: attr(data-prize);
 }
