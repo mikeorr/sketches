@@ -5,10 +5,10 @@ const PRIZES = [
         "☢", "♂", "♀",  "⚖", "⛲", "⛵", "✈", "🪀", "🪁", "☘",
         "☃", "⚓", "⚀", "⚁","⚂", "⚃", "⚄", "⚅", "☑", "☒",
 ];
-const GOAL = 30;   // How many points to win. (Number of rooms / 2.)
 
 const params = new URLSearchParams(document.location.search);  // Query params.
 
+let goal = 0;       // How many points to win.
 let rooms = null;   // Array of all rooms. Initialized by `createRooms`.
 let room1 = null;   // First selected room of potential pair.
 let room2 = null;   // Second selected room of potential pair.
@@ -29,7 +29,7 @@ function create(name, ...classes) {
 }
 
 function assertGoalLength(arr, what) {
-    const expected = GOAL * 2;
+    const expected = goal * 2;
     console.assert(arr.length === expected,
         "Found", arr.length, what, ", expected", expected);
 }
@@ -70,7 +70,7 @@ function checkRoomPair() {
         room2.dataset.state = "";
         points++;
         renderScore();
-        if (points >= GOAL) {
+        if (points >= goal) {
             renderWon(true);
         }
     } else {
@@ -84,10 +84,10 @@ function checkRoomPair() {
 function renderScore() {
     const progress = document.getElementById("progress");
     const score = document.getElementById("score");
-    const text = `Score = ${points} / ${GOAL}`;
+    const text = `Score = ${points} / ${goal}`;
     score.innerText = text;
     progress.min = 0;
-    progress.max = GOAL;
+    progress.max = goal;
     progress.value = points;
 }
 
@@ -118,6 +118,7 @@ function init() {
         const elNew = document.getElementById("btn-new")
         const elPeek = document.getElementById("ck-peek")
         rooms = document.querySelectorAll(".room");
+        goal = rooms.length / 2;
         assertGoalLength(rooms, "rooms");
         for (room of rooms) {
             room.addEventListener("click", onClickRoom);
