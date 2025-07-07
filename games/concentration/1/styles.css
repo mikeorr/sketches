@@ -67,18 +67,17 @@ main {
 }
 
 
+/* Toolbar */
+
 nav {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 15px;
     margin: 10px 0;
 }
 
-progress {
-    margin: 0 10px;
-    /* width: 800px; */
-    width: 50%;
-}
-
-label {
-    margin: 0 20px;
+.grow {
+    flex-grow: 1;
 }
 
 
@@ -98,9 +97,3 @@ div.details h1 {
     font-size: large;
     padding: 0.5em;
 }
-
-
-/* Generic style components. */
-
-.clearfix { clear: all; }
-.right    { float: right; }
