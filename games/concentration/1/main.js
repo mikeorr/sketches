@@ -8,6 +8,7 @@ const PRIZES = [
 const LAYOUTS = [
     Array(PRIZES.length).fill(2),
     Array(20).fill(2),
+    [0, 0, 0, 2],
 ];
 
 const params = new URLSearchParams(document.location.search);  // Query params.
@@ -48,7 +49,7 @@ function getPrizes() {
 }
 
 function newGame() {
-    let room, prize, prizes;
+    let room, prize, prizes, tableau;
     prizes = getPrizes();
     if (shuffle) {
         random.shuffle(prizes);
@@ -61,7 +62,10 @@ function newGame() {
         room.addEventListener("click", onClickRoom);
         rooms.push(room);
     }
-    document.querySelector("main").replaceChildren(...rooms);
+    tableau = create("div", "tableau");
+    tableau.id = "tableau";
+    tableau.append(...rooms);
+    document.getElementById("tableau_ctr").replaceChildren(tableau);
     room1 = null;
     room2 = null;
     points = 0;
@@ -102,6 +106,7 @@ function renderScore() {
 
 function renderWon(won) {
     document.getElementById("won").hidden = !won;
+    document.getElementById("tableau_ctr").hidden = won;
 }
 
 function onClickRoom(event) {
