@@ -5,10 +5,14 @@ const PRIZES = [
         "☢", "♂", "♀",  "⚖", "⛲", "⛵", "✈", "🪀", "🪁", "☘",
         "☃", "⚓", "⚀", "⚁","⚂", "⚃", "⚄", "⚅", "☑", "☒",
 ];
+const LAYOUTS = [
+    Array(PRIZES.length).fill(2),
+];
 
 const params = new URLSearchParams(document.location.search);  // Query params.
 
 let goal = 0;       // How many points to win.
+let layout = 0;     // Which layout to use. Subscript/key of 'LAYOUTS'.
 let rooms = null;   // Array of all rooms. Initialized by `createRooms`.
 let room1 = null;   // First selected room of potential pair.
 let room2 = null;   // Second selected room of potential pair.
@@ -28,35 +32,39 @@ function create(name, ...classes) {
     return el;
 }
 
-function assertGoalLength(arr, what) {
-    const expected = goal * 2;
-    console.assert(arr.length === expected,
-        "Found", arr.length, what, ", expected", expected);
-}
-
 function getPrizes() {
-    let prize, prizes;
+    const counts = LAYOUTS[layout];
+    let i, j, count, prize, prizes;
     prizes = [];
-    for (prize of PRIZES) {
-        prizes.push(prize, prize);
+    for (i=0; i < counts.length; i++) {
+        count = counts[i];
+        prize = PRIZES[i];
+        for (j=1; j <= count; j++) {
+            prizes.push(prize);
+        }
     }
     return prizes;
 }
 
 function newGame() {
-    let room, prizes;
+    let room, prize, prizes;
     prizes = getPrizes();
     if (shuffle) {
         random.shuffle(prizes);
     }
-    assertGoalLength(prizes, "prizes");
-    for (room of rooms) {
-        room.dataset.prize = prizes.shift();
+    rooms = [];
+    for (prize of prizes) {
+        room = create("data", "room");
+        room.dataset.prize = prize;
         room.dataset.state = "closed";
+        room.addEventListener("click", onClickRoom);
+        rooms.push(room);
     }
+    document.querySelector("main").replaceChildren(...rooms);
     room1 = null;
     room2 = null;
     points = 0;
+    goal = rooms.length / 2;
     renderScore();
     renderWon(false);
 }
@@ -114,16 +122,8 @@ function onClickPeek(event) {
 
 function init() {
     if (!initialized) {
-        let room;
         const elNew = document.getElementById("btn-new")
         const elPeek = document.getElementById("ck-peek")
-        rooms = document.querySelectorAll(".room");
-        goal = rooms.length / 2;
-        assertGoalLength(rooms, "rooms");
-        for (room of rooms) {
-            room.addEventListener("click", onClickRoom);
-            room.dataset.state = "closed";
-        }
         elNew.addEventListener("click", newGame);
         elPeek.addEventListener("click", onClickPeek);
         elPeek.checked = peek;
