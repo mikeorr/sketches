@@ -30,39 +30,26 @@ function init() {
             stock:      document.getElementById("stock"),
             tableau:    document.getElementById("tableau"),
             won:        document.getElementById("won"),
-            rows:       Array.from(document.querySelectorAll(".tableau .row")),
+            rows:       null,
         };
-        console.assert(DOM.rows.length === 7,
-            "Tableau has %d rows (expected 7).", DOM.rows.length);
         DOM.model1.replaceChildren( ...createModelSuit(1) );
         DOM.model2.replaceChildren( ...createModelSuit(2) );
         newGame();
-        function makeRowDroppable(row) {
-            row.addEventListener("dragover", onDragOver);
-            row.addEventListener("drop", onDrop);
-        }
         DOM.btn_colors.addEventListener("click", changeColors);
         DOM.btn_draw.addEventListener("click", onDraw);
         DOM.btn_new.addEventListener("click", newGame);
-        DOM.rows.forEach(makeRowDroppable);
         initialized = true;
     }
 }
 
 // Start a new game.
 function newGame() {
-    DOM.rows.forEach( row => row.replaceChildren() );
+    let rcc;
     points = 0;
     stock = createDeck();
     rs.random.shuffle(stock);
-    DOM.rows[0].replaceChildren( ...stock.splice(0, 4) );
-    DOM.rows[1].replaceChildren( ...stock.splice(0, 4) );
-    DOM.rows[2].replaceChildren( ...stock.splice(0, 4) );
-    DOM.rows[3].replaceChildren( ...stock.splice(0, 3) );
-    DOM.rows[4].replaceChildren( ...stock.splice(0, 3) );
-    DOM.rows[5].replaceChildren( ...stock.splice(0, 3) );
-    DOM.rows[6].replaceChildren( ...stock.splice(0, 3) );
-
+    DOM.rows = ROW_CARD_COUNTS.map(createRow);
+    DOM.tableau.replaceChildren(...DOM.rows);
     changeColors();
     renderAll();
 
@@ -71,13 +58,13 @@ function newGame() {
 
 // Create DOM elements.
 
-function createRow() {
-    let ctr, row;
+function createRow(row_card_count) {
+    let row;
     row = document.createElement("div");
     row.classList.add("row");
-    ctr = document.createElement("div");
-    ctr.classList.add("row-ctr");
-    ctr.append(row);
+    row.addEventListener("dragover", onDragOver);
+    row.addEventListener("drop", onDrop);
+    row.append( ...stock.splice(0, row_card_count) );
     return row;
 }
 
