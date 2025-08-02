@@ -1,0 +1,196 @@
+/* Spysol stylesheet. */
+
+@property --hue1 {
+    syntax: "<integer>",
+    inerits: false,
+    initial-value: 0;
+}
+
+@property --hue2 {
+    syntax: "<integer>",
+    inerits: false,
+    initial-value: 120;
+}
+
+:root {
+    --hue1: 0;     /* red   */
+    --hue2: 120;   /* green */
+}
+
+/* Generic style components. */
+
+.border   { border: 1px solid; }
+.box      { border: 1px solid; }
+.clearfix { clear: all; }
+.right    { float: right; }
+.round1  { border-radius: 10px; padding: 10px; }
+.round2  { border-radius: 15px; padding: 15px;}
+
+.middle   {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.flex {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.flex > * {
+    margin-right: 40px;
+}
+
+h1 {
+    margin: 1em 0;
+    text-align: left;
+}
+
+
+/* Page styles */
+
+html {
+    background-color: #090721;  /* A dark outer gutter. */
+}
+
+body {
+    background-color: green;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 10px;
+    width: 1024px;
+    /* min-height: 600px; */
+}
+
+.app-title {
+    font-size: x-large;
+    font-weight: bold;
+    margin-right: 1em;
+    text-transform: uppercase;
+}
+
+noscript {
+    display: block;
+    margin: 1em auto;
+}
+
+h1 {
+    font-size: large;
+    margin: 10px;
+    text-align: center;
+}
+
+
+/* Help section */
+
+details {
+    margin: 0 5px;
+}
+
+details > div {
+    margin: 10px 20px;
+}
+
+details h1 {
+    background-color: lightGray;
+    border: solid 1px;
+    border-radius: 10px;
+    font-size: large;
+    padding: 0.5em;
+}
+
+.help-box {
+    background-color: white;
+    color: black;
+    border: outset;
+    margin: 20px;
+    padding: 0.25em 1em;
+}
+
+progress {
+    /* width: 40em; */
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+div.won {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: x-large;
+    font-weight: bold;
+    padding-left: 50px;
+}
+
+
+/* Card-related styles */
+
+.tableau {
+}
+
+.models {
+    margin: 10px 0;
+    padding: 5px;
+}
+
+.model {
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    vertical-align: middle;
+    height: 50px;
+}
+
+.row {
+    margin: 15px 0;
+    min-height: 40px;
+}
+
+.card {
+    display: inline-block;
+    color: black;
+    font-family: serif;
+    font-size: large;
+    width: 30px;
+    height: 30px;
+    margin-right: 1px;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;   /* Disable accidentally selecting text. */
+}
+
+
+.card.suit2 {
+    text-decoration: underline double;
+}
+
+
+.card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
+.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 80%); }
+.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 75%); }
+.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 70%); }
+.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 65%); }
+.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 60%); }
+.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 55%); }
+.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 50%); }
+.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 48%); }
+
+.card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
+.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 80%); }
+.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 75%); }
+.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 70%); }
+.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 65%); }
+.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 60%); }
+.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 55%); }
+.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 50%); }
+.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 48%); }
+
+
+.card.promoting {
+    font-size: x-large;
+    font-weight: bold;
+}
