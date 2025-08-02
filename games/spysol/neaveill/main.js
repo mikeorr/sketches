@@ -3,10 +3,9 @@ import * as rs from "./random.js";
 // Animation frame throttles in milliseconds, fastest to slowest.
 const T = [50, 250, 500, 1000];
 
-const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
 const MAX_POINTS = 8;  // How many points to win.
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const ROW_CARD_COUNTS = [5, 5, 5, 4, 4, 4, 3];
+const ROW_CARD_COUNTS = [3, 3, 3, 2];
 
 let DOM = null;   // Certain DOM elements, initialized by 'init()'.
 let initialized = false;  // Has 'initialized()' been called?
@@ -32,8 +31,6 @@ function init() {
             won:        document.getElementById("won"),
             rows:       null,
         };
-        DOM.model1.replaceChildren( ...createModelSuit(1) );
-        DOM.model2.replaceChildren( ...createModelSuit(2) );
         newGame();
         DOM.btn_colors.addEventListener("click", changeColors);
         DOM.btn_draw.addEventListener("click", onDraw);
@@ -69,12 +66,14 @@ function createRow(row_card_count) {
 }
 
 function createCard(suit, rank) {
+    const bases = {spades: 97, clubs: 110, diamonds: 65, hearts: 78};
+    const base = (suit === 1) ? bases.spades : bases.hearts;
     let card;
     card = document.createElement("data");
     card.suit = suit;   // non-dom attribute.
     card.rank = rank;   // non-dom attribute.
     card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = rank;
+    card.innerText = String.fromCodePoint(base + rank - 1);
     return card;
 }
 
@@ -86,12 +85,8 @@ function createDraggableCard(suit, rank, id) {
     return card;
 }
 
-function createModelSuit(suit) {
-    return RANKS.map( rank => createCard(suit, rank) );
-}
-
 function createDeck() {
-    const suits = [1, 2, 1, 2, 1, 2, 1, 2];
+    const suits = [1, 2, 1, 2];
     let card, deck, lastID, rank, suit;
     deck = [];
     lastID = 0;
@@ -106,12 +101,6 @@ function createDeck() {
 
 
 // UI DOM methods.
-
-function changeColors() {
-    const hues = rs.random.shuffle(HUES).slice(0, 2);
-    document.documentElement.style.setProperty("--hue1", hues[0]);
-    document.documentElement.style.setProperty("--hue2", hues[1]);
-}
 
 function clear() {
     document.getElementById("won").hidden = true;
