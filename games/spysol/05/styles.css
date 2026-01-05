@@ -22,8 +22,8 @@ html {
 }
 
 body {
-    background-color: white;
-    color: black;
+    background-color: green;
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
     vertical-align: top;
     margin: 0 auto;
@@ -69,6 +69,8 @@ h1 {
 }
 
 .help-box {
+    background-color: white;
+    color: black;
     border: outset;
     margin: 20px;
     padding: 0.25em 1em;
@@ -141,6 +143,7 @@ div.won {
 }
 
 .card {
+    color: black;
     font-family: serif;
     font-size: large;
     width: 30px;
