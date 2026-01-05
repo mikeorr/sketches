@@ -3,10 +3,10 @@ import * as rs from "./random.js";
 // Animation frame throttles in milliseconds, fastest to slowest.
 const T = [50, 250, 500, 1000];
 
-const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
 const MAX_POINTS = 8;  // How many points to win.
-const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const ROW_CARD_COUNTS = [5, 5, 5, 4, 4, 4, 3];
+const RANKS = [1, 2, 3, 4, 5, 6];
+//const ROW_CARD_COUNTS = [5, 5, 4, 4];
+const ROW_CARD_COUNTS = [4, 4, 3, 3];
 
 let DOM = null;   // Certain DOM elements, initialized by 'init()'.
 let initialized = false;  // Has 'initialized()' been called?
@@ -32,10 +32,7 @@ function init() {
             won:        document.getElementById("won"),
             rows:       null,
         };
-        DOM.model1.replaceChildren( ...createModelSuit(1) );
-        DOM.model2.replaceChildren( ...createModelSuit(2) );
         newGame();
-        DOM.btn_colors.addEventListener("click", changeColors);
         DOM.btn_draw.addEventListener("click", onDraw);
         DOM.btn_new.addEventListener("click", newGame);
         initialized = true;
@@ -50,7 +47,6 @@ function newGame() {
     rs.random.shuffle(stock);
     DOM.rows = ROW_CARD_COUNTS.map(createRow);
     DOM.tableau.replaceChildren(...DOM.rows);
-    changeColors();
     renderAll();
 
 }
@@ -74,7 +70,7 @@ function createCard(suit, rank) {
     card.suit = suit;   // non-dom attribute.
     card.rank = rank;   // non-dom attribute.
     card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = rank;
+    card.innerText = String.fromCodePoint(9856 + rank - 1);
     return card;
 }
 
@@ -84,10 +80,6 @@ function createDraggableCard(suit, rank, id) {
     card.draggable = true;
     card.addEventListener("dragstart", onDragStart);
     return card;
-}
-
-function createModelSuit(suit) {
-    return RANKS.map( rank => createCard(suit, rank) );
 }
 
 function createDeck() {
@@ -106,12 +98,6 @@ function createDeck() {
 
 
 // UI DOM methods.
-
-function changeColors() {
-    const hues = rs.random.shuffle(HUES).slice(0, 2);
-    document.documentElement.style.setProperty("--hue1", hues[0]);
-    document.documentElement.style.setProperty("--hue2", hues[1]);
-}
 
 function clear() {
     document.getElementById("won").hidden = true;
@@ -162,8 +148,8 @@ function getCardsToDrop(id) {
 function tryPromote(row) {
     const cards = Array.from(row.children);
     const count = cards.length;
-    if (cards.length >= 9) {
-        const hand = cards.slice(cards.length - 9, cards.length);
+    if (cards.length >= 6) {
+        const hand = cards.slice(cards.length - 6, cards.length);
         if (canPromote(hand)) {
             hand.forEach( card => card.classList.add("promoting") );
             setTimeout(promote1, T[3], hand);
@@ -175,23 +161,22 @@ function tryPromote(row) {
 // canPromote(cards) -> bool
 //   Is this array of cards a complete suit?
 function canPromote(cards) {
-    if (cards.length !== 9) {
+    if (cards.length !== 6) {
         return false;
     }
+    /*
     const suit = cards[0].suit;
     if (! ( cards.every( x => x.suit === suit ) ) ) {
         return false;
     }
+    */
     return (
         (cards[0].rank === 1) &&
         (cards[1].rank === 2) &&
         (cards[2].rank === 3) &&
         (cards[3].rank === 4) &&
         (cards[4].rank === 5) &&
-        (cards[5].rank === 6) &&
-        (cards[6].rank === 7) &&
-        (cards[7].rank === 8) &&
-        (cards[8].rank === 9) );
+        (cards[5].rank === 6) );
 }
 
 function promote1(hand) {
