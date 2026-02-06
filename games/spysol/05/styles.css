@@ -139,15 +139,15 @@ div.won {
     margin: 5px;
     padding: 0;
     vertical-align: top;
-    width: 50px;
+    width: 80px;
 }
 
 .card {
     color: black;
     font-family: serif;
-    font-size: large;
-    width: 30px;
-    height: 30px;
+    font-size: 50px;
+    width: 60px;
+    height: 60px;
     margin: 1px auto;
     padding: 10px;
     text-align: center;
