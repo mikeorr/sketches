@@ -74,19 +74,8 @@ function createCard(suit, rank) {
     card.suit = suit;   // non-dom attribute.
     card.rank = rank;   // non-dom attribute.
     card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = getCardFace(rank);
+    card.innerText = rank;
     return card;
-}
-
-function getCardFace(rank) {
-    switch (rank) {
-        case 13: return 'K';
-        case 12: return 'Q';
-        case 11: return 'J';
-        case 10: return 'T';
-        case  1: return 'A';
-        default: return rank;
-    }
 }
 
 function createDraggableCard(suit, rank, id) {
