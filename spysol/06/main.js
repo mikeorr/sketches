@@ -12,16 +12,17 @@ const SUITS = [1, 2, 1, 2, 1, 2, 1, 2];
 const MAX_POINTS = SUITS.length;  // How many points needed to win.
 const ROWS_COUNT = ROW_CARD_COUNTS.length;   // How many rows by default.
 
+
+// Global state initialized in `start()`.
 let DOM = null;   // Certain DOM elements, initialized by 'init()'.
 let initialized = false;  // Has 'initialized()' been called?
 
-// Game state. Reset by 'newGame()',
 let points = 0;
 let stock = [];   // `[card]`.
 
 
-// Initialize Spysol.
-function init() {
+// Start a new game.
+function start() {
     if (!initialized) {
         DOM = {
             btn_colors: document.getElementById("btn-colors"),
@@ -38,16 +39,7 @@ function init() {
         };
         DOM.model1.replaceChildren( ...createModelSuit(1) );
         DOM.model2.replaceChildren( ...createModelSuit(2) );
-        newGame();
-        DOM.btn_colors.addEventListener("click", changeColors);
-        DOM.btn_draw.addEventListener("click", onDraw);
-        DOM.btn_new.addEventListener("click", newGame);
-        initialized = true;
     }
-}
-
-// Start a new game.
-function newGame() {
     let rcc;
     points = 0;
     stock = createDeck();
@@ -57,6 +49,12 @@ function newGame() {
     changeColors();
     renderAll();
 
+    if (!initialized) {
+        DOM.btn_colors.addEventListener("click", changeColors);
+        DOM.btn_draw.addEventListener("click", onDraw);
+        DOM.btn_new.addEventListener("click", start);
+        initialized = true;
+    }
 }
 
 
@@ -259,7 +257,7 @@ function onDraw(ev) {
 
 
 if (document.readyState === "complete") {
-    init();
+    start();
 } else {
-    document.addEventListener("DOMContentLoaded", init, {once: true});
+    document.addEventListener("DOMContentLoaded", start, {once: true});
 }
