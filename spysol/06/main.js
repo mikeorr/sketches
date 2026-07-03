@@ -3,10 +3,14 @@ import * as rs from "./random.js";
 // Animation frame throttles in milliseconds, fastest to slowest.
 const T = [50, 250, 500, 1000];
 
+const FACES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const HUES = [0, 60, 120, 180, 300];  // red, yellow, green, blue, purple.
-const MAX_POINTS = 8;  // How many points to win.
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-const ROW_CARD_COUNTS = [5, 5, 5, 5, 4, 4, 4, 4, 4, 4];
+const ROW_CARD_COUNTS = [6, 6, 6, 6, 5, 5, 5, 5, 5, 5];
+const SUITS = [1, 2, 1, 2, 1, 2, 1, 2];
+
+const MAX_POINTS = SUITS.length;  // How many points needed to win.
+const ROWS_COUNT = ROW_CARD_COUNTS.length;   // How many rows by default.
 
 let DOM = null;   // Certain DOM elements, initialized by 'init()'.
 let initialized = false;  // Has 'initialized()' been called?
