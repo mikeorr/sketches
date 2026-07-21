@@ -1,0 +1,129 @@
+import * as rs from "./random.js";
+
+// Animation frame throttles in milliseconds, fastest to slowest.
+const T = [50, 250, 500, 1000];
+
+const SHIP = "&#128674;";
+
+// Initialized in 'initialize()'.
+let DOM = {};   // Certain DOM elements.
+let initialized = false;   // True if initialized.
+let y = null;   // YachtModel.
+
+// Initialized in 'startRound()'.
+let dice;
+let round;
+let selected;
+
+
+class YachtDieElement extends HTMLElement {
+    _value;
+
+    constructor() {
+        super();
+        this.addEventListener("click", onClickDie);
+    }
+
+    get value() { return this._value; }
+
+    set value(value) {
+        this._value = value;
+        this.setAttribute("value", value);
+        this.innerText = this.getDieFace(value);
+    }
+
+    getDieFace(value) {
+        if (Number.isInteger(value) && value >= 1 && value <= 6) {
+            return String.fromCodePoint(9856 + value - 1);
+        } else {
+            return "";
+        }
+    }
+
+    get rolling()     { return this.hasAttribute("rolling"); }
+    set rolling(yes)  { return this.toggleAttribute("rolling", yes); }
+
+    get selected()    { return this.hasAttribute("selected"); }
+    set selected(yes) { return this.toggleAttribute("selected", yes); }
+
+}
+
+customElements.define("yacht-die", YachtDieElement);
+
+
+class YachtUI {
+    tray     = document.getElementById("tray");
+    btn_roll = document.getElementById("btn-roll");
+    dice = this.createTrayDice();
+
+    constructor() {
+        this.tray.replaceChildren(...this.dice);
+        this.btn_roll.addEventListener("click", onClickRoll);
+    }
+
+    createTrayDice() {
+        let i, dice, die;
+        dice = [];
+        for (i=0; i<=4; i++) {
+            die = document.createElement("yacht-die");
+            die.addEventListener("click", onClickDie);
+            dice.push(die);
+        }
+        return dice;
+    }
+}
+
+
+function initialize() {
+    y = new YachtUI();
+    startGame();
+}
+
+function startGame() {
+    startRound();
+}
+
+function startRound() {
+    dice = [0, 0, 0, 0, 0];
+    rollDice(true);
+}
+
+
+function roll() {
+    return rs.random.randRange(1, 6);
+}
+
+function rollDice(all) {
+    let i, timeout, value;
+    const throttle = T[2];
+    timeout = 0;
+    for (i=0; i<=4; i++) {
+        if (all || y.dice[i].selected) {
+            timeout += throttle;
+            value = roll();
+            dice[i] = value;
+            y.dice[i].rolling = true;
+            y.dice[i].selected = false;
+            y.dice[i].value = value;
+            setTimeout(showDie, timeout, i);
+        }
+    }
+}
+
+function showDie(i) {
+    y.dice[i].rolling = false;
+}
+
+function onClickDie(e) {
+    e.target.selected = !e.target.selected;
+}
+
+function onClickRoll(e) {
+    rollDice(false);
+}
+
+if (document.readyState === "complete") {
+    initialize();
+} else {
+    document.addEventListener("DOMContentLoaded", initialize, {once: true});
+}
