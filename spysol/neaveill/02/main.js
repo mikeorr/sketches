@@ -70,13 +70,22 @@ function createRow(row_card_count) {
     return row;
 }
 
+function getCardFace(suit, rank) {
+    // Neaveill card font characters are ASCII "n"-"z" for suit 1 (Spades),
+    // "N"-"Z" for suit 2 (Hearts).  Set `base` to the Ace card in decimal:
+    // Suit 1 is 110 ("n"), suit 2 is 78 ("N").
+    const base = (suit === 2) ? 110 : 78;
+    const asc = base + rank - 1;
+    return String.fromCodePoint(asc);
+}
+
 function createCard(suit, rank) {
     let card;
     card = document.createElement("div");
     card.suit = suit;   // non-dom attribute.
     card.rank = rank;   // non-dom attribute.
     card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = rank;
+    card.innerText = getCardFace(suit, rank);
     return card;
 }
 
