@@ -1,0 +1,204 @@
+/* Spysol stylesheet. */
+
+@property --hue1 {
+    syntax: "<integer>",
+    inerits: false,
+    initial-value: 0;
+}
+
+@property --hue2 {
+    syntax: "<integer>",
+    inerits: false,
+    initial-value: 120;
+}
+
+:root {
+    --hue1: 0;     /* red   */
+    --hue2: 120;   /* green */
+}
+
+html {
+    background-color: #090721;  /* A dark outer gutter. */
+}
+
+body {
+    background-color: green;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 10px;
+    width: 1024px;
+    min-height: 600px;
+}
+
+.app-title {
+    font-size: x-large;
+    font-weight: bold;
+    margin-right: 1em;
+    text-transform: uppercase;
+}
+
+noscript {
+    display: block;
+    margin: 1em auto;
+}
+
+h1 {
+    font-size: large;
+    margin: 10px;
+    text-align: center;
+}
+
+
+/* Generic style components. */
+
+.border   { border: 1px solid; }
+.clearfix { clear: all; }
+.right    { float: right; }
+.rounded  { border-radius: 15px; }
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.flex > * {
+    margin-right: 40px;
+}
+
+.help-box {
+    background-color: white;
+    color: black;
+    border: outset;
+    margin: 20px;
+    padding: 0.25em 1em;
+}
+
+.box2 {
+    border: solid 1px;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+details {
+    margin: 0 5px;
+}
+
+details > div {
+    margin: 10px 20px;
+}
+
+details h1 {
+    background-color: lightGray;
+    border: solid 1px;
+    border-radius: 10px;
+    font-size: large;
+    padding: 0.5em;
+}
+
+input[type="number"] {
+    width: 50px;
+}
+
+/* Page sections */
+
+main {
+    display: flex;
+    flex-direction: row;
+    border: solid 1px;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+div.won {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: x-large;
+    font-weight: bold;
+    padding-left: 50px;
+}
+
+
+/* Card-related styles */
+
+.tableau {
+    height: 100%;
+}
+
+.row-ctr {
+    width: 50px;
+    height: 100%;
+}
+
+.row {
+    list-style-type: none;
+    margin: 5px;
+    padding: 0;
+    vertical-align: top;
+    width: 80px;
+}
+
+.card {
+    color: black;
+    font-family: serif;
+    font-size: 40px;
+    width: 50px;
+    height: 50px;
+    margin: 1px auto;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;   /* Disable accidentally selecting text. */
+}
+
+
+.card.suit2 {
+    text-decoration: underline double;
+}
+
+
+.card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
+.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 82%); }
+.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 79%); }
+.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 76%); }
+.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 73%); }
+.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 70%); }
+.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 67%); }
+.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 64%); }
+.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 61%); }
+.card.suit1.rank10 { background-color: hsl(var(--hue1) 100% 58%); }
+.card.suit1.rank11 { background-color: hsl(var(--hue1) 100% 55%); }
+.card.suit1.rank12 { background-color: hsl(var(--hue1) 100% 52%); }
+.card.suit1.rank13 { background-color: hsl(var(--hue1) 100% 49%); }
+
+.card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
+.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 82%); }
+.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 79%); }
+.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 76%); }
+.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 73%); }
+.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 70%); }
+.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 67%); }
+.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 64%); }
+.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 61%); }
+.card.suit2.rank10 { background-color: hsl(var(--hue2) 100% 58%); }
+.card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 55%); }
+.card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 52%); }
+.card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 49%); }
+
+
+.card.promoting {
+    /* font-size: x-large; */
+    font-weight: bold;
+}
+
+
+
+/* Foundation/Stock/Toolbar styles */
+
+progress {
+    /* width: 40em; */
+}
