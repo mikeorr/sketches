@@ -10,6 +10,7 @@ body {
     margin: 0 2%;
 }
 
+
 /* Dice and their tray. */
 
 .tray {
@@ -40,6 +41,7 @@ yacht-die[selected] {
     visibility: hidden;
 }
 
+
 /* Dropdowns and help text. */
 
 details {
@@ -60,12 +62,24 @@ details h1 {
     font-style: italic;
 }
 
-/* Navigation buttons */
+
+/* Navigation buttons. */
 
 nav {
-    margin: 1em 0;
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
 }
 
 button {
-    font-size: 20px;
+    font-size: 25px;
+    margin: auto 10px;
+    padding: 0 5px;
+}
+
+
+/* Status messages. */
+
+.message {
+    height: 20px;
 }
