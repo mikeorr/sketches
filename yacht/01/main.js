@@ -12,6 +12,7 @@ let y = null;   // YachtModel.
 
 // Initialized in 'startRound()'.
 let dice;
+let roll;
 let round;
 let selected;
 
@@ -54,6 +55,7 @@ customElements.define("yacht-die", YachtDieElement);
 class YachtUI {
     tray     = document.getElementById("tray");
     btn_roll = document.getElementById("btn-roll");
+    info_msg = document.getElementById("info");
     dice = this.createTrayDice();
 
     constructor() {
@@ -71,6 +73,15 @@ class YachtUI {
         }
         return dice;
     }
+
+    info(message) {
+        this.info_msg.innerHTML = message;
+    }
+
+    hideAllDice() {
+        this.dice.forEach(x => x.rolling = true);
+    }
+
 }
 
 
@@ -80,27 +91,32 @@ function initialize() {
 }
 
 function startGame() {
+    round = 0;
     startRound();
 }
 
 function startRound() {
     dice = [0, 0, 0, 0, 0];
-    rollDice(true);
+    roll = 0;
+    y.hideAllDice();
+    y.info("Press 'Roll' to start game.");
 }
 
 
-function roll() {
+function rollDie() {
     return rs.random.randRange(1, 6);
 }
 
-function rollDice(all) {
+function rollDice() {
     let i, timeout, value;
+    round++;
     const throttle = T[2];
+    y.info("");
     timeout = 0;
     for (i=0; i<=4; i++) {
-        if (all || y.dice[i].selected) {
+        if ( (round === 1) || y.dice[i].selected) {
             timeout += throttle;
-            value = roll();
+            value = rollDie();
             dice[i] = value;
             y.dice[i].rolling = true;
             y.dice[i].selected = false;
@@ -119,7 +135,7 @@ function onClickDie(e) {
 }
 
 function onClickRoll(e) {
-    rollDice(false);
+    rollDice();
 }
 
 if (document.readyState === "complete") {
