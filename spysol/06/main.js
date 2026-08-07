@@ -76,7 +76,7 @@ function createCard(suit, rank) {
     card.suit = suit;   // non-dom attribute.
     card.rank = rank;   // non-dom attribute.
     card.classList.add("card", `rank${rank}`, `suit${suit}`);
-    card.innerText = rank;
+    card.innerText = FACES[rank - 1] || rank;
     return card;
 }
 
