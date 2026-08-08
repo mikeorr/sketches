@@ -61,12 +61,16 @@ function start() {
 // Create DOM elements.
 
 function createRow(row_card_count) {
-    let row;
+    let i, cards, row;
+    cards = stock.splice(0, row_card_count);
+    for (i = 0; i < row_card_count - 2; i++) {
+        cards[i].classList.add("reserve");
+    }
     row = document.createElement("div");
     row.classList.add("row");
     row.addEventListener("dragover", onDragOver);
     row.addEventListener("drop", onDrop);
-    row.append( ...stock.splice(0, row_card_count) );
+    row.append(...cards);
     return row;
 }
 
