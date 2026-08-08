@@ -148,13 +148,31 @@ function showWon(value) {
     DOM.won.hidden = !value;
 }
 
-function getCardsToDrop(id) {
-    let card = document.getElementById(id);
+function getCardsToDrop(card) {
     let cards = [card];
     while (card = card.nextSibling) {
         cards.push(card);
     }
     return cards;
+}
+
+function getCardRow(card) {
+    let el;
+    el = card;
+    while (el && ! el.classList.contains("row")) {
+        el = el.parentElement;
+    }
+    return el;
+}
+
+
+function unreserve(row) {
+    let i;
+    for (i = row.children.length - 1; i >= row.children.length - 2; i--) {
+        if (i >= 0) {
+            row[i].classList.remove("reserve");
+        }
+    }
 }
 
 
@@ -172,7 +190,9 @@ function tryPromote(row) {
         const hand = cards.slice(cards.length - 13, cards.length);
         if (canPromote(hand)) {
             hand.forEach( card => card.classList.add("promoting") );
-            setTimeout(promote1, T[3], hand);
+            setTimeout(promote1, T[3], hand, row);
+        } else {
+            setTimeout(unreserve, T[3], row);
         }
     }
 
@@ -204,16 +224,18 @@ function canPromote(cards) {
         (cards[12].rank === 1) );
 }
 
-function promote1(hand) {
+function promote1(hand, row) {
     hand.forEach(card => card.remove() );
-    setTimeout(promote2, T[3]);
+    setTimeout(promote2, T[3], row);
 }
 
-function promote2() {
+function promote2(row) {
     points++;
     renderScore();
     if (points == MAX_POINTS) {
         setTimeout(showWon, T[3], true);
+    } else {
+        setTimeout(unreserve, T[3], row);
     }
 
 }
@@ -222,6 +244,10 @@ function promote2() {
 /* Drag and drop listeners */
 
 function onDragStart(ev) {
+    if (ev.target.classList.contains("reserve") ) {
+        ev.preventDefault();  // Can't drag a card in reserve state.
+        return;
+    }
     ev.dataTransfer.setData("text/plain", ev.target.id);
 }
 
@@ -233,12 +259,11 @@ function onDrop(ev) {
     ev.preventDefault();
     ev.dataTransfer.dropEffect = "move";
     const id = ev.dataTransfer.getData("text/plain");
-    const cards = getCardsToDrop(id);
-    let dst = ev.target;
-    // If destination is a card, go up to the ancestor row.
-    while (dst && ! dst.classList.contains("row")) {
-        dst = dst.parentElement;
-    }
+    const srcCard = document.getElementById(id);
+    const dstCard = ev.target;
+    const src = getCardRow(srcCard);
+    const dst = getCardRow(dstCard);
+    const cards = getCardsToDrop(srcCard);
     dst.append(...cards);
     tryPromote(dst);
     // TODO: Try promote source row too.
