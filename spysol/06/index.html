@@ -14,26 +14,6 @@
       <p>This Spider-like card game requires Javascript.</p>
     </noscript>
 
-    <header class="flex">
-      <div>
-        <span class="app-title">Spysol</span>
-      </div>
-      <div>
-        Score =
-        <span id="points">0</span> / 8
-        <progress id="progress" min="0" max="8" value="0"></progress>
-      </div>
-      <div>
-        <button id="btn-draw">Draw (<span id="stock">0</span>)</button>
-      </div>
-      <div>
-        <button id="btn-colors">Change Colors</button>
-      </div>
-      <div>
-        <button id="btn-new" class="right">New Game</button>
-      </div>
-    </header>
-
     <section id="won" hidden>
       <div class="flex won">
         <span lang="en" title="English">You won!</span>
@@ -52,17 +32,8 @@
       </div>
     </section>
 
-    <section class="flex box2">
-
-      <div>
-        <div id="tableau" class="tableau flex">
-        </div>
-      </div>
-
-    </section>
-
     <details>
-      <summary>Help</summary>
+      <summary>Spysol Help</summary>
 
       <div class="help-box">
         <h1>How to play</h1>
@@ -145,6 +116,32 @@
 
     </details>
 
-  <script type="module" src="main.js"></script>
+    <section class="flex box2">
+
+      <div>
+        <div id="tableau" class="tableau flex">
+        </div>
+      </div>
+
+    </section>
+
+    <nav class="flex">
+      <div>
+        Score =
+        <span id="points">0</span> / 8
+        <progress id="progress" min="0" max="8" value="0"></progress>
+      </div>
+      <div>
+        <button id="btn-draw">Draw (<span id="stock">0</span>)</button>
+      </div>
+      <div>
+        <button id="btn-colors">Change Colors</button>
+      </div>
+      <div>
+        <button id="btn-new" class="right">New Game</button>
+      </div>
+    </nav>
+
+    <script type="module" src="main.js"></script>
   </body>
 </html>
