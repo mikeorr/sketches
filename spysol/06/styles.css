@@ -32,13 +32,6 @@ body {
     min-height: 600px;
 }
 
-.app-title {
-    font-size: x-large;
-    font-weight: bold;
-    margin-right: 1em;
-    text-transform: uppercase;
-}
-
 noscript {
     display: block;
     margin: 1em auto;
