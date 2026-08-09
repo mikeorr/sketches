@@ -14,55 +14,8 @@
       <p>This Spider-like card game requires Javascript.</p>
     </noscript>
 
-    <header class="flex">
-      <div>
-        <span class="app-title">Spysol</span>
-      </div>
-      <div>
-        Score =
-        <span id="points">0</span> / 8
-        <progress id="progress" min="0" max="8" value="0"></progress>
-      </div>
-      <div>
-        <button id="btn-draw">Draw (<span id="stock">0</span>)</button>
-      </div>
-      <div>
-        <button id="btn-colors">Change Colors</button>
-      </div>
-      <div>
-        <button id="btn-new" class="right">New Game</button>
-      </div>
-    </header>
-
-    <section id="won" hidden>
-      <div class="flex won">
-        <span lang="en" title="English">You won!</span>
-        <span lang="eo" title="Esperanto">Vi gajnis!</span>
-        <span lang="es" title="Spanish">¡Cantaste!</span>
-        <span lang="de" title="German">Du hast gewonnen!</span>
-        <span lang="ru" title="Russian">Ты выграл(а)!</span>
-        <span lang="la" title="Latin">Vicisti!</span>
-        <span lang="es" title="French">Tu as gagné !</span>
-        <span lang="it" title="Italian">Hai vinto!</span>
-        <span lang="lfn" title="Linua Franca Nova">Tu ia gania!</span>
-        <span lang="pl" title="Polish">Wygrałeś!</span>
-        <span lang="ga" title="Irish">Bhuaigh tú!</span>
-        <span lang="tr" title="Turkish">kazandın!</span>
-
-      </div>
-    </section>
-
-    <section class="flex box2">
-
-      <div>
-        <div id="tableau" class="tableau flex">
-        </div>
-      </div>
-
-    </section>
-
     <details>
-      <summary>Help</summary>
+      <summary>Spysol Help</summary>
 
       <div class="help-box">
         <h1>How to play</h1>
@@ -144,6 +97,53 @@
       </div>
 
     </details>
+
+    <section class="flex box2">
+
+      <div>
+        <div id="tableau" class="tableau flex">
+        </div>
+      </div>
+
+    </section>
+
+    <header class="flex">
+      <div>
+          <span class="app-title">Spysol</span>
+      </div>
+      <div>
+        Score =
+        <span id="points">0</span> / 8
+        <progress id="progress" min="0" max="8" value="0"></progress>
+      </div>
+      <div>
+        <button id="btn-draw">Draw (<span id="stock">0</span>)</button>
+      </div>
+      <div>
+        <button id="btn-colors">Change Colors</button>
+      </div>
+      <div>
+        <button id="btn-new" class="right">New Game</button>
+      </div>
+    </header>
+
+    <section id="won" hidden>
+      <div class="flex won">
+        <span lang="en" title="English">You won!</span>
+        <span lang="eo" title="Esperanto">Vi gajnis!</span>
+        <span lang="es" title="Spanish">¡Cantaste!</span>
+        <span lang="de" title="German">Du hast gewonnen!</span>
+        <span lang="ru" title="Russian">Ты выграл(а)!</span>
+        <span lang="la" title="Latin">Vicisti!</span>
+        <span lang="es" title="French">Tu as gagné !</span>
+        <span lang="it" title="Italian">Hai vinto!</span>
+        <span lang="lfn" title="Linua Franca Nova">Tu ia gania!</span>
+        <span lang="pl" title="Polish">Wygrałeś!</span>
+        <span lang="ga" title="Irish">Bhuaigh tú!</span>
+        <span lang="tr" title="Turkish">kazandın!</span>
+
+      </div>
+    </section>
 
   <script type="module" src="main.js"></script>
   </body>
