@@ -32,56 +32,8 @@ body {
     min-height: 600px;
 }
 
-.app-title {
-    font-size: x-large;
-    font-weight: bold;
-    margin-right: 1em;
-    text-transform: uppercase;
-}
 
-noscript {
-    display: block;
-    margin: 1em auto;
-}
-
-h1 {
-    font-size: large;
-    margin: 10px;
-    text-align: center;
-}
-
-
-/* Generic style components. */
-
-.border   { border: 1px solid; }
-.clearfix { clear: all; }
-.right    { float: right; }
-.rounded  { border-radius: 15px; }
-
-.flex {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-}
-
-.flex > * {
-    margin-right: 40px;
-}
-
-.help-box {
-    background-color: white;
-    color: black;
-    border: outset;
-    margin: 20px;
-    padding: 0.25em 1em;
-}
-
-.box2 {
-    border: solid 1px;
-    border-radius: 10px;
-    margin: 10px 0;
-    padding: 0 10px;
-}
+/* Help and dropdowns. */
 
 details {
     margin: 0 5px;
@@ -99,67 +51,8 @@ details h1 {
     padding: 0.5em;
 }
 
-input[type="number"] {
-    width: 50px;
-}
 
-/* Page sections */
-
-main {
-    display: flex;
-    flex-direction: row;
-    border: solid 1px;
-    border-radius: 10px;
-    margin: 10px 0;
-    padding: 0 10px;
-}
-
-div.won {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: x-large;
-    font-weight: bold;
-    padding-left: 50px;
-}
-
-
-/* Card-related styles */
-
-.tableau {
-    height: 100%;
-}
-
-.row-ctr {
-    width: 50px;
-    height: 100%;
-}
-
-.row {
-    list-style-type: none;
-    margin: 5px;
-    padding: 0;
-    vertical-align: top;
-    width: 80px;
-}
-
-.card {
-    color: black;
-    font-family: serif;
-    font-size: 30px;
-    width: 40px;
-    height: 40px;
-    margin: 1px auto;
-    padding: 5px;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;   /* Disable accidentally selecting text. */
-}
-
-
-.card.suit2 {
-    text-decoration: underline double;
-}
-
+/* Suit color gradients. */
 
 .card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
 .card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 82%); }
@@ -188,17 +81,3 @@ div.won {
 .card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 55%); }
 .card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 52%); }
 .card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 49%); }
-
-
-.card.promoting {
-    /* font-size: x-large; */
-    font-weight: bold;
-}
-
-
-
-/* Foundation/Stock/Toolbar styles */
-
-progress {
-    /* width: 40em; */
-}
