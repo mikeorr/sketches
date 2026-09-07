@@ -1,20 +1,18 @@
 /* Spysol stylesheet. */
 
-@property --hue1 {
-    syntax: "<integer>",
-    inerits: false,
-    initial-value: 0;
-}
-
-@property --hue2 {
-    syntax: "<integer>",
-    inerits: false,
-    initial-value: 120;
-}
-
 :root {
+    --card-size: 30px;   /* Card font size. Also used calculate width/height. */
+    --model-size: 20px;  /* Model size. Also used to calculate width/height.  */
     --hue1: 0;     /* red   */
     --hue2: 120;   /* green */
+}
+
+.border {
+    border: solid 1px;
+    border-color: white;
+    border-radius: 5px;
+    margin-bottom: 3px;
+    padding: 3px;
 }
 
 html {
@@ -28,8 +26,52 @@ body {
     vertical-align: top;
     margin: 0 auto;
     padding: 10px;
-    width: 1024px;
-    min-height: 600px;
+    width: 80%;
+}
+
+#board {
+}
+
+main {
+    display: flex;
+    min-height: 50vh;
+}
+
+#sidebar {
+}
+
+#tableau {
+    flex-grow: 1;
+}
+
+#models {
+}
+
+#models > span {
+    margin: 0 1em;
+}
+
+/* Sidebar. */
+
+#sidebar {
+    width: 200px;
+}
+
+.app-title {
+    font-family: serif;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+div.hr {
+    background-color: white;
+    color: black;
+    margin: 3px auto;
+    height: 5px;
+    width: 80%;
 }
 
 
@@ -52,32 +94,79 @@ details h1 {
 }
 
 
-/* Suit color gradients. */
+spy-card {
+    display: inline-block;
+    background-color: white;  /* Overridden by card-specific background color below. */
+    color: black;
+    font-family: serif;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;   /* Disable accidentally selecting text. */
 
-.card.suit1.rank1  { background-color: hsl(var(--hue1) 100% 85%); }
-.card.suit1.rank2  { background-color: hsl(var(--hue1) 100% 82%); }
-.card.suit1.rank3  { background-color: hsl(var(--hue1) 100% 79%); }
-.card.suit1.rank4  { background-color: hsl(var(--hue1) 100% 76%); }
-.card.suit1.rank5  { background-color: hsl(var(--hue1) 100% 73%); }
-.card.suit1.rank6  { background-color: hsl(var(--hue1) 100% 70%); }
-.card.suit1.rank7  { background-color: hsl(var(--hue1) 100% 67%); }
-.card.suit1.rank8  { background-color: hsl(var(--hue1) 100% 64%); }
-.card.suit1.rank9  { background-color: hsl(var(--hue1) 100% 61%); }
-.card.suit1.rank10 { background-color: hsl(var(--hue1) 100% 58%); }
-.card.suit1.rank11 { background-color: hsl(var(--hue1) 100% 55%); }
-.card.suit1.rank12 { background-color: hsl(var(--hue1) 100% 52%); }
-.card.suit1.rank13 { background-color: hsl(var(--hue1) 100% 49%); }
+    &[suit="1"] {
+        &[rank="1"]  { background-color: hsl(var(--hue1) 100% 85%); }
+        &[rank="2"]  { background-color: hsl(var(--hue1) 100% 82%); }
+        &[rank="3"]  { background-color: hsl(var(--hue1) 100% 79%); }
+        &[rank="4"]  { background-color: hsl(var(--hue1) 100% 76%); }
+        &[rank="5"]  { background-color: hsl(var(--hue1) 100% 73%); }
+        &[rank="6"]  { background-color: hsl(var(--hue1) 100% 70%); }
+        &[rank="7"]  { background-color: hsl(var(--hue1) 100% 67%); }
+        &[rank="8"]  { background-color: hsl(var(--hue1) 100% 64%); }
+        &[rank="9"]  { background-color: hsl(var(--hue1) 100% 61%); }
+        &[rank="10"] { background-color: hsl(var(--hue1) 100% 58%); }
+        &[rank="11"] { background-color: hsl(var(--hue1) 100% 55%); }
+        &[rank="12"] { background-color: hsl(var(--hue1) 100% 52%); }
+        &[rank="13"] { background-color: hsl(var(--hue1) 100% 49%); }
+    }
 
-.card.suit2.rank1  { background-color: hsl(var(--hue2) 100% 85%); }
-.card.suit2.rank2  { background-color: hsl(var(--hue2) 100% 82%); }
-.card.suit2.rank3  { background-color: hsl(var(--hue2) 100% 79%); }
-.card.suit2.rank4  { background-color: hsl(var(--hue2) 100% 76%); }
-.card.suit2.rank5  { background-color: hsl(var(--hue2) 100% 73%); }
-.card.suit2.rank6  { background-color: hsl(var(--hue2) 100% 70%); }
-.card.suit2.rank7  { background-color: hsl(var(--hue2) 100% 67%); }
-.card.suit2.rank8  { background-color: hsl(var(--hue2) 100% 64%); }
-.card.suit2.rank9  { background-color: hsl(var(--hue2) 100% 61%); }
-.card.suit2.rank10 { background-color: hsl(var(--hue2) 100% 58%); }
-.card.suit2.rank11 { background-color: hsl(var(--hue2) 100% 55%); }
-.card.suit2.rank12 { background-color: hsl(var(--hue2) 100% 52%); }
-.card.suit2.rank13 { background-color: hsl(var(--hue2) 100% 49%); }
+    &[suit="2"] {
+        text-decoration: underline double;
+        &[rank="1"]  { background-color: hsl(var(--hue2) 100% 85%); }
+        &[rank="2"]  { background-color: hsl(var(--hue2) 100% 82%); }
+        &[rank="3"]  { background-color: hsl(var(--hue2) 100% 79%); }
+        &[rank="4"]  { background-color: hsl(var(--hue2) 100% 76%); }
+        &[rank="5"]  { background-color: hsl(var(--hue2) 100% 73%); }
+        &[rank="6"]  { background-color: hsl(var(--hue2) 100% 70%); }
+        &[rank="7"]  { background-color: hsl(var(--hue2) 100% 67%); }
+        &[rank="8"]  { background-color: hsl(var(--hue2) 100% 64%); }
+        &[rank="9"]  { background-color: hsl(var(--hue2) 100% 61%); }
+        &[rank="10"] { background-color: hsl(var(--hue2) 100% 58%); }
+        &[rank="11"] { background-color: hsl(var(--hue2) 100% 55%); }
+        &[rank="12"] { background-color: hsl(var(--hue2) 100% 52%); }
+        &[rank="13"] { background-color: hsl(var(--hue2) 100% 49%); }
+    }
+}
+
+spy-row {
+    display: block;
+    margin: 5px;
+    height: calc( var(--card-size) + 15px);
+
+    &:hover {
+        background-color: #555555;
+    }
+
+    spy-card {
+        font-size: var(--card-size);
+        width: calc( var(--card-size) + 10px);
+        height: calc( var(--card-size) + 10px);
+        margin: 0 1px;
+        padding: 0 2px;
+    }
+}
+
+spy-model {
+    margin: 0.5em;
+    height: calc( var(--model-size) + 30px);
+    padding: 2px;
+
+    spy-card {
+        font-size: var(--model-size);
+        width: calc( var(--model-size) + 6px);
+        height: calc( var(--model-size) + 6pxpx);
+        padding: 2px;
+    }
+}
+
+
+
