@@ -17,6 +17,14 @@
     --hue2: 120;   /* green */
 }
 
+.border {
+    border: solid 1px;
+    border-color: white;
+    border-radius: 5px;
+    margin-bottom: 3px;
+    padding: 3px;
+}
+
 html {
     background-color: #090721;  /* A dark outer gutter. */
 }
@@ -29,8 +37,33 @@ body {
     margin: 0 auto;
     padding: 10px;
     width: 1024px;
-    min-height: 600px;
 }
+
+#board {
+}
+
+main {
+    display: flex;
+    min-height: 50vh;
+}
+
+#sidebar {
+}
+
+#tableau {
+    flex-grow: 1;
+}
+
+#models {
+}
+
+#models > span {
+    margin: 0 1em;
+}
+
+.model {
+}
+
 
 
 /* Help and dropdowns. */
@@ -49,6 +82,12 @@ details h1 {
     border-radius: 10px;
     font-size: large;
     padding: 0.5em;
+}
+
+
+spy-card {
+    background-color: white;  /* Overridden by card-specific background color below. */
+    color: black;
 }
 
 

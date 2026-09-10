@@ -10,10 +10,7 @@ const ROW_CARD_COUNTS = [6, 6, 6, 6, 5, 5, 5, 5, 5, 5];
 const SUITS = [1, 2, 1, 2, 1, 2, 1, 2];
 
 
-class SpyCard extends Element {
-    constructor() {
-        super();
-    }
+class SpyCard extends HTMLElement {
 }
 
 customElements.define("spy-card", SpyCard);
