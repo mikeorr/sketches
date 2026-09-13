@@ -85,6 +85,13 @@ details h1 {
 }
 
 
+.row {
+    border: dotted;
+    margin: 0.5em;
+    height: 3em;
+}
+
+
 spy-card {
     background-color: white;  /* Overridden by card-specific background color below. */
     color: black;
