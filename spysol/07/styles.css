@@ -94,6 +94,8 @@ details h1 {
 }
 
 
+/* Cards, rows, and models. */
+
 spy-card {
     display: inline-block;
     background-color: white;  /* Overridden by card-specific background color below. */
