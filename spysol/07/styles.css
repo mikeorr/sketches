@@ -41,7 +41,9 @@ main {
 }
 
 #tableau {
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;  /* Tableau can expand in parent flex. */
 }
 
 #models {
@@ -55,6 +57,7 @@ main {
 
 #sidebar {
     width: 200px;
+    padding: 5px;
 }
 
 .app-title {
@@ -70,7 +73,7 @@ button {
     display: block;
     font-size: 20px;
     margin: 20px auto;
-    padding: 10px;
+    width: 100%;
 }
 
 
@@ -139,9 +142,8 @@ spy-card {
 }
 
 spy-row {
-    display: block;
     margin: 5px;
-    height: calc( var(--card-size) + 15px);
+    min-height: calc( var(--card-size) + 15px);
 
     &:hover {
         background-color: #555555;
@@ -157,6 +159,7 @@ spy-row {
 }
 
 spy-model {
+    flex-wrap: wrap;
     margin: 0.5em;
     height: calc( var(--model-size) + 30px);
     padding: 2px;

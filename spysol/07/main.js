@@ -149,10 +149,17 @@ function changeColors() {
     document.documentElement.style.setProperty("--hue2", hues[1]);
 }
 
+function newGame() {
+    if ( window.confirm("Abandon current game?" ) ) {
+        spy.newGame();
+    }
+}
+
 
 // Initialize game.
 function initialize() {
     document.getElementById("btn-colors").addEventListener("click", changeColors);
+    document.getElementById("btn-new").addEventListener("click", newGame);
     spy.newGame();
 }
 
