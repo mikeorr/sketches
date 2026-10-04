@@ -31,13 +31,23 @@ class StandardSpec {
 // content: calculated from suit and rank
 // Note: Font size is inherited from the containing row or ancestor.
 class SpyCard extends HTMLElement {
-    setValue(suit, rank, spec) {
+    setValue(suit, rank, spec, drag) {
         this.suit = suit;
         this.rank = rank;
         this.setAttribute("suit", suit);
         this.setAttribute("rank", rank);
         this.innerText = spec.getFace(suit, rank);
+        if (drag) {
+            this.draggable = true;
+            this.addEventListener("dragstart", onDragHand);
+        }
     }
+
+    get reserve()  { return Boolean(this.getAttribute("reserve")); }
+    get selected() { return Boolean(this.getAttribute("selected")); }
+
+    set reserve(value)  { this.toggleAttribute("reserve", value); }
+    set selected(value) { this.toggleAttribute("selected", value); }
 }
 
 class SpyModel extends HTMLElement {
@@ -54,14 +64,15 @@ customElements.define("spy-row", SpyRow);
 // Logic class.
 
 class Spysol {
+    dragging;
     rows;
     score;
     stock;
     spec = new StandardSpec();
 
-    createCard(suit, rank) {
+    createCard(suit, rank, drag) {
         const card = document.createElement("spy-card");
-        card.setValue(suit, rank, this.spec);
+        card.setValue(suit, rank, this.spec, drag);
         return card;
     }
 
@@ -70,7 +81,7 @@ class Spysol {
         deck = [];
         for (suit of SUITS) {
             for (rank = 1; rank <= this.spec.ranks; rank++) {
-                card = this.createCard(suit, rank);
+                card = this.createCard(suit, rank, true);
                 deck.push(card);
             }
         }
@@ -84,7 +95,7 @@ class Spysol {
         let card, cards, rank;
         cards = [];
         for (rank=1; rank <= this.ranks; rank++) {
-            card = this.createCard(suit, rank);
+            card = this.createCard(suit, rank, false);
             cards.push(card);
         }
         return cards;
@@ -133,6 +144,7 @@ class Spysol {
 
     newGame() {
         this.score = 0;
+        this.dragging = null;
         this.initModels();
         this.dealCards();
         this.renderDraw();
@@ -179,6 +191,20 @@ function draw() {
             }
         }
         spy.renderDraw();
+    }
+}
+
+function onDragHand(event) {
+    let el, hand;
+    hand = [];
+    el = event.target;
+    while (el) {
+        hand.push(el);
+        el = el.nextSibling;
+    }
+    if (hand) {
+        spy.dragging = hand;
+        hand.forEach(x => x.selected = true);
     }
 }
 
