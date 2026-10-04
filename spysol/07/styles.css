@@ -66,14 +66,6 @@ main {
     text-transform: uppercase;
 }
 
-div.hr {
-    background-color: white;
-    color: black;
-    margin: 3px auto;
-    height: 5px;
-    width: 80%;
-}
-
 
 /* Help and dropdowns. */
 
@@ -100,7 +92,7 @@ spy-card {
     display: inline-block;
     background-color: white;  /* Overridden by card-specific background color below. */
     color: black;
-    font-family: serif;
+    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     vertical-align: middle;
     user-select: none;   /* Disable accidentally selecting text. */
