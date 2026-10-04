@@ -8,9 +8,10 @@
 }
 
 .border {
-    border: solid 1px;
+    border-style: solid;
     border-color: white;
     border-radius: 5px;
+    border-width: 1px;
     margin-bottom: 3px;
     padding: 3px;
 }
@@ -47,11 +48,19 @@ main {
 }
 
 #models {
+    display: flex;
+    padding: 10px;
+
+    > :first-child {
+        font-size: 20px;
+    }
+
+    > :last-child {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
 
-#models > span {
-    margin: 0 1em;
-}
 
 /* Sidebar. */
 
@@ -159,15 +168,13 @@ spy-row {
 }
 
 spy-model {
-    flex-wrap: wrap;
-    margin: 0.5em;
-    height: calc( var(--model-size) + 30px);
-    padding: 2px;
+    margin-left: 10px;
+    height: calc( var(--model-size) + 15px);
 
     spy-card {
         font-size: var(--model-size);
         width: calc( var(--model-size) + 6px);
-        height: calc( var(--model-size) + 6pxpx);
+        height: calc( var(--model-size) + 6px);
         padding: 2px;
     }
 }
