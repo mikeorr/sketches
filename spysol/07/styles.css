@@ -66,6 +66,13 @@ main {
     text-transform: uppercase;
 }
 
+button {
+    display: block;
+    font-size: 20px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
 
 /* Help and dropdowns. */
 
