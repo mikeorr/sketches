@@ -55,6 +55,7 @@ customElements.define("spy-row", SpyRow);
 
 class Spysol {
     rows;
+    score;
     stock;
     spec = new StandardSpec();
 
@@ -131,13 +132,25 @@ class Spysol {
     }
 
     newGame() {
-        let size;
+        this.score = 0;
         this.initModels();
         this.dealCards();
-        this.rows = this.createRows();
-        const deck = this.createCardDeck(true);
-        for (size of this.spec.rowSizes) {
-        }
+        this.renderDraw();
+        this.renderScore();
+    }
+
+    renderDraw() {
+        const el = document.getElementById("btn-draw")
+        const rounds = this.stock.length / this.rows.length;
+        el.innerText = `Draw (${rounds})`;
+        el.disabled = !rounds;
+    }
+
+    renderScore() {
+        const score = document.getElementById("score");
+        const progress = document.querySelector("progress");
+        score.innerText = this.score;
+        progress.value = this.score;
     }
 };
 
