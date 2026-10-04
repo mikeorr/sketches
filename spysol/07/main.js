@@ -168,9 +168,24 @@ function newGame() {
     }
 }
 
+function draw() {
+    let card;
+    if (spy.stock.length) {
+        for (let i = 0; i < spy.rows.length; i++) {
+            card = spy.stock.shift();
+            if (card) {
+                spy.rows[i].push(card);
+                document.getElementById("tableau").children[i].append(card);
+            }
+        }
+        spy.renderDraw();
+    }
+}
+
 
 // Initialize game.
 function initialize() {
+    document.getElementById("btn-draw").addEventListener("click", draw);
     document.getElementById("btn-colors").addEventListener("click", changeColors);
     document.getElementById("btn-new").addEventListener("click", newGame);
     spy.newGame();
