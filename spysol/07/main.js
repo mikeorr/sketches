@@ -39,21 +39,40 @@ class SpyCard extends HTMLElement {
         this.innerText = spec.getFace(suit, rank);
         if (drag) {
             this.draggable = true;
-            this.addEventListener("dragstart", onDragHand);
+            this.addEventListener("dragstart", onDrag);
         }
     }
 
     get reserve()  { return Boolean(this.getAttribute("reserve")); }
     get selected() { return Boolean(this.getAttribute("selected")); }
 
-    set reserve(value)  { this.toggleAttribute("reserve", value); }
+    set reserve(value)  { this.toggleAttribute("reserve",  value); }
     set selected(value) { this.toggleAttribute("selected", value); }
+
+    select(yes) {
+        let card = this;
+        do {
+           card.selected = yes; 
+        } while ( card = card.nextSibling ) ;
+    }
+
+    move(dst) {
+        let card = this;
+        do {
+            card.selected = false;
+            dst.append(card);
+        } while ( card = card.nextSibling );
+    }
 }
 
 class SpyModel extends HTMLElement {
 }
 
 class SpyRow extends HTMLElement {
+    makeDroppable() {
+        this.addEventListener("dragover", onDragOver);
+        this.addEventListener("drop", onDrop);
+    }
 }
 
 customElements.define("spy-card", SpyCard);
@@ -101,8 +120,9 @@ class Spysol {
         return cards;
     }
 
-    createRow() {
+    createRow(droppable) {
         const row = document.createElement("spy-row");
+        row.makeDroppable();
         return row;
     }
 
@@ -110,7 +130,7 @@ class Spysol {
         let i, rows;
         rows = [];
         for (i = 1; i <= this.spec.rowSizes.length; i++) {
-            rows.push( this.createRow() );
+            rows.push( this.createRow(droppable) );
         }
         return rows;
     }
@@ -194,18 +214,23 @@ function draw() {
     }
 }
 
-function onDragHand(event) {
-    let el, hand;
-    hand = [];
-    el = event.target;
-    while (el) {
-        hand.push(el);
-        el = el.nextSibling;
+function onDrag(event) {
+    const card = event.target;
+    card.select();
+    spy.dragging = card;
+}
+
+function onDragOver(event) {
+    event.preventDefault();
+}
+
+function onDrop(event) {
+    const dst = event.target;
+    if (spy.dragging) {
+        spy.dragging.move(dst);
+        spy.dragging = null;
     }
-    if (hand) {
-        spy.dragging = hand;
-        hand.forEach(x => x.selected = true);
-    }
+    event.preventDefault();
 }
 
 
