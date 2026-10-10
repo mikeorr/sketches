@@ -58,10 +58,14 @@ class SpyCard extends HTMLElement {
 
     move(dst) {
         let card = this;
-        do {
+        while (card) {
+            console.log("Moving", card, "to", dst);
+            console.log("My next sibling is", card.nextSibling);
             card.selected = false;
             dst.append(card);
-        } while ( card = card.nextSibling );
+            card = card.nextSibling;
+            console.log("I am sibling", card);
+        }
     }
 }
 
@@ -188,6 +192,20 @@ class Spysol {
 
 const spy = new Spysol();
 
+// Get the element's row, which may be the element itself or an ancestor.
+function getRow(el) {
+    while (el) {
+        if (el instanceof SpyRow) {
+            return el;
+        }
+        el = el.parentElement();
+    }
+    return null;
+}
+
+
+// Event callbacks
+
 function changeColors() {
     const hues = rs.random.shuffle(HUES).slice(0, 2);
     document.documentElement.style.setProperty("--hue1", hues[0]);
@@ -225,12 +243,19 @@ function onDragOver(event) {
 }
 
 function onDrop(event) {
-    const dst = event.target;
     if (spy.dragging) {
-        spy.dragging.move(dst);
+        const start = spy.dragging;
+        const src = spy.dragging.parentElement;
+        const dst = event.currentTarget;
+        console.assert(src instanceof SpyRow);
+        console.assert(dst instanceof SpyRow);
+        if (src === dst) {
+        } else {
+            start.move(dst);
+            event.preventDefault();
+        }
         spy.dragging = null;
     }
-    event.preventDefault();
 }
 
 
