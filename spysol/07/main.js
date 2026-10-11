@@ -57,15 +57,14 @@ class SpyCard extends HTMLElement {
     }
 
     move(dst) {
-        let card = this;
-        while (card) {
-            console.log("Moving", card, "to", dst);
-            console.log("My next sibling is", card.nextSibling);
+        let card, cards;
+        cards = [];
+        card = this;
+        do  {
             card.selected = false;
-            dst.append(card);
-            card = card.nextSibling;
-            console.log("I am sibling", card);
-        }
+            cards.push(card);
+        } while (card = card.nextSibling);
+        dst.append(...cards);
     }
 }
 
