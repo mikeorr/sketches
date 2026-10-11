@@ -31,12 +31,11 @@ class StandardSpec {
 // content: calculated from suit and rank
 // Note: Font size is inherited from the containing row or ancestor.
 class SpyCard extends HTMLElement {
-    setValue(suit, rank, spec, drag) {
+    constructor(suit, rank, face, drag) {
+        super();
         this.suit = suit;
         this.rank = rank;
-        this.setAttribute("suit", suit);
-        this.setAttribute("rank", rank);
-        this.innerText = spec.getFace(suit, rank);
+        this.face = face;
         if (drag) {
             this.draggable = true;
             this.addEventListener("dragstart", onDragStart);
@@ -44,25 +43,36 @@ class SpyCard extends HTMLElement {
         }
     }
 
+    connectedCallback() {
+        this.setAttribute("suit", this.suit);
+        this.setAttribute("rank", this.rank);
+        this.innerText = this.face;
+    }
+
+    reserve(yes) { this.classList.toggle("reserve", yes); }
+    select(yes)  { this.classList.toggle("select",  yes); }
+
+    /*
     get reserve()  { return Boolean(this.getAttribute("reserve")); }
     get selected() { return Boolean(this.getAttribute("selected")); }
 
     set reserve(value)  { this.toggleAttribute("reserve",  value); }
     set selected(value) { this.toggleAttribute("selected", value); }
+    */
 
-    select(yes) {
+    selectHand(yes) {
         let card = this;
         do {
-           card.selected = yes; 
+           card.select(yes);
         } while ( card = card.nextSibling ) ;
     }
 
-    move(dst) {
+    moveHand(dst) {
         let card, cards;
         cards = [];
         card = this;
         do  {
-            card.selected = false;
+            card.select(false);
             cards.push(card);
         } while (card = card.nextSibling);
         dst.append(...cards);
@@ -94,8 +104,10 @@ class Spysol {
     spec = new StandardSpec();
 
     createCard(suit, rank, drag) {
-        const card = document.createElement("spy-card");
-        card.setValue(suit, rank, this.spec, drag);
+        //const card = document.createElement("spy-card");
+        const face = this.spec.getFace(suit, rank)
+        const card = new SpyCard(suit, rank, face, drag);
+        //card.setValue(suit, rank, this.spec, drag);
         return card;
     }
 
@@ -234,18 +246,24 @@ function draw() {
 
 function onDragStart(event) {
     spy.dragging = event.target;
-    spy.dragging.select(true);
-    document.getElementById("tableau").classList.add("dragging");
+    spy.dragging.selectHand(true);
 }
 
 function onDragEnd(event) {
-    document.getElementById("tableau").classList.remove("dragging");
-    spy.dragging.select(false);
+    spy.dragging.selectHand(false);
     spy.dragging = null;
 }
 
 function onDragOver(event) {
     event.preventDefault();
+}
+
+function onDragEnter(event) {
+    event.currentTarget.classList.add("dragging");
+}
+
+function onDragLeave(event) {
+    event.currentTarget.classList.remove("dragging");
 }
 
 function onDrop(event) {
@@ -257,7 +275,7 @@ function onDrop(event) {
         console.assert(dst instanceof SpyRow);
         if (src === dst) {
         } else {
-            start.move(dst);
+            start.moveHand(dst);
             event.preventDefault();
         }
     }
