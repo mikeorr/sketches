@@ -164,15 +164,23 @@ spy-card {
         &[rank="12"] { background-color: hsl(var(--hue2) 100% 52%); }
         &[rank="13"] { background-color: hsl(var(--hue2) 100% 49%); }
     }
+
+    &[selected] {
+        /* 
+           Can't set 'background-color: black important!', presumably
+           because the suit-rank styles above override it.
+         */
+        color: white;
+    }
+
+    &[reserve] {
+    }
 }
 
 spy-row {
     margin: 5px;
     min-height: calc( var(--card-size) + 15px);
 
-    &:hover {
-        background-color: #555555;
-    }
 
     spy-card {
         font-size: var(--card-size);
@@ -181,6 +189,10 @@ spy-row {
         margin: 0 1px;
         padding: 0 2px;
     }
+}
+
+#tableau.dragging spy-row:hover {
+    background-color: #555555;
 }
 
 spy-model {

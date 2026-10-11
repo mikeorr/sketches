@@ -39,7 +39,8 @@ class SpyCard extends HTMLElement {
         this.innerText = spec.getFace(suit, rank);
         if (drag) {
             this.draggable = true;
-            this.addEventListener("dragstart", onDrag);
+            this.addEventListener("dragstart", onDragStart);
+            this.addEventListener("dragend", onDragEnd);
         }
     }
 
@@ -231,10 +232,16 @@ function draw() {
     }
 }
 
-function onDrag(event) {
-    const card = event.target;
-    card.select();
-    spy.dragging = card;
+function onDragStart(event) {
+    spy.dragging = event.target;
+    spy.dragging.select(true);
+    document.getElementById("tableau").classList.add("dragging");
+}
+
+function onDragEnd(event) {
+    document.getElementById("tableau").classList.remove("dragging");
+    spy.dragging.select(false);
+    spy.dragging = null;
 }
 
 function onDragOver(event) {
@@ -253,7 +260,6 @@ function onDrop(event) {
             start.move(dst);
             event.preventDefault();
         }
-        spy.dragging = null;
     }
 }
 
