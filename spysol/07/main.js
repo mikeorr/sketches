@@ -26,9 +26,9 @@ class StandardSpec {
 // attributes:
 //   suit: 1-2
 //   rank: 1-13
-//   reserve: true to obscure card's value
-//   selected: true to mark the card as selected to move
-// content: calculated from suit and rank
+//   reserve: Card is "face down"; obscure the content so it can't be read.
+//   selected: Card is participating in a drag move.
+// content: Specified in constructor.
 // Note: Font size is inherited from the containing row or ancestor.
 class SpyCard extends HTMLElement {
     constructor(suit, rank, face, drag) {
@@ -49,16 +49,8 @@ class SpyCard extends HTMLElement {
         this.innerText = this.face;
     }
 
-    reserve(yes) { this.classList.toggle("reserve", yes); }
-    select(yes)  { this.classList.toggle("select",  yes); }
-
-    /*
-    get reserve()  { return Boolean(this.getAttribute("reserve")); }
-    get selected() { return Boolean(this.getAttribute("selected")); }
-
-    set reserve(value)  { this.toggleAttribute("reserve",  value); }
-    set selected(value) { this.toggleAttribute("selected", value); }
-    */
+    reserve(yes) { this.toggleAttribute("reserve", yes); }
+    select(yes)  { this.toggleAttribute("select",  yes); }
 
     selectHand(yes) {
         let card = this;
@@ -86,6 +78,11 @@ class SpyRow extends HTMLElement {
     makeDroppable() {
         this.addEventListener("dragover", onDragOver);
         this.addEventListener("drop", onDrop);
+    }
+
+    unreserve() {
+        // Ensure the last up to two cards are face up.
+        Array.from(this.children).slice(-2).forEach( x => x.reserve(false) );
     }
 }
 
@@ -164,13 +161,20 @@ class Spysol {
     }
 
     dealCards() {
-        let hand, row, size;
+        let card, hand, i, row, size;
         const tableau = document.getElementById("tableau");
         this.stock = this.createCardDeck(true);
         this.rows = [];
         tableau.replaceChildren();
-        for (let size of this.spec.rowSizes) {
-            hand = this.stock.splice(0, size);
+        for (size of this.spec.rowSizes) {
+            hand = [];
+            for (i = 0; i < size; i++) {
+                card = this.stock.pop();
+                if (i < size - 2) {
+                    card.reserve(true);
+                }
+                hand.push(card);
+            }
             this.rows.push(hand);
             row = this.createRow();
             row.append(...hand);
@@ -276,6 +280,7 @@ function onDrop(event) {
         if (src === dst) {
         } else {
             start.moveHand(dst);
+            src.unreserve();
             event.preventDefault();
         }
     }
