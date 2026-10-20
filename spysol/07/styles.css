@@ -135,7 +135,7 @@ spy-card {
         background-color 0.5s ease 0.10s,
                    color 0.5s ease 0.10s;
 
-    &[suit="1"]:not([reserve]) {
+    &[suit="1"][state="normal"] {
         &[rank="1"]  { background-color: hsl(var(--hue1) 100% 85%); }
         &[rank="2"]  { background-color: hsl(var(--hue1) 100% 82%); }
         &[rank="3"]  { background-color: hsl(var(--hue1) 100% 79%); }
@@ -151,7 +151,7 @@ spy-card {
         &[rank="13"] { background-color: hsl(var(--hue1) 100% 49%); }
     }
 
-    &[suit="2"]:not([reserve]) {
+    &[suit="2"][state="normal"] {
         text-decoration: underline double;
         &[rank="1"]  { background-color: hsl(var(--hue2) 100% 85%); }
         &[rank="2"]  { background-color: hsl(var(--hue2) 100% 82%); }
@@ -168,17 +168,20 @@ spy-card {
         &[rank="13"] { background-color: hsl(var(--hue2) 100% 49%); }
     }
 
-    &[reserve] {
+    &[state="facedown"] {
         background-color: gray !important;
         color: gray !important;
     }
 
-    &[selected] {
+    &[state="selected"] {
         /* 
            Can't set 'background-color: black important!', presumably
            because the suit-rank styles above override it.
          */
         color: white;
+    }
+
+    &[state="promoting"] {
     }
 
 }

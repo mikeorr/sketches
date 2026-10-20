@@ -47,8 +47,12 @@ class SpyCard extends HTMLElement {
         this.setAttribute("suit", this.suit);
         this.setAttribute("rank", this.rank);
         this.innerText = this.face;
+        this.state("normal");
     }
 
+    state(state) { this.setAttribute("state", state); }
+
+    /*
     reserve(yes) { this.toggleAttribute("reserve", yes); }
     select(yes)  { this.toggleAttribute("select",  yes); }
 
@@ -58,13 +62,14 @@ class SpyCard extends HTMLElement {
            card.select(yes);
         } while ( card = card.nextSibling ) ;
     }
+    */
 
     moveHand(dst) {
         let card, cards;
         cards = [];
         card = this;
         do  {
-            card.select(false);
+            card.state("normal");
             cards.push(card);
         } while (card = card.nextSibling);
         dst.append(...cards);
@@ -82,7 +87,7 @@ class SpyRow extends HTMLElement {
 
     unreserve() {
         // Ensure the last up to two cards are face up.
-        Array.from(this.children).slice(-2).forEach( x => x.reserve(false) );
+        Array.from(this.children).slice(-2).forEach( x => x.state("normal") );
     }
 
     canPromote(hand) {
@@ -199,7 +204,7 @@ class Spysol {
             for (i = 0; i < size; i++) {
                 card = this.stock.pop();
                 if (i < size - 2) {
-                    card.reserve(true);
+                    card.state("facedown");
                 }
                 hand.push(card);
             }
