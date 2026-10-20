@@ -84,6 +84,34 @@ class SpyRow extends HTMLElement {
         // Ensure the last up to two cards are face up.
         Array.from(this.children).slice(-2).forEach( x => x.reserve(false) );
     }
+
+    canPromote(hand) {
+        console.assert(hand.length === 13, hand);
+        const suit = hand[0].suit;
+        let card, i, rank;
+        for (i = 0; i < hand.length; i++) {
+            rank = i + 1;
+            card = hand[i];
+            if ( (card.suit !== suit) || (card.rank !== rank) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    tryPromote() {
+        const hand = Array.from(this.children).slice(-13);
+        if (hand.length !== 13) {
+            return false;
+        }
+        if ( ! this.canPromote(hand) ) {
+            console.debug("Can't promote.", hand);
+            return false;
+        }
+            console.info("PROMOTED!", hand);
+        hand.forEach( x => x.remove() );
+        return true;
+    }
 }
 
 customElements.define("spy-card", SpyCard);
@@ -279,9 +307,10 @@ function onDrop(event) {
         console.assert(dst instanceof SpyRow);
         if (src === dst) {
         } else {
-            start.moveHand(dst);
-            src.unreserve();
             event.preventDefault();
+            start.moveHand(dst);
+            src.tryPromote();
+            src.unreserve();
         }
     }
 }
